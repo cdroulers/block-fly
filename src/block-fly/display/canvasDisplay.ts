@@ -1,4 +1,4 @@
-import { Board, PieceType } from "../game/board";
+import { Board, PieceType, IPlayerPiece } from "../game/board";
 import * as Promise from "bluebird";
 
 const imageSize = 30;
@@ -6,20 +6,20 @@ const imageSize = 30;
 export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
   const promises = [
     loadImage("/assets/imgs/player1-left.gif"),
+    loadImage("/assets/imgs/player1-right.gif"),
     loadImage("/assets/imgs/empty.gif"),
     loadImage("/assets/imgs/wall.gif"),
     loadImage("/assets/imgs/block.gif"),
     loadImage("/assets/imgs/door.gif")
   ];
   Promise.all(promises).then(values => {
-    let [player1Left, empty, wall, block, door] = values;
+    let [player1Left, player1Right, empty, wall, block, door] = values;
 
     const context = canvas.getContext("2d");
 
-    for (let y = 0; y < board.boardValues.length; y++) {
-      const row = board.boardValues[y];
-      for (let x = 0; x < row.length; x++) {
-        let piece = row[x];
+    for (let y = 0; y < board.height; y++) {
+      for (let x = 0; x < board.width; x++) {
+        let piece = board.pieces.filter(p => p.x === x && p.y === y)[0];
         switch (piece.type) {
           case PieceType.Block:
             context.drawImage(block, x * imageSize, y * imageSize);
@@ -31,7 +31,10 @@ export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
             context.drawImage(door, x * imageSize, y * imageSize);
             break;
           case PieceType.Player:
-            context.drawImage(player1Left, x * imageSize, y * imageSize);
+            context.drawImage(
+              (piece as IPlayerPiece).facingLeft ? player1Left : player1Right,
+              x * imageSize,
+              y * imageSize);
             break;
           default:
             context.drawImage(empty, x * imageSize, y * imageSize);
