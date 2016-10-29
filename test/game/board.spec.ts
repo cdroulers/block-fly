@@ -52,6 +52,10 @@ describe("!unit! Board", () => {
     expect(board.toString()).to.equal(expected);
   }
 
+  function makePlayerFaceRight(board: Board): void {
+    (board.pieces.filter(x => x.type === PieceType.Player)[0] as IPlayerPiece).facingLeft = false;
+  }
+
   describe("toString", () => {
     it("Outputs same as input", () => {
       const board = Board.parse(`
@@ -125,7 +129,7 @@ describe("!unit! Board", () => {
       let actual = board.canMove(1, Move.Climb);
       expect(actual).to.be.false;
 
-      (board.pieces.filter(x => x.type === PieceType.Player)[0] as IPlayerPiece).facingLeft = false;
+      makePlayerFaceRight(board);
       actual = board.canMove(1, Move.Climb);
       expect(actual).to.be.false;
     });
@@ -137,7 +141,7 @@ describe("!unit! Board", () => {
         1,1,1,1
       `);
 
-      (board.pieces.filter(x => x.type === PieceType.Player)[0] as IPlayerPiece).facingLeft = false;
+      makePlayerFaceRight(board);
       const actual = board.canMove(1, Move.Climb);
       expect(actual).to.be.true;
     });
@@ -149,7 +153,7 @@ describe("!unit! Board", () => {
         1,1,1,1
       `);
 
-      (board.pieces.filter(x => x.type === PieceType.Player)[0] as IPlayerPiece).facingLeft = false;
+      makePlayerFaceRight(board);
       const actual = board.canMove(1, Move.Climb);
       expect(actual).to.be.false;
     });
@@ -218,6 +222,39 @@ describe("!unit! Board", () => {
       assertBoardEqual(board, `
         1,0,0,1
         1,1,3,1
+        1,1,1,1
+      `);
+    });
+
+    it("move climb to left", () => {
+      const board = Board.parse(`
+        1,0,0,1
+        1,1,3,1
+        1,1,1,1
+      `);
+
+      board.move(1, Move.Climb);
+
+      assertBoardEqual(board, `
+        1,3,0,1
+        1,1,0,1
+        1,1,1,1
+      `);
+    });
+
+    it("move climb to right", () => {
+      const board = Board.parse(`
+        1,0,0,1
+        1,3,1,1
+        1,1,1,1
+      `);
+
+      makePlayerFaceRight(board);
+      board.move(1, Move.Climb);
+
+      assertBoardEqual(board, `
+        1,0,3,1
+        1,0,1,1
         1,1,1,1
       `);
     });

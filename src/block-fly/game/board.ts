@@ -28,9 +28,7 @@ export class Board {
   }
 
   public canMove(playerId: number, move: Move): boolean {
-    const player = this.pieces.filter(
-      x => x.type === PieceType.Player &&
-        (x as IPlayerPiece).playerId === playerId)[0] as IPlayerPiece;
+    const player = this.getPlayer(playerId);
 
     if (!player) {
       return false;
@@ -58,15 +56,25 @@ export class Board {
   }
 
   public move(playerId: number, move: Move): void {
-    if (!this.canMove(playerId, move)) {
+    const player = this.getPlayer(playerId);
+
+    if (!player) {
       return;
     }
 
-    const player = this.pieces.filter(
-      x => x.type === PieceType.Player &&
-        (x as IPlayerPiece).playerId === playerId)[0] as IPlayerPiece;
+    // Always make the player face elsewhere.
+    switch (move) {
+      case Move.Left:
+        player.facingLeft = true;
+        break;
+      case Move.Right:
+        player.facingLeft = false;
+        break;
+      default:
+        break;
+    }
 
-    if (!player) {
+    if (!this.canMove(playerId, move)) {
       return;
     }
 
@@ -84,9 +92,20 @@ export class Board {
         this.swapPieces(rightPiece, player);
         this.makePlayerFall(player);
         break;
+      case Move.Climb:
+        const facingPiece = this.getFacingPiece(player);
+        const topPiece = this.getTopPiece(facingPiece);
+        this.swapPieces(topPiece, player);
+        break;
       default:
         throw new Error(`Unknown move ${move}`);
     }
+  }
+
+  private getPlayer(playerId: number): IPlayerPiece {
+    return this.pieces.filter(
+      x => x.type === PieceType.Player &&
+        (x as IPlayerPiece).playerId === playerId)[0] as IPlayerPiece;
   }
 
   private swapPieces(one: IPiece, two: IPiece): void {
