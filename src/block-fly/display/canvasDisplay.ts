@@ -39,7 +39,7 @@ export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
         }
       }
     }
-  })
+  });
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -52,5 +52,5 @@ function loadImage(src: string): Promise<HTMLImageElement> {
       },
       false);
     img.src = src;
-  })
+  });
 }
