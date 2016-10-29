@@ -97,7 +97,7 @@ export class Board {
     two.y = y;
   }
 
-  private makePlayerFall(player: IPlayerPiece) {
+  private makePlayerFall(player: IPlayerPiece): void {
     let bottomPiece = this.getBottomPiece(player);
     while (bottomPiece.type === PieceType.Empty) {
       this.swapPieces(bottomPiece, player);
