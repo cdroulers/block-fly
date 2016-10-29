@@ -16,6 +16,8 @@ export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
     let [player1Left, player1Right, empty, wall, block, door] = values;
 
     const context = canvas.getContext("2d");
+    canvas.width = board.width * imageSize;
+    canvas.height = board.height * imageSize;
 
     for (let y = 0; y < board.height; y++) {
       for (let x = 0; x < board.width; x++) {

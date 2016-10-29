@@ -10,7 +10,12 @@
 </head>
 
 <body data-version="<%= htmlWebpackPlugin.options.version %>">
-  <canvas id="root" width="800" height="800" style="border:1px solid">
+  <div id="board">
+    <canvas id="root" width="400" height="400">
+  </div>
+  <footer>
+    Version <%= htmlWebpackPlugin.options.version %> by <a href="mailto:webmaster@cdroulers.com">Christian Droulers</a> 2016 | <a href="https://github.com/cdroulers/block-fly">Source</a>
+  </footer>
   <script type="text/javascript">
     // Force `fetch` polyfill to workaround Chrome not displaying request body
     // in developer tools for the native `fetch`.

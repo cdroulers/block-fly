@@ -9,6 +9,9 @@ const packageJson = require(path.join(rootPath, "package.json"));
 
 var config = {
   entry: {
+    vendors: [
+      "bluebird"
+    ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
     ]

@@ -17,7 +17,6 @@ const board = Board.parse(`
 writeToCanvas(canvas, board);
 
 window.onkeydown = (e) => {
-  console.log("keypress", e);
   switch (e.keyCode) {
     case 37:
       board.move(1, Move.Left);
