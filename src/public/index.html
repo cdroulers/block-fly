@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fr-CA">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/assets/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="/assets/site.css" rel="stylesheet" type="text/css">
+  <title>Block Fly!</title>
+</head>
+
+<body data-version="<%= htmlWebpackPlugin.options.version %>">
+  <canvas id="root" width="800" height="800" style="border:1px solid">
+  <script type="text/javascript">
+    // Force `fetch` polyfill to workaround Chrome not displaying request body
+    // in developer tools for the native `fetch`.
+    self.fetch = null;
+  </script>
+</body>
+
+</html>

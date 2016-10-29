@@ -1,0 +1,51 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "command": "npm",
+  "isShellCommand": true,
+  "args": [
+    "run"
+  ],
+  "showOutput": "silent",
+  "tasks": [
+    {
+      "taskName": "build",
+      "args": [
+        "-s"
+      ],
+      "isBuildCommand": true,
+      "isWatching": false,
+      "showOutput": "always",
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "taskName": "lint",
+      "args": [
+        "-s"
+      ],
+      "isBuildCommand": false,
+      "isWatching": false,
+      "showOutput": "always",
+      "problemMatcher": [
+        {
+          "severity": "warning",
+          "owner": "tslint",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}/"
+          ],
+          "pattern": {
+            "regexp": "^([^\\[]*)\\[(\\d+), ?(\\d+)\\]: (.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        }
+      ]
+    }
+  ]
+}

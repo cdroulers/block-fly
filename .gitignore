@@ -1,0 +1,4 @@
+# lol windows
+.DS_Store
+node_modules
+build
