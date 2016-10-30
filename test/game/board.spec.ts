@@ -1,11 +1,12 @@
 import { expect } from "chai";
-import
-{
-  Board,
+import {
+  Board
+} from "../../src/block-fly/game/board";
+import {
   PieceType,
   pieceGenerator,
   playerPieceGenerator
-} from "../../src/block-fly/game/board";
+} from "../../src/block-fly/game/pieces";
 import {assertBoardEqual} from "./boardHelpers";
 
 describe("!unit! Board", () => {

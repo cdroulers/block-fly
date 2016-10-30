@@ -1,4 +1,5 @@
-import { Board, PieceType, IPlayerPiece } from "../game/board";
+import { Board } from "../game/board";
+import { PieceType, IPlayerPiece } from "../game/pieces";
 import * as Promise from "bluebird";
 
 const imageSize = 30;

@@ -1,9 +1,11 @@
 import { expect } from "chai";
 import {
-  Board,
+  Board
+} from "../../src/block-fly/game/board";
+import {
   PieceType,
   IPlayerPiece
-} from "../../src/block-fly/game/board";
+} from "../../src/block-fly/game/pieces";
 
 import { ICoordinates } from "../../src/block-fly/game/coordinates";
 
