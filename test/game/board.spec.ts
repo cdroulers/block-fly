@@ -4,10 +4,9 @@ import
   Board,
   PieceType,
   pieceGenerator,
-  playerPieceGenerator,
-  Move,
-  IPlayerPiece
+  playerPieceGenerator
 } from "../../src/block-fly/game/board";
+import {assertBoardEqual} from "./boardHelpers";
 
 describe("!unit! Board", () => {
   describe("Parse", () => {
@@ -22,39 +21,29 @@ describe("!unit! Board", () => {
       expect(board.width).to.equal(5);
       expect(board.height).to.equal(4);
       expect(board.pieces).to.deep.equal([
-        pieceGenerator(PieceType.Wall, 0, 0),
-        pieceGenerator(PieceType.Door, 1, 0),
-        pieceGenerator(PieceType.Empty, 2, 0),
-        pieceGenerator(PieceType.Empty, 3, 0),
-        pieceGenerator(PieceType.Wall, 4, 0),
-        pieceGenerator(PieceType.Wall, 0, 1),
-        pieceGenerator(PieceType.Wall, 1, 1),
-        pieceGenerator(PieceType.Empty, 2, 1),
-        pieceGenerator(PieceType.Empty, 3, 1),
-        pieceGenerator(PieceType.Wall, 4, 1),
-        pieceGenerator(PieceType.Wall, 0, 2),
-        pieceGenerator(PieceType.Wall, 1, 2),
-        pieceGenerator(PieceType.Block, 2, 2),
-        playerPieceGenerator(1, 3, 2),
-        pieceGenerator(PieceType.Wall, 4, 2),
-        pieceGenerator(PieceType.Wall, 0, 3),
-        pieceGenerator(PieceType.Wall, 1, 3),
-        pieceGenerator(PieceType.Wall, 2, 3),
-        pieceGenerator(PieceType.Wall, 3, 3),
-        pieceGenerator(PieceType.Wall, 4, 3)
+        pieceGenerator(PieceType.Wall, { x: 0, y: 0 }),
+        pieceGenerator(PieceType.Door, { x: 1, y: 0 }),
+        pieceGenerator(PieceType.Empty, { x: 2, y: 0 }),
+        pieceGenerator(PieceType.Empty, { x: 3, y: 0 }),
+        pieceGenerator(PieceType.Wall, { x: 4, y: 0 }),
+        pieceGenerator(PieceType.Wall, { x: 0, y: 1 }),
+        pieceGenerator(PieceType.Wall, { x: 1, y: 1 }),
+        pieceGenerator(PieceType.Empty, { x: 2, y: 1 }),
+        pieceGenerator(PieceType.Empty, { x: 3, y: 1 }),
+        pieceGenerator(PieceType.Wall, { x: 4, y: 1 }),
+        pieceGenerator(PieceType.Wall, { x: 0, y: 2 }),
+        pieceGenerator(PieceType.Wall, { x: 1, y: 2 }),
+        pieceGenerator(PieceType.Block, { x: 2, y: 2 }),
+        playerPieceGenerator(1, { x: 3, y: 2 }),
+        pieceGenerator(PieceType.Wall, { x: 4, y: 2 }),
+        pieceGenerator(PieceType.Wall, { x: 0, y: 3 }),
+        pieceGenerator(PieceType.Wall, { x: 1, y: 3 }),
+        pieceGenerator(PieceType.Wall, { x: 2, y: 3 }),
+        pieceGenerator(PieceType.Wall, { x: 3, y: 3 }),
+        pieceGenerator(PieceType.Wall, { x: 4, y: 3 })
       ]);
     });
   });
-
-  function assertBoardEqual(board: Board, expected: string): void {
-    expected = expected.trim().split("\n").map(x => x.trim()).join("\n");
-
-    expect(board.toString()).to.equal(expected);
-  }
-
-  function makePlayerFaceRight(board: Board): void {
-    (board.pieces.filter(x => x.type === PieceType.Player)[0] as IPlayerPiece).facingLeft = false;
-  }
 
   describe("toString", () => {
     it("Outputs same as input", () => {
@@ -71,192 +60,6 @@ describe("!unit! Board", () => {
         1,1,2,3,1
         1,1,1,1,1`
       );
-    });
-  });
-
-  describe("canMove", () => {
-    it("can't move left because of block", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,2,3,1
-        1,1,1,1
-      `);
-
-      const actual = board.canMove(1, Move.Left);
-      expect(actual).to.be.false;
-    });
-
-    it("can't move right because of wall", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,2,3,1
-        1,1,1,1
-      `);
-
-      const actual = board.canMove(1, Move.Right);
-      expect(actual).to.be.false;
-    });
-
-    it("can climb left", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,2,3,1
-        1,1,1,1
-      `);
-
-      const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
-    });
-
-    it("can't climb left because of empty", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,0,3,1
-        1,1,1,1
-      `);
-
-      const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
-    });
-
-    it("can't climb left or right because of wall over", () => {
-      const board = Board.parse(`
-        1,0,1,0,1
-        1,2,3,1,1
-        1,1,1,1,1
-      `);
-
-      let actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
-
-      makePlayerFaceRight(board);
-      actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
-    });
-
-    it("can climb right", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,3,2,1
-        1,1,1,1
-      `);
-
-      makePlayerFaceRight(board);
-      const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
-    });
-
-    it("can't climb right", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,2,3,1
-        1,1,1,1
-      `);
-
-      makePlayerFaceRight(board);
-      const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
-    });
-  });
-
-  describe("move", () => {
-    it("move left changes board", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,0,3,1
-        1,1,1,1
-      `);
-
-      board.move(1, Move.Left);
-
-      assertBoardEqual(board, `
-        1,0,0,1
-        1,3,0,1
-        1,1,1,1
-      `);
-    });
-
-    it("move left make player fall high", () => {
-      const board = Board.parse(`
-        1,0,3,1
-        1,0,1,1
-        1,0,1,1
-        1,1,1,1
-      `);
-
-      board.move(1, Move.Left);
-
-      assertBoardEqual(board, `
-        1,0,0,1
-        1,0,1,1
-        1,3,1,1
-        1,1,1,1
-      `);
-    });
-
-    it("move right changes board", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,3,0,1
-        1,1,1,1
-      `);
-
-      board.move(1, Move.Right);
-
-      assertBoardEqual(board, `
-        1,0,0,1
-        1,0,3,1
-        1,1,1,1
-      `);
-    });
-
-    it("move right makes fly fall", () => {
-      const board = Board.parse(`
-        1,3,0,1
-        1,1,0,1
-        1,1,1,1
-      `);
-
-      board.move(1, Move.Right);
-
-      assertBoardEqual(board, `
-        1,0,0,1
-        1,1,3,1
-        1,1,1,1
-      `);
-    });
-
-    it("move climb to left", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,1,3,1
-        1,1,1,1
-      `);
-
-      board.move(1, Move.Climb);
-
-      assertBoardEqual(board, `
-        1,3,0,1
-        1,1,0,1
-        1,1,1,1
-      `);
-    });
-
-    it("move climb to right", () => {
-      const board = Board.parse(`
-        1,0,0,1
-        1,3,1,1
-        1,1,1,1
-      `);
-
-      makePlayerFaceRight(board);
-      board.move(1, Move.Climb);
-
-      assertBoardEqual(board, `
-        1,0,3,1
-        1,0,1,1
-        1,1,1,1
-      `);
     });
   });
 });

@@ -5,12 +5,12 @@ const imageSize = 30;
 
 export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
   const promises = [
-    loadImage("/assets/imgs/player1-left.gif"),
-    loadImage("/assets/imgs/player1-right.gif"),
-    loadImage("/assets/imgs/empty.gif"),
-    loadImage("/assets/imgs/wall.gif"),
-    loadImage("/assets/imgs/block.gif"),
-    loadImage("/assets/imgs/door.gif")
+    loadImage("assets/imgs/player1-left.gif"),
+    loadImage("assets/imgs/player1-right.gif"),
+    loadImage("assets/imgs/empty.gif"),
+    loadImage("assets/imgs/wall.gif"),
+    loadImage("assets/imgs/block.gif"),
+    loadImage("assets/imgs/door.gif")
   ];
   Promise.all(promises).then(values => {
     let [player1Left, player1Right, empty, wall, block, door] = values;
@@ -21,7 +21,7 @@ export function writeToCanvas(canvas: HTMLCanvasElement, board: Board): void {
 
     for (let y = 0; y < board.height; y++) {
       for (let x = 0; x < board.width; x++) {
-        let piece = board.pieces.filter(p => p.x === x && p.y === y)[0];
+        let piece = board.pieces.filter(p => p.coords.x === x && p.coords.y === y)[0];
         switch (piece.type) {
           case PieceType.Block:
             context.drawImage(block, x * imageSize, y * imageSize);

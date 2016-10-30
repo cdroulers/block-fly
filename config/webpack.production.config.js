@@ -16,7 +16,8 @@ module.exports = new WebpackConfig.Config().extend({
 }).merge({
   output: {
     filename: "[name]_[chunkhash].js",
-    path: deployPath
+    path: deployPath,
+    publicPath: "",
   },
 
   module: {
