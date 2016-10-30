@@ -46,6 +46,15 @@
           }
         }
       ]
+    },
+    {
+      "taskName": "deploy",
+      "args": [
+        "-s"
+      ],
+      "isBuildCommand": false,
+      "isWatching": false,
+      "showOutput": "always"
     }
   ]
 }
