@@ -1,7 +1,5 @@
 import { expect } from "chai";
-import {
-  Board
-} from "../../src/block-fly/game/board";
+import BoardParser from "../../src/block-fly/game/numbersBoardParser";
 import {
   PieceType,
   pieceGenerator,
@@ -9,10 +7,12 @@ import {
 } from "../../src/block-fly/game/pieces";
 import {assertBoardEqual} from "./boardHelpers";
 
+const parser = new BoardParser();
+
 describe("!unit! Board", () => {
   describe("Parse", () => {
     it("Parses simple level", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,4,0,0,1
         1,1,0,0,1
         1,1,2,3,1
@@ -48,14 +48,14 @@ describe("!unit! Board", () => {
 
   describe("toString", () => {
     it("Outputs same as input", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,4,0,0,1
         1,1,0,0,1
         1,1,2,3,1
         1,1,1,1,1
       `);
 
-      assertBoardEqual(board, `
+      assertBoardEqual(board, parser, `
         1,4,0,0,1
         1,1,0,0,1
         1,1,2,3,1

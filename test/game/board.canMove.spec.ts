@@ -1,14 +1,16 @@
 import { expect } from "chai";
 import {
-  Board,
   Move
 } from "../../src/block-fly/game/board";
+import BoardParser from "../../src/block-fly/game/numbersBoardParser";
 import { makePlayerFaceRight, makePlayerHaveBlock } from "./boardHelpers";
+
+const parser = new BoardParser();
 
 describe("!unit! Board canMove", () => {
   describe("left", () => {
     it("can't move left because of block", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,2,3,1
         1,1,1,1
@@ -21,7 +23,7 @@ describe("!unit! Board canMove", () => {
 
   describe("right", () => {
     it("can't move right because of wall", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,2,3,1
         1,1,1,1
@@ -35,7 +37,7 @@ describe("!unit! Board canMove", () => {
   describe("climb", () => {
 
     it("can climb left", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,2,3,1
         1,1,1,1
@@ -46,7 +48,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can't climb left because of empty", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,0,3,1
         1,1,1,1
@@ -57,7 +59,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can't climb left or right because of wall over", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,1,0,1
         1,2,3,1,1
         1,1,1,1,1
@@ -72,7 +74,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can climb right", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,3,2,1
         1,1,1,1
@@ -84,7 +86,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can't climb right", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,2,3,1
         1,1,1,1
@@ -96,7 +98,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can climb left with block", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,0,2,1
         1,1,3,1
@@ -111,7 +113,7 @@ describe("!unit! Board canMove", () => {
 
   describe("grab", () => {
     it("can grab left", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,0,1
         1,2,3,1
         1,1,1,1
@@ -122,7 +124,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can grab left if something on top of block", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,1,0,1
         1,2,3,1
         1,1,1,1
@@ -133,7 +135,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can grab left if something on top of player", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,1,1
         1,2,3,1
         1,1,1,1
@@ -146,7 +148,7 @@ describe("!unit! Board canMove", () => {
 
   describe("drop", () => {
     it("can drop left", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,2,1
         1,0,3,1
         1,1,1,1
@@ -158,7 +160,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can drop left over wall", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,0,2,1
         1,1,3,1
         1,1,1,1
@@ -170,7 +172,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can drop left because of wall", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,1,2,1
         1,0,3,1
         1,1,1,1
@@ -182,7 +184,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can drop right", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,2,0,1
         1,3,0,1
         1,1,1,1
@@ -195,7 +197,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can drop right over wall", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,2,0,1
         1,3,1,1
         1,1,1,1
@@ -208,7 +210,7 @@ describe("!unit! Board canMove", () => {
     });
 
     it("can't drop right because of wall", () => {
-      const board = Board.parse(`
+      const board = parser.parse(`
         1,2,1,1
         1,3,0,1
         1,1,1,1

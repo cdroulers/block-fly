@@ -2,34 +2,10 @@ import { ICoordinates } from "./coordinates";
 import {
   IPiece,
   IPlayerPiece,
-  pieceGenerator,
-  playerPieceGenerator,
   PieceType
 } from "./pieces";
 
 export class Board {
-  public static parse(text: string): Board {
-    let playerId = 1;
-    const pieces = text.trim().split("\n").map((x, i) => {
-      return x.trim().split(",").map((s, j) => {
-        let piece: IPiece = undefined;
-        const pieceType = parseInt(s, 10) as PieceType;
-        if (pieceType === PieceType.Player) {
-          piece = playerPieceGenerator(playerId++, { x: j, y: i });
-        } else {
-          piece = pieceGenerator(pieceType, { x: j, y: i });
-        }
-
-        return piece;
-      });
-    });
-
-    const arrayOfPieces = [];
-    pieces.forEach(x => arrayOfPieces.push(...x));
-
-    return new Board(arrayOfPieces, pieces[0].length, pieces.length);
-  }
-
   public constructor(
     public pieces: IPiece[],
     public width: number,
@@ -140,10 +116,14 @@ export class Board {
     }
   }
 
+  public getPiece(coords: ICoordinates): IPiece {
+    return this.pieces.filter(p => p.coords.x === coords.x && p.coords.y === coords.y)[0];
+  }
+
   private grabDrop(player: IPlayerPiece): void {
     const facingPiece = this.getFacingPiece(player);
     if (player.blockCoords) {
-      const blockPiece = this.getPieceByCoordinates(player.blockCoords);
+      const blockPiece = this.getPiece(player.blockCoords);
       if (facingPiece.type === PieceType.Empty) {
         this.swapPieces(facingPiece, blockPiece);
       } else {
@@ -182,52 +162,30 @@ export class Board {
   private makeBlockFollow(player: IPlayerPiece): void {
     if (player.blockCoords) {
       const topPiece = this.getTopPiece(player);
-      const blockPiece = this.getPieceByCoordinates(player.blockCoords);
+      const blockPiece = this.getPiece(player.blockCoords);
       this.swapPieces(topPiece, blockPiece);
       player.blockCoords = blockPiece.coords;
     }
   }
 
-  private getPieceByCoordinates(coords: ICoordinates): IPiece {
-    return this.getPiece(coords.x, coords.y);
-  }
-
-  private getPiece(x: number, y: number): IPiece {
-    return this.pieces.filter(p => p.coords.x === x && p.coords.y === y)[0];
-  }
-
   private getLeftPiece(piece: IPiece): IPiece {
-    return this.getPiece(piece.coords.x - 1, piece.coords.y);
+    return this.getPiece({ x: piece.coords.x - 1, y: piece.coords.y });
   }
 
   private getRightPiece(piece: IPiece): IPiece {
-    return this.getPiece(piece.coords.x + 1, piece.coords.y);
+    return this.getPiece({ x: piece.coords.x + 1, y: piece.coords.y });
   }
 
   private getTopPiece(piece: IPiece): IPiece {
-    return this.getPiece(piece.coords.x, piece.coords.y - 1);
+    return this.getPiece({ x: piece.coords.x, y: piece.coords.y - 1 });
   }
 
   private getBottomPiece(piece: IPiece): IPiece {
-    return this.getPiece(piece.coords.x, piece.coords.y + 1);
+    return this.getPiece({ x: piece.coords.x, y: piece.coords.y + 1 });
   }
 
   private getFacingPiece(player: IPlayerPiece): IPiece {
     return player.facingLeft ? this.getLeftPiece(player) : this.getRightPiece(player);
-  }
-
-  public toString(): string {
-    let result = "";
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const piece = this.getPiece(x, y);
-        result += piece.type + ",";
-      }
-
-      result = result.substring(0, result.length - 1) + "\n";
-    }
-
-    return result.trim();
   }
 }
 

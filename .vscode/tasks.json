@@ -22,6 +22,17 @@
       ]
     },
     {
+      "taskName": "test",
+      "suppressTaskName": true,
+      "args": [
+        "test",
+        "--",
+        "--watch"
+      ],
+      "isTestCommand": true,
+      "isWatching": true
+    },
+    {
       "taskName": "lint",
       "args": [
         "-s"

@@ -2,6 +2,7 @@ import { expect } from "chai";
 import {
   Board
 } from "../../src/block-fly/game/board";
+import { IBoardParser } from "../../src/block-fly/game/boardParser";
 import {
   PieceType,
   IPlayerPiece
@@ -9,10 +10,10 @@ import {
 
 import { ICoordinates } from "../../src/block-fly/game/coordinates";
 
-export function assertBoardEqual(board: Board, expected: string): void {
+export function assertBoardEqual(board: Board, parser: IBoardParser, expected: string): void {
   expected = expected.trim().split("\n").map(x => x.trim()).join("\n");
 
-  expect(board.toString()).to.equal(expected);
+  expect(parser.asString(board)).to.equal(expected);
 }
 
 export function makePlayerFaceRight(board: Board): void {

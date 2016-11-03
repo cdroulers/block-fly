@@ -1,10 +1,12 @@
 import { Board, Move } from "./game/board";
+import BoardParser from "./game/numbersBoardParser";
 import { writeToCanvas } from "./display/canvasDisplay";
 
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 
-const board = Board.parse(`
+const parser = new BoardParser();
+const board: Board = parser.parse(`
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
