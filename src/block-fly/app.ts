@@ -1,5 +1,5 @@
 import { Board, Move } from "./game/board";
-import BoardParser from "./game/numbersBoardParser";
+import BoardParser from "./game/symbolsBoardParser";
 import { writeToCanvas } from "./display/canvasDisplay";
 
 
@@ -7,14 +7,16 @@ const canvas = document.getElementById("root") as HTMLCanvasElement;
 
 const parser = new BoardParser();
 const board: Board = parser.parse(`
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1
-1,4,0,0,1,0,0,0,1,0,2,0,1,0,2,0,3,0,0,1
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-      `);
+#                  #
+#                  #
+#                  #
+#   #       #      #
+#D  #   # B # B P  #
+####################`);
+
+board.onWin.then(() => {
+  alert("YOU WIN THIS LEVEL. Give yourself a high-five");
+});
 
 writeToCanvas(canvas, board);
 

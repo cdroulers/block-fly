@@ -1,3 +1,4 @@
+import * as Promise from "bluebird";
 import { ICoordinates } from "./coordinates";
 import {
   IPiece,
@@ -6,10 +7,17 @@ import {
 } from "./pieces";
 
 export class Board {
+  public onWin: PromiseLike<void>;
+
+  private onWinResolve: Function;
+
   public constructor(
     public pieces: IPiece[],
     public width: number,
     public height: number) {
+    this.onWin = new Promise((resolve) => {
+      this.onWinResolve = resolve;
+    });
   }
 
   public canMove(playerId: number, move: Move): boolean {
@@ -22,43 +30,16 @@ export class Board {
     switch (move) {
       case Move.Left:
         const leftPiece = this.getLeftPiece(player);
-        return leftPiece.type === PieceType.Empty;
+        return leftPiece.type === PieceType.Empty || leftPiece.type === PieceType.Door;
       case Move.Right:
         const rightPiece = this.getRightPiece(player);
-        return rightPiece.type === PieceType.Empty;
+        return rightPiece.type === PieceType.Empty || rightPiece.type === PieceType.Door;
       case Move.Climb:
         return this.canClimb(player);
       case Move.GrabDrop:
         return this.canGrabDrop(player);
       default:
         throw new Error(`Unknown move ${move}`);
-    }
-  }
-
-  private canClimb(player: IPlayerPiece): boolean {
-    const pieceToClimb = this.getFacingPiece(player);
-    const playerTopPiece = this.getTopPiece(player);
-    const pieceToClimbTo = this.getTopPiece(pieceToClimb);
-    return pieceToClimb.type !== PieceType.Empty &&
-      pieceToClimbTo.type === PieceType.Empty &&
-      (playerTopPiece.type === PieceType.Empty ||
-        (Boolean(player.blockCoords) && player.blockCoords.x === playerTopPiece.coords.x &&
-          player.blockCoords.y === playerTopPiece.coords.y));
-  }
-
-  private canGrabDrop(player: IPlayerPiece): boolean {
-    // If the player has a block, we must validate dropping it.
-    if (player.blockCoords) {
-      const facingPiece = this.getFacingPiece(player);
-      const topPiece = this.getTopPiece(facingPiece);
-      return topPiece.type === PieceType.Empty;
-    } else {
-      const pieceToPickup = this.getFacingPiece(player);
-      const playerTopPieceGrab = this.getTopPiece(player);
-      const pieceToPickupTop = this.getTopPiece(pieceToPickup);
-      return pieceToPickup.type === PieceType.Block &&
-        playerTopPieceGrab.type === PieceType.Empty &&
-        pieceToPickupTop.type === PieceType.Empty;
     }
   }
 
@@ -120,6 +101,33 @@ export class Board {
     return this.pieces.filter(p => p.coords.x === coords.x && p.coords.y === coords.y)[0];
   }
 
+  private canClimb(player: IPlayerPiece): boolean {
+    const pieceToClimb = this.getFacingPiece(player);
+    const playerTopPiece = this.getTopPiece(player);
+    const pieceToClimbTo = this.getTopPiece(pieceToClimb);
+    return pieceToClimb.type !== PieceType.Empty &&
+      pieceToClimbTo.type === PieceType.Empty &&
+      (playerTopPiece.type === PieceType.Empty ||
+        (Boolean(player.blockCoords) && player.blockCoords.x === playerTopPiece.coords.x &&
+          player.blockCoords.y === playerTopPiece.coords.y));
+  }
+
+  private canGrabDrop(player: IPlayerPiece): boolean {
+    // If the player has a block, we must validate dropping it.
+    if (player.blockCoords) {
+      const facingPiece = this.getFacingPiece(player);
+      const topPiece = this.getTopPiece(facingPiece);
+      return topPiece.type === PieceType.Empty;
+    } else {
+      const pieceToPickup = this.getFacingPiece(player);
+      const playerTopPieceGrab = this.getTopPiece(player);
+      const pieceToPickupTop = this.getTopPiece(pieceToPickup);
+      return pieceToPickup.type === PieceType.Block &&
+        playerTopPieceGrab.type === PieceType.Empty &&
+        pieceToPickupTop.type === PieceType.Empty;
+    }
+  }
+
   private grabDrop(player: IPlayerPiece): void {
     const facingPiece = this.getFacingPiece(player);
     if (player.blockCoords) {
@@ -146,6 +154,12 @@ export class Board {
   }
 
   private swapPieces(one: IPiece, two: IPiece): void {
+    if ((one.type === PieceType.Door && two.type === PieceType.Player) ||
+      (two.type === PieceType.Door && one.type === PieceType.Player)) {
+      this.onWinResolve();
+      return;
+    }
+
     const tmp = one.coords;
     one.coords = two.coords;
     two.coords = tmp;

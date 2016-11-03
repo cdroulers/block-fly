@@ -37,8 +37,15 @@ The web part uses WebPack with hot reload, but nothing hot reloads because I hav
 The tests execute the JS in the `build` folder which is output when `npm run build` is run (or `ctrl+shift+b` in VSCode).
 This is because I tried to use `ts-node` for running and it worked, but it wasn't possible to debug the tests that way.
 
+Levels can be seen [here](http://azich.org/blockdude/levels.js).
+
 # History
+
+## 0.3.0
+
+* Change parser to symbols instead of numbers.
+* Can go through door! DEAR GAWD.
 
 ## 0.2.0
 
-Basic first level. Can't use the door yet.
+* Basic first level. Can't use the door yet.

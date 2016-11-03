@@ -3,9 +3,11 @@ import {
   Move
 } from "../../src/block-fly/game/board";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
+import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { makePlayerFaceRight, makePlayerHaveBlock } from "./boardHelpers";
 
 const parser = new BoardParser();
+const symbolsParser = new SymbolsBoardParser();
 
 describe("!unit! Board canMove", () => {
   describe("left", () => {
@@ -19,6 +21,28 @@ describe("!unit! Board canMove", () => {
       const actual = board.canMove(1, Move.Left);
       expect(actual).to.be.false;
     });
+
+    it("can move left to empty", () => {
+      const board = symbolsParser.parse(`
+        #  #
+        # P#
+        ####
+      `);
+
+      const actual = board.canMove(1, Move.Left);
+      expect(actual).to.be.true;
+    });
+
+    it("can move left to door", () => {
+      const board = symbolsParser.parse(`
+        #  #
+        #DP#
+        ####
+      `);
+
+      const actual = board.canMove(1, Move.Left);
+      expect(actual).to.be.true;
+    });
   });
 
   describe("right", () => {
@@ -31,6 +55,28 @@ describe("!unit! Board canMove", () => {
 
       const actual = board.canMove(1, Move.Right);
       expect(actual).to.be.false;
+    });
+
+    it("can move right to empty", () => {
+      const board = symbolsParser.parse(`
+        #  #
+        #P #
+        ####
+      `);
+
+      const actual = board.canMove(1, Move.Right);
+      expect(actual).to.be.true;
+    });
+
+    it("can move right to door", () => {
+      const board = symbolsParser.parse(`
+        #  #
+        #PD#
+        ####
+      `);
+
+      const actual = board.canMove(1, Move.Right);
+      expect(actual).to.be.true;
     });
   });
 
