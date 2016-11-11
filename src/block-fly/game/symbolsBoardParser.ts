@@ -16,8 +16,25 @@ export default class SymbolsBoardParser implements IBoardParser {
 
   public parse(text: string): Board {
     let playerId = 1;
-    const pieces = text.trim().split("\n").map((x, i) => {
-      return x.trim().split("").map((s, j) => {
+
+    let lines = text.split("\n")
+      .filter(x => x.trim().length > 0);
+
+    let indices = lines
+      .map(x => ({ begin: x.indexOf("#"), end: x.lastIndexOf("#") }));
+    let stuff = indices.reduce((p, c) => {
+        return {
+          begin: Math.min(p.begin, c.begin),
+          end: Math.max(p.end, c.end)
+        };
+      });
+
+    let moreLines = lines.map(x => {
+      return (x + "                                         ")
+        .substring(stuff.begin, stuff.end + 1);
+      });
+    const pieces = moreLines.map((x, i) => {
+      return x.split("").map((s, j) => {
         if (s === "P") {
           return playerPieceGenerator(playerId++, { x: j, y: i });
         }

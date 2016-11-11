@@ -41,6 +41,11 @@ Levels can be seen [here](http://azich.org/blockdude/levels.js).
 
 # History
 
+## 0.4.0
+
+* All basic levels!
+* Touch events for mobile (untested!)
+
 ## 0.3.0
 
 * Change parser to symbols instead of numbers.

@@ -9,7 +9,7 @@ const parser = new BoardParser();
 
 describe("!unit! Board level", () => {
   describe("win through door", () => {
-    it("triggers win promise on left move", () => {
+    it("triggers win callback on left move", () => {
       const board = parser.parse(`
         #DP#
         ####
@@ -17,7 +17,7 @@ describe("!unit! Board level", () => {
 
       board.move(1, Move.Left);
 
-      (expect(board.onWin).to as any).eventually.be.fulfilled;
+      expect(board.hasWon).to.be.true;
 
       assertBoardEqual(board, parser, `
         #DP#
@@ -25,7 +25,7 @@ describe("!unit! Board level", () => {
       `);
     });
 
-    it("triggers win promise on fall", () => {
+    it("triggers win callback on fall", () => {
       const board = parser.parse(`
         # P#
         #D##
@@ -34,11 +34,29 @@ describe("!unit! Board level", () => {
 
       board.move(1, Move.Left);
 
-      (expect(board.onWin).to as any).eventually.be.fulfilled;
+      expect(board.hasWon).to.be.true;
 
       assertBoardEqual(board, parser, `
         #P #
         #D##
+        ####
+      `);
+    });
+
+    it("triggers win callback on climb", () => {
+      const board = parser.parse(`
+        #D #
+        ##P#
+        ####
+      `);
+
+      board.move(1, Move.Climb);
+
+      expect(board.hasWon).to.be.true;
+
+      assertBoardEqual(board, parser, `
+        #D #
+        ##P#
         ####
       `);
     });

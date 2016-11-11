@@ -1,4 +1,3 @@
-import * as Promise from "bluebird";
 import { ICoordinates } from "./coordinates";
 import {
   IPiece,
@@ -7,20 +6,25 @@ import {
 } from "./pieces";
 
 export class Board {
-  public onWin: PromiseLike<void>;
+  private won: boolean = false;
 
-  private onWinResolve: Function;
+  public onWin: () => void;
+
+  public get hasWon(): boolean {
+    return this.won;
+  }
 
   public constructor(
     public pieces: IPiece[],
     public width: number,
     public height: number) {
-    this.onWin = new Promise((resolve) => {
-      this.onWinResolve = resolve;
-    });
   }
 
   public canMove(playerId: number, move: Move): boolean {
+    if (this.won) {
+      return false;
+    }
+
     const player = this.getPlayer(playerId);
 
     if (!player) {
@@ -44,6 +48,10 @@ export class Board {
   }
 
   public move(playerId: number, move: Move): void {
+    if (this.won) {
+      return;
+    }
+
     const player = this.getPlayer(playerId);
 
     if (!player) {
@@ -70,14 +78,14 @@ export class Board {
       case Move.Left:
         const leftPiece = this.getLeftPiece(player);
         this.swapPieces(leftPiece, player);
-        this.makePlayerFall(player);
+        this.makePieceFall(player);
         this.makeBlockFollow(player);
         break;
 
       case Move.Right:
         const rightPiece = this.getRightPiece(player);
         this.swapPieces(rightPiece, player);
-        this.makePlayerFall(player);
+        this.makePieceFall(player);
         this.makeBlockFollow(player);
         break;
 
@@ -106,7 +114,7 @@ export class Board {
     const playerTopPiece = this.getTopPiece(player);
     const pieceToClimbTo = this.getTopPiece(pieceToClimb);
     return pieceToClimb.type !== PieceType.Empty &&
-      pieceToClimbTo.type === PieceType.Empty &&
+      (pieceToClimbTo.type === PieceType.Empty || pieceToClimbTo.type === PieceType.Door) &&
       (playerTopPiece.type === PieceType.Empty ||
         (Boolean(player.blockCoords) && player.blockCoords.x === playerTopPiece.coords.x &&
           player.blockCoords.y === playerTopPiece.coords.y));
@@ -134,6 +142,7 @@ export class Board {
       const blockPiece = this.getPiece(player.blockCoords);
       if (facingPiece.type === PieceType.Empty) {
         this.swapPieces(facingPiece, blockPiece);
+        this.makePieceFall(blockPiece);
       } else {
         const topPieceDrop = this.getTopPiece(facingPiece);
         this.swapPieces(topPieceDrop, blockPiece);
@@ -156,7 +165,7 @@ export class Board {
   private swapPieces(one: IPiece, two: IPiece): void {
     if ((one.type === PieceType.Door && two.type === PieceType.Player) ||
       (two.type === PieceType.Door && one.type === PieceType.Player)) {
-      this.onWinResolve();
+      this.triggerWin();
       return;
     }
 
@@ -165,9 +174,23 @@ export class Board {
     two.coords = tmp;
   }
 
-  private makePlayerFall(player: IPlayerPiece): void {
+  private triggerWin(): void {
+      if (this.onWin) {
+        this.onWin();
+      }
+
+      this.won = true;
+  }
+
+  private makePieceFall(player: IPiece): void {
     let bottomPiece = this.getBottomPiece(player);
-    while (bottomPiece.type === PieceType.Empty) {
+    while (bottomPiece.type === PieceType.Empty ||
+      bottomPiece.type === PieceType.Door) {
+      if (bottomPiece.type === PieceType.Door) {
+        this.triggerWin();
+        return;
+      }
+
       this.swapPieces(bottomPiece, player);
       bottomPiece = this.getBottomPiece(player);
     }

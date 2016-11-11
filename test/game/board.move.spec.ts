@@ -2,9 +2,11 @@ import {
   Move
 } from "../../src/block-fly/game/board";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
+import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { assertBoardEqual, makePlayerFaceRight, makePlayerHaveBlock } from "./boardHelpers";
 
 const parser = new BoardParser();
+const symbolsParser = new SymbolsBoardParser();
 
 describe("!unit! Board move", () => {
   describe("left", () => {
@@ -225,6 +227,25 @@ describe("!unit! Board move", () => {
         1,0,0,1
         1,2,3,1
         1,1,1,1
+      `);
+    });
+
+    it("falls all the way", () => {
+      const board = symbolsParser.parse(`
+        # B#
+        # P#
+        # ##
+        ####
+      `);
+
+      makePlayerHaveBlock(board, { x: 2, y: 0 });
+      board.move(1, Move.GrabDrop);
+
+      assertBoardEqual(board, symbolsParser, `
+        #  #
+        # P#
+        #B##
+        ####
       `);
     });
 

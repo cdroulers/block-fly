@@ -155,6 +155,17 @@ describe("!unit! Board canMove", () => {
       const actual = board.canMove(1, Move.Climb);
       expect(actual).to.be.true;
     });
+
+    it("can climb left to door", () => {
+      const board = symbolsParser.parse(`
+        #D #
+        #BP#
+        ####
+      `);
+
+      const actual = board.canMove(1, Move.Climb);
+      expect(actual).to.be.true;
+    });
   });
 
   describe("grab", () => {
