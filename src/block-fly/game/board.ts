@@ -6,6 +6,8 @@ import {
 } from "./pieces";
 
 export class Board {
+  private originalState: string;
+
   private won: boolean = false;
 
   public onWin: () => void;
@@ -18,6 +20,7 @@ export class Board {
     public pieces: IPiece[],
     public width: number,
     public height: number) {
+      this.originalState = JSON.stringify(pieces);
   }
 
   public canMove(playerId: number, move: Move): boolean {
@@ -103,6 +106,10 @@ export class Board {
       default:
         throw new Error(`Unknown move ${move}`);
     }
+  }
+
+  public reset(): void {
+      this.pieces = JSON.parse(this.originalState);
   }
 
   public getPiece(coords: ICoordinates): IPiece {

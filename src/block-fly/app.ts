@@ -25,17 +25,20 @@ writeToCanvas(canvas, levelSet.currentLevel);
 
 window.onkeydown = (e) => {
   switch (e.keyCode) {
-    case 37:
+    case 37: // Arrow left
       levelSet.currentLevel.move(1, Move.Left);
       break;
-    case 38:
+    case 38: // Arrow up
       levelSet.currentLevel.move(1, Move.Climb);
       break;
-    case 39:
+    case 39: // Arrow right
       levelSet.currentLevel.move(1, Move.Right);
       break;
-    case 40:
+    case 40: // Arrow down
       levelSet.currentLevel.move(1, Move.GrabDrop);
+      break;
+    case 82: // Letter "r"
+      levelSet.currentLevel.reset();
       break;
     default:
       break;

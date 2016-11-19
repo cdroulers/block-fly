@@ -41,6 +41,10 @@ Levels can be seen [here](http://azich.org/blockdude/levels.js).
 
 # History
 
+## 0.5.0
+
+* Add reset functionality.
+
 ## 0.4.0
 
 * All basic levels!

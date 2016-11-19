@@ -1,5 +1,7 @@
 import { expect } from "chai";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
+import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
+import { Move } from "../../src/block-fly/game/board";
 import {
   PieceType,
   pieceGenerator,
@@ -8,6 +10,7 @@ import {
 import {assertBoardEqual} from "./boardHelpers";
 
 const parser = new BoardParser();
+const symbolsParser = new SymbolsBoardParser();
 
 describe("!unit! Board", () => {
   describe("Parse", () => {
@@ -61,6 +64,25 @@ describe("!unit! Board", () => {
         1,1,2,3,1
         1,1,1,1,1`
       );
+    });
+  });
+
+  describe("reset", () => {
+    it("puts board back to same state after moves", () => {
+      const board = symbolsParser.parse(`
+        #D  P#
+        ######
+      `);
+
+      board.move(1, Move.Left);
+      board.move(1, Move.Left);
+
+      board.reset();
+
+      assertBoardEqual(board, symbolsParser, `
+        #D  P#
+        ######
+      `);
     });
   });
 });
