@@ -1,4 +1,5 @@
-import { Board } from "../game/board";
+import { Board, Move } from "../game/board";
+import LevelSet from "../game/levelSet";
 import { PieceType, IPlayerPiece } from "../game/pieces";
 import * as Promise from "bluebird";
 

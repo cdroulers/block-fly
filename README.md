@@ -41,7 +41,11 @@ Levels can be seen [here](http://azich.org/blockdude/levels.js).
 
 # History
 
-## 0.5.0
+## 0.6.0 (2016-11-19)
+
+* Actual working touch events for mobile! Includes reset button!
+
+## 0.5.0 (2016-11-19)
 
 * Add reset functionality.
 

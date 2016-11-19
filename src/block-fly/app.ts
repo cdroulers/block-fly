@@ -1,8 +1,8 @@
-import { Move } from "./game/board";
 import BoardParser from "./game/symbolsBoardParser";
 import LevelSet from "./game/levelSet";
 import { writeToCanvas } from "./display/canvasDisplay";
-
+import { bindDefaultControls } from "./display/defaultControls";
+import { bindMobileControls } from "./display/mobileControls";
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 
@@ -23,70 +23,8 @@ levelSet.onSetFinished = () => {
 
 writeToCanvas(canvas, levelSet.currentLevel);
 
-window.onkeydown = (e) => {
-  switch (e.keyCode) {
-    case 37: // Arrow left
-      levelSet.currentLevel.move(1, Move.Left);
-      break;
-    case 38: // Arrow up
-      levelSet.currentLevel.move(1, Move.Climb);
-      break;
-    case 39: // Arrow right
-      levelSet.currentLevel.move(1, Move.Right);
-      break;
-    case 40: // Arrow down
-      levelSet.currentLevel.move(1, Move.GrabDrop);
-      break;
-    case 82: // Letter "r"
-      levelSet.currentLevel.reset();
-      break;
-    default:
-      break;
-  }
-
-  writeToCanvas(canvas, levelSet.currentLevel);
-};
-
-document.addEventListener("touchstart", handleTouchStart, false);
-document.addEventListener("touchmove", handleTouchMove, false);
-
-let xDown = undefined;
-let yDown = undefined;
-
-function handleTouchStart(evt: TouchEvent): void {
-  xDown = evt.touches[0].clientX;
-  yDown = evt.touches[0].clientY;
-};
-
-function handleTouchMove(evt: TouchEvent): void {
-  if (!xDown || !yDown ) {
-    return;
-  }
-
-  let xUp = evt.touches[0].clientX;
-  let yUp = evt.touches[0].clientY;
-
-  let xDiff = xDown - xUp;
-  let yDiff = yDown - yUp;
-
-  if (Math.abs(xDiff) > Math.abs(yDiff)) {
-    if (xDiff > 0) {
-      levelSet.currentLevel.move(1, Move.Left);
-    } else {
-      levelSet.currentLevel.move(1, Move.Right);
-    }
-  } else {
-    if (yDiff > 0) {
-      levelSet.currentLevel.move(1, Move.Climb);
-    } else {
-      levelSet.currentLevel.move(1, Move.GrabDrop);
-    }
-  }
-
-  xDown = undefined;
-  yDown = undefined;
-};
-
+bindDefaultControls(canvas, levelSet);
+bindMobileControls(canvas, levelSet);
 
 function getLevels(): string[] {
   return [
@@ -97,7 +35,8 @@ function getLevels(): string[] {
 #   #       #      #
 #D  #   # B # B P  #
 ####################`,
-    " #    ##        ##    \n" +
+
+" #    ##        ##    \n" +
 " #                #   \n" +
 "##                 #  \n" +
 "#D                  # \n" +
