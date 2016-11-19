@@ -7,7 +7,7 @@ var WebpackDevServer = require("webpack-dev-server");
 var config = require("../config/webpack.dev.config");
 
 var APP_PORT = process.env.APP_PORT || 5555;
-var APP_HOST = process.env.APP_HOST || "localhost";
+var APP_HOST = process.env.APP_HOST || "0.0.0.0";
 
 var compiler = webpack(config);
 var app = new WebpackDevServer(compiler, {
