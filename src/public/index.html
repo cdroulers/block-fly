@@ -13,6 +13,7 @@
   <div id="board">
     <canvas id="root" width="400" height="400">
   </div>
+
   <footer>
     <h3>CONTROLS</h3>
     <ul>
@@ -25,6 +26,18 @@
       <li><strong>Down Arrow</strong>: Pick up or drop block</li>
       <li><strong>Up Arrow</strong>: Move upwards (climb on block)</li>
     </ul>
+
+    <h3>LOAD LEVELS FILE</h3>
+    <h4>Local file</h4>
+    <input type="file" accept=".json">
+
+    <h4>Remote file</h4>
+    <input type="text">
+    <button type="button" id="load-remote">Load</button>
+
+    <h4>Default levels</h4>
+    <button type="button" id="load-defaults">Load default levels</button>
+
     <h3>Other functionality</h3>
     <ul>
       <li><strong><keyboard>r</keyboard></strong>: <a id="reset" href="#reset">Reset level</a></li>

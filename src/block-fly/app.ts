@@ -34,11 +34,21 @@ getLevels().then(
     console.log(error);
   });
 
-function getLevels(): Promise<string[]> {
+let loadRemoteButton = document.getElementById('load-remote');
+loadRemoteButton.addEventListener('click', function () {
+    getLevels();
+});
+
+let loadDefaultsButton = document.getElementById('load-defaults');
+loadDefaultsButton.addEventListener('click', function () {
+    getLevels();
+});
+
+function getLevels(path: string = "/assets/default-levels.json"): Promise<string[]> {
   return new Promise<string[]>(function(resolve: any, reject: any): void {
     let xhr = new XMLHttpRequest();
 
-    xhr.open("GET", "/assets/default-levels.json");
+    xhr.open("GET", path);
     xhr.responseType = "json";
 
     xhr.onload = function(): any {
