@@ -33,11 +33,24 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
     writeToCanvas(canvas, levelSet.currentLevel);
   });
 
-  const resetLink = document.getElementById("reset") as HTMLAnchorElement;
-
-  resetLink.addEventListener("click", (evt: Event) => {
+  document.getElementById("reset").addEventListener("click", (evt: Event) => {
     evt.preventDefault();
     levelSet.currentLevel.reset();
+    writeToCanvas(canvas, levelSet.currentLevel);
+  });
+
+  bindMove("left", Move.Left, canvas, levelSet);
+  bindMove("up", Move.Climb, canvas, levelSet);
+  bindMove("right", Move.Right, canvas, levelSet);
+  bindMove("down", Move.GrabDrop, canvas, levelSet);
+}
+
+function bindMove(id: string, move: Move, canvas: HTMLCanvasElement, levelSet: LevelSet): void {
+  const element = document.getElementById(id);
+
+  element.addEventListener("click", (evt: Event) => {
+    evt.preventDefault();
+    levelSet.currentLevel.move(1, move);
     writeToCanvas(canvas, levelSet.currentLevel);
   });
 }

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
   <link href="assets/favicon.ico" rel="icon" type="image/x-icon">
   <link href="assets/site.css" rel="stylesheet" type="text/css">
   <title>Block Fly!</title>
@@ -13,6 +13,13 @@
   <div id="board">
     <canvas id="root" width="400" height="400">
   </div>
+  <section id="controls">
+    <div id="left">←</div>
+    <div id="up">↑</div>
+    <div id="right">→</div>
+    <div id="down">↓</div>
+    <div id="reset">↺</div>
+  </section>
   <footer>
     <h3>CONTROLS</h3>
     <ul>
@@ -27,7 +34,7 @@
     </ul>
     <h3>Other functionality</h3>
     <ul>
-      <li><strong><keyboard>r</keyboard></strong>: <a id="reset" href="#reset">Reset level</a></li>
+      <li><strong><keyboard>r</keyboard></strong>: Reset level</li>
     </ul>
   </footer>
   <footer>
