@@ -9,8 +9,7 @@ const canvas = document.getElementById("root") as HTMLCanvasElement;
 
 const parser = new BoardParser();
 
-getLevels().then(
-  function(response: string[]): void {
+getLevels().then((response: string[]) => {
     const levels = response;
 
     const levelSet = new LevelSet(levels, parser);
@@ -29,8 +28,9 @@ getLevels().then(
 
     bindDefaultControls(canvas, levelSet);
     bindMobileControls(canvas, levelSet);
-  },
-  function(error: string): void {
+
+    return response;
+  }).catch((error: string): void => {
     console.log(error);
   });
 
@@ -44,7 +44,7 @@ loadDefaultsButton.addEventListener('click', function () {
     getLevels();
 });
 
-function getLevels(path: string = "/assets/default-levels.json"): Promise<string[]> {
+function getLevels(path: string = "assets/default-levels.json"): Promise<string[]> {
   return new Promise<string[]>(function(resolve: any, reject: any): void {
     let xhr = new XMLHttpRequest();
 

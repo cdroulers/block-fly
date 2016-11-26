@@ -10,8 +10,52 @@ body {
   width: 100%;
   text-align: center;
 }
+
 #root {
   display: inline;
+}
+
+#controls {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+#controls > div {
+  position: absolute;
+  text-align: center;
+  line-height: 58px;
+  width: 58px;
+  border: 1px solid #000;
+  cursor: pointer;
+  background: #999;
+  opacity: 0.75;
+  color: #fff;
+}
+
+#controls > #left {
+  bottom: 0;
+  left: 0;
+}
+
+#controls > #up {
+  bottom: 60px;
+  left: 0;
+}
+
+#controls > #right {
+  bottom: 0;
+  right: 0;
+}
+
+#controls > #down {
+  bottom: 60px;
+  right: 0;
+}
+
+#controls > #reset {
+  bottom: 120px;
+  right: 0;
 }
 
 a[href^="http://"], a[href^="https://"] {
