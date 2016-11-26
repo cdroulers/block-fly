@@ -9,42 +9,48 @@ const canvas = document.getElementById("root") as HTMLCanvasElement;
 
 const parser = new BoardParser();
 
-getLevels().then((response: string[]) => {
-    const levels = response;
+initLevels();
 
-    const levelSet = new LevelSet(levels, parser);
+function initLevels(path: string = "assets/default-levels.json") {
+  getLevels(path).then((response: string[]) => {
+      const levels = response;
 
-    levelSet.onLevelFinished = () => {
-      alert("YOU WIN THIS LEVEL. Give yourself a high-five");
-      levelSet.nextLevel();
+      const levelSet = new LevelSet(levels, parser);
+
+      levelSet.onLevelFinished = () => {
+        alert("YOU WIN THIS LEVEL. Give yourself a high-five");
+        levelSet.nextLevel();
+        writeToCanvas(canvas, levelSet.currentLevel);
+      };
+
+      levelSet.onSetFinished = () => {
+        alert("YOU Finished all levels. Sweet Christmas!");
+      };
+
       writeToCanvas(canvas, levelSet.currentLevel);
-    };
 
-    levelSet.onSetFinished = () => {
-      alert("YOU Finished all levels. Sweet Christmas!");
-    };
+      bindDefaultControls(canvas, levelSet);
+      bindMobileControls(canvas, levelSet);
 
-    writeToCanvas(canvas, levelSet.currentLevel);
-
-    bindDefaultControls(canvas, levelSet);
-    bindMobileControls(canvas, levelSet);
-
-    return response;
-  }).catch((error: string): void => {
-    console.log(error);
-  });
+      return response;
+    }).catch((error: string): void => {
+      console.log(error);
+    });
+}
 
 let loadRemoteButton = document.getElementById('load-remote');
 loadRemoteButton.addEventListener('click', function () {
-    getLevels();
+    let url = (<HTMLInputElement>document.getElementById("remote-path")).value;
+    initLevels(url);
 });
 
 let loadDefaultsButton = document.getElementById('load-defaults');
 loadDefaultsButton.addEventListener('click', function () {
-    getLevels();
+    initLevels();
 });
 
-function getLevels(path: string = "assets/default-levels.json"): Promise<string[]> {
+
+function getLevels(path: string): Promise<string[]> {
   return new Promise<string[]>(function(resolve: any, reject: any): void {
     let xhr = new XMLHttpRequest();
 
