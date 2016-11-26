@@ -11,7 +11,7 @@ const parser = new BoardParser();
 
 initLevels();
 
-function initLevels(path: string = "assets/default-levels.json") {
+function initLevels(path: string = "assets/default-levels.json"): void {
   getLevels(path).then((response: string[]) => {
       const levels = response;
 
@@ -34,21 +34,25 @@ function initLevels(path: string = "assets/default-levels.json") {
 
       return response;
     }).catch((error: string): void => {
-      console.log(error);
+      alert("Unable to find levels");
     });
 }
 
-let loadRemoteButton = document.getElementById('load-remote');
-loadRemoteButton.addEventListener('click', function () {
-    let url = (<HTMLInputElement>document.getElementById("remote-path")).value;
+let loadRemoteButton = document.getElementById("load-remote");
+loadRemoteButton.addEventListener("click", function(): void {
+    let url = (document.getElementById("remote-path") as HTMLInputElement).value;
     initLevels(url);
 });
 
-let loadDefaultsButton = document.getElementById('load-defaults');
-loadDefaultsButton.addEventListener('click', function () {
+let loadDefaultsButton = document.getElementById("load-defaults");
+loadDefaultsButton.addEventListener("click", function(): void {
     initLevels();
 });
 
+let loadLocalLevels = document.getElementById("local-levels");
+loadLocalLevels.addEventListener("change", function(): void {
+    console.log((loadLocalLevels as HTMLInputElement).files[0]);
+});
 
 function getLevels(path: string): Promise<string[]> {
   return new Promise<string[]>(function(resolve: any, reject: any): void {
