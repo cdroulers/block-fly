@@ -1,5 +1,10 @@
 # History
 
+## 0.7.0 (2016-11-25)
+
+* Levels extracted to JSON file.
+* Large buttons for better mobile experience.
+
 ## 0.6.0 (2016-11-19)
 
 * Actual working touch events for mobile! Includes reset button!
