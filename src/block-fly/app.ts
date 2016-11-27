@@ -23,7 +23,6 @@ loadRemoteButton.addEventListener("click", function(): void {
     } else {
       alert("Please enter an URL");
     }
-
 });
 
 let loadDefaultsButton = document.getElementById("load-defaults");
