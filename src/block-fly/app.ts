@@ -12,7 +12,7 @@ const parser = new BoardParser();
 initDefaultLevels();
 
 let loadRemoteButton = document.getElementById("load-remote");
-loadRemoteButton.addEventListener("click", function(): void {
+loadRemoteButton.addEventListener("click", () => {
     let url = (document.getElementById("remote-path") as HTMLInputElement).value;
 
     if (url !== "") {
@@ -26,12 +26,12 @@ loadRemoteButton.addEventListener("click", function(): void {
 });
 
 let loadDefaultsButton = document.getElementById("load-defaults");
-loadDefaultsButton.addEventListener("click", function(): void {
+loadDefaultsButton.addEventListener("click", () => {
     initDefaultLevels();
 });
 
 let loadLocalLevels = document.getElementById("load-file");
-loadLocalLevels.addEventListener("click", function(): void {
+loadLocalLevels.addEventListener("click", () => {
     let levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
 
     if (levelsFile !== undefined) {
@@ -80,13 +80,13 @@ function transformReponseToLevels(response: string[][]): string[] {
 }
 
 function getXHRLevels(path: string): Promise<string[]> {
-  return new Promise<string[]>(function(resolve: any, reject: any): void {
+  return new Promise<string[]>((resolve: any, reject: any) => {
     let xhr = new XMLHttpRequest();
 
     xhr.open("GET", path);
     xhr.responseType = "json";
 
-    xhr.onload = function(): any {
+    xhr.onload = () => {
       if (xhr.status === 200) {
         resolve(transformReponseToLevels(xhr.response));
       } else {
@@ -94,7 +94,7 @@ function getXHRLevels(path: string): Promise<string[]> {
       }
     };
 
-    xhr.onerror = function(): any {
+    xhr.onerror = () => {
       reject(Error("There was a network error."));
     };
 

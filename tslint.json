@@ -99,6 +99,10 @@
       "check-finally",
       "check-whitespace"
     ],
+    "only-arrow-functions": [
+      true,
+      "allow-declarations"
+    ],
     "quotemark": [
       true,
       "double",
