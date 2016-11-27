@@ -30,13 +30,17 @@ loadDefaultsButton.addEventListener("click", function(): void {
     initDefaultLevels();
 });
 
-let loadLocalLevels = document.getElementById("local-levels");
-loadLocalLevels.addEventListener("change", function(): void {
-    let levelsFile = (loadLocalLevels as HTMLInputElement).files[0];
+let loadLocalLevels = document.getElementById("load-file");
+loadLocalLevels.addEventListener("click", function(): void {
+    let levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
 
-    let reader = new FileReader();
-    reader.onload = e => initGame(transformReponseToLevels(JSON.parse(reader.result)));
-    reader.readAsText(levelsFile);
+    if (levelsFile !== undefined) {
+      let reader = new FileReader();
+      reader.onload = e => initGame(transformReponseToLevels(JSON.parse(reader.result)));
+      reader.readAsText(levelsFile);
+    } else {
+      alert("Please choose a file");
+    }
 });
 
 function initDefaultLevels(): void {
