@@ -51,7 +51,10 @@ export function getXHRLevels(path: string): Promise<string[]> {
 
     xhr.onload = () => {
       if (xhr.status === 200) {
-        resolve(transformReponseToLevels(xhr.response));
+        const json = typeof xhr.response === "string" ?
+          JSON.parse(xhr.response) :
+          xhr.response;
+        resolve(transformReponseToLevels(json));
       } else {
         reject(Error("Cannot load levels; error : " + xhr.statusText));
       }

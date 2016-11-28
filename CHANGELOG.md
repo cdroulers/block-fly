@@ -1,5 +1,10 @@
 # History
 
+## 0.8.0 (2016-11-28)
+
+* Load any level file (local or remote)
+** Thanks to [@olafleur](https://github.com/olafleur)!
+
 ## 0.7.0 (2016-11-25)
 
 * Levels extracted to JSON file.

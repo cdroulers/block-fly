@@ -39,6 +39,10 @@ This is because I tried to use `ts-node` for running and it worked, but it wasn'
 
 Levels can be seen [here](http://azich.org/blockdude/levels.js).
 
+# Contributors
+
+See [the list](CONTRIBUTORS.md)
+
 # History
 
 See [the changelog](CHANGELOG.md)

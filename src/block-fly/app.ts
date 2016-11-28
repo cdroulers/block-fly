@@ -14,10 +14,11 @@ init();
 function init(): void {
   bindLevelsControls(initGame);
 
-  getDefaultLevels().then(initGame)
-  .catch((error: string): void => {
-    alert(error);
-  });
+  getDefaultLevels()
+    .then(initGame)
+    .catch((error: string): void => {
+      alert(error);
+    });
 }
 
 export function initGame(levels: string[]): void {
