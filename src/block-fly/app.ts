@@ -3,8 +3,7 @@ import LevelSet from "./game/levelSet";
 import { writeToCanvas } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
-import { getDefaultLevels } from "./display/levelControls";
-import { bindUiControls } from "./display/uiControls";
+import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 
@@ -13,7 +12,7 @@ const parser = new BoardParser();
 init();
 
 function init(): void {
-  bindUiControls();
+  bindLevelsControls(initGame);
 
   getDefaultLevels().then(initGame)
   .catch((error: string): void => {
