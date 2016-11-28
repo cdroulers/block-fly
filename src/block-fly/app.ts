@@ -3,62 +3,38 @@ import LevelSet from "./game/levelSet";
 import { writeToCanvas } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
-import * as Promise from "bluebird";
+import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 
 const parser = new BoardParser();
 
-getLevels().then((response: string[]) => {
-    const levels = response;
+init();
 
-    const levelSet = new LevelSet(levels, parser);
+function init(): void {
+  bindLevelsControls(initGame);
 
-    levelSet.onLevelFinished = () => {
-      alert("YOU WIN THIS LEVEL. Give yourself a high-five");
-      levelSet.nextLevel();
-      writeToCanvas(canvas, levelSet.currentLevel);
-    };
+  getDefaultLevels().then(initGame)
+  .catch((error: string): void => {
+    alert(error);
+  });
+}
 
-    levelSet.onSetFinished = () => {
-      alert("YOU Finished all levels. Sweet Christmas!");
-    };
+export function initGame(levels: string[]): void {
+  const levelSet = new LevelSet(levels, parser);
 
+  levelSet.onLevelFinished = () => {
+    alert("YOU WIN THIS LEVEL. Give yourself a high-five");
+    levelSet.nextLevel();
     writeToCanvas(canvas, levelSet.currentLevel);
+  };
 
-    bindDefaultControls(canvas, levelSet);
-    bindMobileControls(canvas, levelSet);
+  levelSet.onSetFinished = () => {
+    alert("YOU Finished all levels. Sweet Christmas!");
+  };
 
-    return response;
-  }).catch((error: string): void => {
-    console.log(error);
-  });
+  writeToCanvas(canvas, levelSet.currentLevel);
 
-function getLevels(): Promise<string[]> {
-  return new Promise<string[]>(function(resolve: any, reject: any): void {
-    let xhr = new XMLHttpRequest();
-
-    xhr.open("GET", "assets/default-levels.json");
-    xhr.responseType = "json";
-
-    xhr.onload = function(): any {
-      let levels: string[] = [];
-
-      if (xhr.status === 200) {
-        for (let i = 0 ; i < xhr.response.length ; i++) {
-          levels.push(xhr.response[i].join("\n"));
-        }
-
-        resolve(levels);
-      } else {
-        reject(Error("Cannot load levels; error :" + xhr.statusText));
-      }
-    };
-
-    xhr.onerror = function(): any {
-      reject(Error("There was a network error."));
-    };
-
-    xhr.send();
-  });
+  bindDefaultControls(canvas, levelSet);
+  bindMobileControls(canvas, levelSet);
 }
