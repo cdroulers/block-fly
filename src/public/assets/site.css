@@ -22,7 +22,7 @@ body {
 }
 
 #controls > div {
-  position: absolute;
+  position: fixed;
   text-align: center;
   line-height: 58px;
   width: 58px;
