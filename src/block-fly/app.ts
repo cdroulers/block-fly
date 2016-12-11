@@ -1,6 +1,6 @@
 import BoardParser from "./game/symbolsBoardParser";
 import LevelSet from "./game/levelSet";
-import { writeToCanvas } from "./display/canvasDisplay";
+import { writeToCanvas, loadImages } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
 import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
@@ -12,16 +12,15 @@ const parser = new BoardParser();
 init();
 
 function init(): void {
-  bindLevelsControls(initGame);
+  loadImages().then(() => {
+    bindLevelsControls(initGame);
 
-  getDefaultLevels()
-    .then(initGame)
-    .catch((error: string): void => {
-      alert(error);
-    });
+    getDefaultLevels()
+      .then(initGame);
+  });
 }
 
-export function initGame(levels: string[]): void {
+export function initGame(levels: string[]): string[] {
   const levelSet = new LevelSet(levels, parser);
 
   levelSet.onLevelFinished = () => {
@@ -38,4 +37,6 @@ export function initGame(levels: string[]): void {
 
   bindDefaultControls(canvas, levelSet);
   bindMobileControls(canvas, levelSet);
+
+  return levels;
 }
