@@ -1,6 +1,5 @@
-import { Move } from "../game/board";
 import LevelSet from "../game/levelSet";
-import { writeToCanvas } from "./canvasDisplay";
+import { writeToCanvas, imageSize } from "./canvasDisplay";
 
 export function bindMobileControls(canvas: HTMLCanvasElement, levelSet: LevelSet): void {
   canvas.addEventListener("touchstart", handleTouchStart, false);
@@ -17,37 +16,15 @@ export function bindMobileControls(canvas: HTMLCanvasElement, levelSet: LevelSet
 
   function handleTouchMove(evt: TouchEvent): void {
     evt.preventDefault();
+    let xDragged = evt.changedTouches[0].clientX;
+    let yDragged = evt.changedTouches[0].clientY;
+
+    let xModifier = Math.floor((xDragged - xDown) / imageSize);
+    let yModifier = Math.floor((yDown - yDragged) / imageSize);
+    writeToCanvas(canvas, levelSet.currentLevel, { x: xModifier, y: yModifier });
   }
 
   function handleTouchEnd(evt: TouchEvent): void {
-    const hasCoords = Boolean(xDown) && Boolean(yDown);
-    if (!hasCoords) {
-      return;
-    }
-
-    let xUp = evt.changedTouches[0].clientX;
-    let yUp = evt.changedTouches[0].clientY;
-
-    let xDiff = xDown - xUp;
-    let yDiff = yDown - yUp;
-
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-      if (xDiff > 0) {
-        levelSet.currentLevel.move(1, Move.Left);
-      } else {
-        levelSet.currentLevel.move(1, Move.Right);
-      }
-    } else {
-      if (yDiff > 0) {
-        levelSet.currentLevel.move(1, Move.Climb);
-      } else {
-        levelSet.currentLevel.move(1, Move.GrabDrop);
-      }
-    }
-
     writeToCanvas(canvas, levelSet.currentLevel);
-
-    xDown = undefined;
-    yDown = undefined;
   }
 }
