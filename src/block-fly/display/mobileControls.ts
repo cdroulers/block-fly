@@ -19,8 +19,8 @@ export function bindMobileControls(canvas: HTMLCanvasElement, levelSet: LevelSet
     let xDragged = evt.changedTouches[0].clientX;
     let yDragged = evt.changedTouches[0].clientY;
 
-    let xModifier = Math.floor((xDragged - xDown) / imageSize);
-    let yModifier = Math.floor((yDown - yDragged) / imageSize);
+    let xModifier = Math.floor((xDragged - xDown) / imageSize * 5.0);
+    let yModifier = Math.floor((yDown - yDragged) / imageSize * 5.0);
     writeToCanvas(canvas, levelSet.currentLevel, { x: xModifier, y: yModifier });
   }
 

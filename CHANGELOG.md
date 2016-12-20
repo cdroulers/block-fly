@@ -1,5 +1,9 @@
 # History
 
+## 0.9.0 (2016-12-20)
+
+* Mobile responsive canvas, uses screen width and paning to give a better mobile experience.
+
 ## 0.8.0 (2016-11-28)
 
 * Load any level file (local or remote)
