@@ -1,4 +1,5 @@
 import { ICoordinates } from "./coordinates";
+import { ILevel } from "./level";
 import {
   IPiece,
   IPlayerPiece,
@@ -16,11 +17,31 @@ export class Board {
     return this.won;
   }
 
+  public get name(): string {
+    return this.level.name || "";
+  }
+
+  public get number(): number {
+    return this.level.number;
+  }
+
+  public get password(): string {
+    return this.level.password || "";
+  }
+
   public constructor(
     public pieces: IPiece[],
     public width: number,
-    public height: number) {
-      this.originalState = JSON.stringify(pieces);
+    public height: number,
+    private level: ILevel = undefined
+  ) {
+    this.originalState = JSON.stringify(pieces);
+
+    this.level = level || {
+      name: "",
+      number: 0,
+      password: ""
+    };
   }
 
   public canMove(playerId: number, move: Move): boolean {
@@ -109,7 +130,7 @@ export class Board {
   }
 
   public reset(): void {
-      this.pieces = JSON.parse(this.originalState);
+    this.pieces = JSON.parse(this.originalState);
   }
 
   public getPiece(coords: ICoordinates): IPiece {
@@ -182,11 +203,11 @@ export class Board {
   }
 
   private triggerWin(): void {
-      if (this.onWin) {
-        this.onWin();
-      }
+    if (this.onWin) {
+      this.onWin();
+    }
 
-      this.won = true;
+    this.won = true;
   }
 
   private makePieceFall(player: IPiece): void {
