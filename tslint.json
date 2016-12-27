@@ -36,7 +36,8 @@
     "forin": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-name": [
       true,
@@ -60,7 +61,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false,
+    "no-consecutive-blank-lines": [true],
     "no-console": [
       true,
       "debug",
@@ -76,7 +77,7 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
-    "no-inferrable-types": false,
+    "no-inferrable-types": [false],
     "no-internal-module": true,
     "no-null-keyword": true,
     "no-require-imports": true,
