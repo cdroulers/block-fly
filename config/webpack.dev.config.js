@@ -23,12 +23,6 @@ module.exports = new WebpackConfig.Config().extend({
   watch: true,
 
   module: {
-    loaders: [
-      {
-        test: /(\.scss|\.css)$/,
-        loader: "style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox"
-      }
-    ]
   },
 
   plugins: [

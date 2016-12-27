@@ -10,6 +10,7 @@ const packageJson = require(path.join(rootPath, "package.json"));
 var config = {
   entry: {
     vendors: [
+      "bluebird"
     ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
@@ -23,9 +24,9 @@ var config = {
   resolveLoader: {
     root: nodeModulesPath
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js'],
+    extensions: ["", ".scss", ".webpack.js", ".web.js", ".ts", ".js"],
     fallback: rootPath,
     modulesDirectories: [
       "node_modules",
@@ -43,11 +44,20 @@ var config = {
     loaders: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader'
+        loader: "ts-loader"
       },
       {
         test: /\.json$/,
         loader: "json-loader"
+      },
+      {
+        test: /(\.scss|\.css)$/,
+        loaders: [
+          "style",
+          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+          "postcss",
+          "sass?sourceMap"
+        ]
       }
     ]
   }
