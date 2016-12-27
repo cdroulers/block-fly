@@ -1,5 +1,6 @@
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
+import { ITextLevel } from "./level";
 
 export default class LevelSet {
   private currentLevelIndex: number;
@@ -11,7 +12,7 @@ export default class LevelSet {
   public onSetFinished: () => void;
 
   public constructor(
-    public levels: string[],
+    public levels: ITextLevel[] | string[],
     private boardParser: IBoardParser
   ) {
     this.currentLevelIndex = -1;

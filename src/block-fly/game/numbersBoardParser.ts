@@ -6,9 +6,14 @@ import {
 } from "./pieces";
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
+import { ITextLevel } from "./level";
 
 export default class NumbersBoardParser implements IBoardParser {
-  public parse(text: string): Board {
+  public parse(text: string | ITextLevel): Board {
+    if (typeof text !== "string") {
+      throw new Error("This parser doesn't support ITextLevel");
+    }
+
     let playerId = 1;
     const pieces = text.trim().split("\n").map((x, i) => {
       return x.trim().split(",").map((s, j) => {

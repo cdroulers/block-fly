@@ -1,7 +1,8 @@
 import { Board } from "./board";
+import { ITextLevel } from "./level";
 
 export interface IBoardParser {
-  parse(text: string): Board;
+  parse(input: string | ITextLevel): Board;
 
   asString(board: Board): string;
 }

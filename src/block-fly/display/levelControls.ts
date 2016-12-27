@@ -1,49 +1,53 @@
 import * as Promise from "bluebird";
+import { ITextLevel } from "../game/level";
 
-export function bindLevelsControls(callback: (levels: string[]) => void): void {
+export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
   let loadRemoteButton = document.getElementById("load-remote");
   loadRemoteButton.addEventListener("click", () => {
-      let url = (document.getElementById("remote-path") as HTMLInputElement).value;
+    let url = (document.getElementById("remote-path") as HTMLInputElement).value;
 
-      if (url !== "") {
-        getXHRLevels(url).then(callback)
+    if (url !== "") {
+      getXHRLevels(url)
+        .then(callback)
         .catch((error: string): void => {
           alert(error);
         });
-      } else {
-        alert("Please enter an URL");
-      }
+    } else {
+      alert("Please enter an URL");
+    }
   });
 
   let loadDefaultsButton = document.getElementById("load-defaults");
   loadDefaultsButton.addEventListener("click", () => {
-    getDefaultLevels().then(callback)
-    .catch((error: string): void => {
-      alert(error);
-    });
+    getDefaultLevels()
+      .then(callback)
+      .catch((error: string): void => {
+        alert(error);
+      });
   });
 
   let loadLocalLevels = document.getElementById("load-file");
   loadLocalLevels.addEventListener("click", () => {
-      let levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
+    let levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
 
-      if (levelsFile !== undefined) {
-        getLevelsFromFile(levelsFile).then(callback)
+    if (levelsFile !== undefined) {
+      getLevelsFromFile(levelsFile)
+        .then(callback)
         .catch((error: string): void => {
           alert(error);
         });
-      } else {
-        alert("Please choose a file");
-      }
+    } else {
+      alert("Please choose a file");
+    }
   });
 }
 
-export function getDefaultLevels(): Promise<string[]> {
+export function getDefaultLevels(): Promise<ITextLevel[]> {
   return getXHRLevels("assets/default-levels.json");
 }
 
-export function getXHRLevels(path: string): Promise<string[]> {
-  return new Promise<string[]>((resolve: any, reject: any) => {
+export function getXHRLevels(path: string): Promise<ITextLevel[]> {
+  return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
     let xhr = new XMLHttpRequest();
 
     xhr.open("GET", path);
@@ -68,19 +72,35 @@ export function getXHRLevels(path: string): Promise<string[]> {
   });
 }
 
-export function getLevelsFromFile(file: File): Promise<string[]> {
-  return new Promise<string[]>((resolve: any, reject: any) => {
+export function getLevelsFromFile(file: File): Promise<ITextLevel[]> {
+  return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
     let reader = new FileReader();
     reader.onload = e => resolve(transformReponseToLevels(JSON.parse(reader.result)));
     reader.readAsText(file);
   });
 }
 
-function transformReponseToLevels(response: string[][]): string[] {
-  let levels: string[] = [];
+function transformReponseToLevels(response: any[]): ITextLevel[] {
+  let levels: ITextLevel[] = [];
 
-  for (let i = 0 ; i < response.length ; i++) {
-    levels.push(response[i].join("\n"));
+  for (let i = 0; i < response.length; i++) {
+    const value = response[i];
+    if (Array.isArray(value)) {
+      // Assume it's a simple string;
+      levels.push({
+        number: i + 1,
+        text: value.join("\n")
+      });
+    } else {
+      const text = Array.isArray(value.text) ? value.text.join("\n") : value.text;
+
+      levels.push({
+        name: value.name,
+        number: value.number || i + 1,
+        password: value.password,
+        text
+      });
+    }
   }
 
   return levels;
