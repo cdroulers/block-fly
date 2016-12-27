@@ -7,6 +7,8 @@ import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
 import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
 
+require("./site.style"); // tslint:disable-line no-require-imports no-var-requires
+
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 const canvasTitle = document.querySelector("#level-indicator > div:first-child") as HTMLDivElement;
 

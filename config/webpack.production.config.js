@@ -11,6 +11,7 @@ const deployPath = path.join(rootPath, "build/deploy");
 
 module.exports = new WebpackConfig.Config().extend({
   "./config/webpack.base.config.js": (config) => {
+    config.module.loaders = config.module.loaders.splice(0, 2);
     return config;
   }
 }).merge({
@@ -26,7 +27,9 @@ module.exports = new WebpackConfig.Config().extend({
         test: /(\.scss|\.css)$/,
         loader: ExtractTextPlugin.extract(
           "style",
-          "css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass!toolbox"
+          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+          "postcss",
+          "sass?sourceMap"
         )
       }
     ]
