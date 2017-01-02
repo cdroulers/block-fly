@@ -1,5 +1,11 @@
 # History
 
+## 0.10.0 (2017-01-02)
+
+* Display levels on top of canvas (#14)
+* Better controls for mobile (#3)
+* Cache busting for CSS files using webpack and node-sass.
+
 ## 0.9.0 (2016-12-20)
 
 * Mobile responsive canvas, uses screen width and paning to give a better mobile experience.
