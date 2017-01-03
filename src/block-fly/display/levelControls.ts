@@ -3,9 +3,9 @@ import { ITextLevel } from "../game/level";
 import { showMessage } from "./messageDisplay";
 
 export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
-  let loadRemoteButton = document.getElementById("load-remote");
+  const loadRemoteButton = document.getElementById("load-remote");
   loadRemoteButton.addEventListener("click", () => {
-    let url = (document.getElementById("remote-path") as HTMLInputElement).value;
+    const url = (document.getElementById("remote-path") as HTMLInputElement).value;
 
     if (url !== "") {
       getXHRLevels(url)
@@ -18,7 +18,7 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
     }
   });
 
-  let loadDefaultsButton = document.getElementById("load-defaults");
+  const loadDefaultsButton = document.getElementById("load-defaults");
   loadDefaultsButton.addEventListener("click", () => {
     getDefaultLevels()
       .then(callback)
@@ -27,9 +27,9 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
       });
   });
 
-  let loadLocalLevels = document.getElementById("load-file");
+  const loadLocalLevels = document.getElementById("load-file");
   loadLocalLevels.addEventListener("click", () => {
-    let levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
+    const levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
 
     if (levelsFile !== undefined) {
       getLevelsFromFile(levelsFile)
@@ -49,7 +49,7 @@ export function getDefaultLevels(): Promise<ITextLevel[]> {
 
 export function getXHRLevels(path: string): Promise<ITextLevel[]> {
   return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
-    let xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
 
     xhr.open("GET", path);
     xhr.responseType = "json";
@@ -75,7 +75,7 @@ export function getXHRLevels(path: string): Promise<ITextLevel[]> {
 
 export function getLevelsFromFile(file: File): Promise<ITextLevel[]> {
   return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = e => resolve(transformReponseToLevels(JSON.parse(reader.result)));
     reader.readAsText(file);
   });
