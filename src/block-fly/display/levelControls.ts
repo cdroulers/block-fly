@@ -1,5 +1,6 @@
 import * as Promise from "bluebird";
 import { ITextLevel } from "../game/level";
+import { showMessage } from "./messageDisplay";
 
 export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
   let loadRemoteButton = document.getElementById("load-remote");
@@ -10,10 +11,10 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
       getXHRLevels(url)
         .then(callback)
         .catch((error: string): void => {
-          alert(error);
+          showMessage(error);
         });
     } else {
-      alert("Please enter an URL");
+      showMessage("Please enter an URL");
     }
   });
 
@@ -22,7 +23,7 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
     getDefaultLevels()
       .then(callback)
       .catch((error: string): void => {
-        alert(error);
+        showMessage(error);
       });
   });
 
@@ -34,10 +35,10 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
       getLevelsFromFile(levelsFile)
         .then(callback)
         .catch((error: string): void => {
-          alert(error);
+          showMessage(error);
         });
     } else {
-      alert("Please choose a file");
+      showMessage("Please choose a file");
     }
   });
 }
