@@ -6,8 +6,10 @@ import { writeToCanvas, loadImages } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
 import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
+import { showMessage } from "./display/messageDisplay";
 
 require("./site.style"); // tslint:disable-line no-require-imports no-var-requires
+require("material-design-lite/material.min.css"); // tslint:disable-line no-require-imports no-var-requires
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 const canvasTitle = document.querySelector("#level-indicator > div:first-child") as HTMLDivElement;
@@ -29,14 +31,14 @@ export function initGame(levels: ITextLevel[]): ITextLevel[] {
   const levelSet = new LevelSet(levels, parser);
 
   levelSet.onLevelFinished = () => {
-    alert("YOU WIN THIS LEVEL. Give yourself a high-five");
+    showMessage("YOU WIN THIS LEVEL. Give yourself a high-five");
     levelSet.nextLevel();
     updateLevelTitle(levelSet.currentLevel);
     writeToCanvas(canvas, levelSet.currentLevel);
   };
 
   levelSet.onSetFinished = () => {
-    alert("YOU Finished all levels. Sweet Christmas!");
+    showMessage("YOU Finished all levels. Sweet Christmas!");
   };
 
   updateLevelTitle(levelSet.currentLevel);
