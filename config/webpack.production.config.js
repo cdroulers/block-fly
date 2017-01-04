@@ -9,6 +9,9 @@ const WebpackMd5Hash = require("webpack-md5-hash");
 const rootPath = path.join(__dirname, "../");
 const deployPath = path.join(rootPath, "build/deploy");
 
+let extractVendorsCss = new ExtractTextPlugin("vendors_[chunkhash].css", { allChunks: true });
+let extractAppCss = new ExtractTextPlugin("[name]_[chunkhash].css", { allChunks: true });
+
 module.exports = new WebpackConfig.Config().extend({
   "./config/webpack.base.config.js": (config) => {
     config.module.loaders = config.module.loaders.splice(0, 2);
@@ -24,8 +27,17 @@ module.exports = new WebpackConfig.Config().extend({
   module: {
     loaders: [
       {
-        test: /(\.scss|\.css)$/,
-        loader: ExtractTextPlugin.extract(
+        test: /(\.scss)$/,
+        loader: extractAppCss.extract(
+          "style",
+          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+          "postcss",
+          "sass?sourceMap"
+        )
+      },
+      {
+        test: /(\.css)$/,
+        loader: extractVendorsCss.extract(
           "style",
           "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
           "postcss",
@@ -39,7 +51,8 @@ module.exports = new WebpackConfig.Config().extend({
     new CleanWebpackPlugin(["build/deploy"], {
       root: rootPath
     }),
-    new ExtractTextPlugin("[name]_[chunkhash].css", { allChunks: true }),
+    extractVendorsCss,
+    extractAppCss,
     new CopyWebpackPlugin([
       {
         from: path.join(rootPath, "src", "public", "assets"),

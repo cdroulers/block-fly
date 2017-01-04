@@ -9,7 +9,7 @@ import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
 import { showMessage } from "./display/messageDisplay";
 
 require("./site.style"); // tslint:disable-line no-require-imports no-var-requires
-require("material-design-lite/material.min.css"); // tslint:disable-line no-require-imports no-var-requires
+require("material-design-lite/material.min"); // tslint:disable-line no-require-imports no-var-requires
 
 const canvas = document.getElementById("root") as HTMLCanvasElement;
 const canvasTitle = document.querySelector("#level-indicator > div:first-child") as HTMLDivElement;

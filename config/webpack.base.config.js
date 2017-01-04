@@ -10,7 +10,8 @@ const packageJson = require(path.join(rootPath, "package.json"));
 var config = {
   entry: {
     vendors: [
-      "bluebird"
+      "bluebird",
+      "material-design-lite"
     ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
@@ -26,7 +27,7 @@ var config = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: ["", ".scss", ".webpack.js", ".web.js", ".ts", ".js"],
+    extensions: ["", ".scss", ".css", ".webpack.js", ".web.js", ".ts", ".js"],
     fallback: rootPath,
     modulesDirectories: [
       "node_modules",

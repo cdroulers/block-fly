@@ -1,5 +1,9 @@
 # History
 
+## 0.11.0 (2017-01-04)
+
+* Use Material Design Snackbar to show messages instead of ugly alert! (#19 by [@olafleur](https://github.com/olafleur))
+
 ## 0.10.0 (2017-01-02)
 
 * Display levels on top of canvas (#14)
