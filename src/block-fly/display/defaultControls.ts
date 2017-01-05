@@ -134,7 +134,7 @@ function updateModifier(e: KeyboardEvent, canvas: HTMLCanvasElement, levelSet: L
   writeToCanvas(canvas, levelSet.currentLevel, modifiers);
 }
 
-function checkDrawerButton(canvas: HTMLElement) {
+function checkDrawerButton(canvas: HTMLElement): void {
   const drawerButton = document.querySelector(".mdl-layout__drawer-button");
   if (canvas.offsetLeft < imageSize) {
     drawerButton.classList.add("over-game");
