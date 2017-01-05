@@ -11,8 +11,6 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
     checkDrawerButton(canvas);
   });
 
-  setTimeout(() => checkDrawerButton(canvas), 50);
-
   window.addEventListener("keyup", (e) => {
     if (!e.shiftKey) {
       modifiers = { x: 0, y: 0 };
@@ -136,6 +134,12 @@ function updateModifier(e: KeyboardEvent, canvas: HTMLCanvasElement, levelSet: L
 
 function checkDrawerButton(canvas: HTMLElement): void {
   const drawerButton = document.querySelector(".mdl-layout__drawer-button");
+
+  if (!drawerButton) {
+    setTimeout(() => checkDrawerButton(canvas), 50);
+    return;
+  }
+
   if (canvas.offsetLeft < imageSize) {
     drawerButton.classList.add("over-game");
   } else {

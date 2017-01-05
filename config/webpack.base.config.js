@@ -11,7 +11,8 @@ var config = {
   entry: {
     vendors: [
       "bluebird",
-      "material-design-lite"
+      "material-design-lite",
+      "dialog-polyfill"
     ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
