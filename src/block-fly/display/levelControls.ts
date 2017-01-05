@@ -4,10 +4,11 @@ import { showErrorMessage } from "./messageDisplay";
 
 export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
   const loadRemoteButton = document.getElementById("load-remote");
-  loadRemoteButton.addEventListener("click", () => {
-    const url = (document.getElementById("remote-path") as HTMLInputElement).value;
+  loadRemoteButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const url = prompt("Enter URL of file");
 
-    if (url !== "") {
+    if (url) {
       getXHRLevels(url)
         .then(callback)
         .catch((error: string): void => {
@@ -19,7 +20,8 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
   });
 
   const loadDefaultsButton = document.getElementById("load-defaults");
-  loadDefaultsButton.addEventListener("click", () => {
+  loadDefaultsButton.addEventListener("click", (e) => {
+    e.preventDefault();
     getDefaultLevels()
       .then(callback)
       .catch((error: string): void => {
@@ -27,13 +29,26 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
       });
   });
 
-  const loadLocalLevels = document.getElementById("load-file");
-  loadLocalLevels.addEventListener("click", () => {
+  const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
+
+  const loadLocalLevels = document.getElementById("load-local");
+  loadLocalLevels.addEventListener("click", (e) => {
+    e.preventDefault();
+    loadLocalDialog.showModal();
+  });
+
+  const loadLocalLevelsButton = document.getElementById("load-local-levels");
+  loadLocalLevelsButton.addEventListener("click", (e) => {
+    e.preventDefault();
     const levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
 
-    if (levelsFile !== undefined) {
+    if (levelsFile) {
       getLevelsFromFile(levelsFile)
-        .then(callback)
+        .then((levels: ITextLevel[]) => {
+          loadLocalDialog.close();
+          callback(levels);
+          return levels;
+        })
         .catch((error: string): void => {
           showErrorMessage(error);
         });
