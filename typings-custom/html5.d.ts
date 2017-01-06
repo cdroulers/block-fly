@@ -5,3 +5,8 @@ interface HTMLDialogElement extends HTMLElement {
 
   showModal();
 }
+
+interface NodeSelector {
+  querySelector(selectors: "dialog"): HTMLDialogElement;
+  querySelectorAll(selectors: "dialog"): NodeListOf<HTMLDialogElement>;
+}

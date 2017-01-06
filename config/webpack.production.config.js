@@ -30,18 +30,22 @@ module.exports = new WebpackConfig.Config().extend({
         test: /(\.scss)$/,
         loader: extractAppCss.extract(
           "style",
-          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
-          "postcss",
-          "sass?sourceMap"
+          [
+            "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+            "postcss",
+            "sass?sourceMap"
+          ]
         )
       },
       {
         test: /(\.css)$/,
         loader: extractVendorsCss.extract(
           "style",
-          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
-          "postcss",
-          "sass?sourceMap"
+          [
+            "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+            "postcss",
+            "sass?sourceMap"
+          ]
         )
       }
     ]

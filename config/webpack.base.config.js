@@ -11,8 +11,7 @@ var config = {
   entry: {
     vendors: [
       "bluebird",
-      "material-design-lite",
-      "dialog-polyfill"
+      "material-design-lite"
     ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
@@ -56,9 +55,11 @@ var config = {
         test: /(\.scss|\.css)$/,
         loaders: [
           "style",
-          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
-          "postcss",
-          "sass?sourceMap"
+          [
+            "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+            "postcss",
+            "sass?sourceMap"
+          ]
         ]
       }
     ]
