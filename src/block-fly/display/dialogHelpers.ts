@@ -5,6 +5,7 @@ export function setupDialogs(): void {
   for (let i = 0; i < dialogs.length; i++) {
     const diag = dialogs[i] as HTMLDialogElement;
     if (!diag.showModal) {
+      document.getElementsByTagName("body")[0].classList.add("no-dialog");
       dialogPolyfill.registerDialog(diag);
     }
     diag.querySelector(".close").addEventListener("click", () => {

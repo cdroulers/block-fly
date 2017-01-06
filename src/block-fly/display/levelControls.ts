@@ -3,59 +3,11 @@ import { ITextLevel } from "../game/level";
 import { showErrorMessage } from "./messageDisplay";
 
 export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
-  const loadRemoteButton = document.getElementById("load-remote");
-  loadRemoteButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    const url = prompt("Enter URL of file");
+  bindLoadRemoteLevels(callback);
 
-    if (url) {
-      getXHRLevels(url)
-        .then(callback)
-        .catch((error: string): void => {
-          showErrorMessage(error);
-        });
-    } else {
-      showErrorMessage("Please enter an URL");
-    }
-  });
+  bindLoadDefaultLevels(callback);
 
-  const loadDefaultsButton = document.getElementById("load-defaults");
-  loadDefaultsButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    getDefaultLevels()
-      .then(callback)
-      .catch((error: string): void => {
-        showErrorMessage(error);
-      });
-  });
-
-  const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
-
-  const loadLocalLevels = document.getElementById("load-local");
-  loadLocalLevels.addEventListener("click", (e) => {
-    e.preventDefault();
-    loadLocalDialog.showModal();
-  });
-
-  const loadLocalLevelsButton = document.getElementById("load-local-levels");
-  loadLocalLevelsButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    const levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
-
-    if (levelsFile) {
-      getLevelsFromFile(levelsFile)
-        .then((levels: ITextLevel[]) => {
-          loadLocalDialog.close();
-          callback(levels);
-          return levels;
-        })
-        .catch((error: string): void => {
-          showErrorMessage(error);
-        });
-    } else {
-      showErrorMessage("Please choose a file");
-    }
-  });
+  bindLoadLocalLevels(callback);
 }
 
 export function getDefaultLevels(): Promise<ITextLevel[]> {
@@ -120,4 +72,82 @@ function transformReponseToLevels(response: any[]): ITextLevel[] {
   }
 
   return levels;
+}
+
+function bindLoadRemoteLevels(callback: (levels: ITextLevel[]) => void): void {
+  const loadRemoteDialog = document.getElementById("load-remote-file-dialog") as HTMLDialogElement;
+
+  const loadRemoteButton = document.getElementById("load-remote");
+  loadRemoteButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    loadRemoteDialog.showModal();
+  });
+
+  const loadRemoteLevelsButton = document.getElementById("load-remote-levels");
+  loadRemoteLevelsButton.addEventListener("click", (e) => {
+    const url = (document.getElementById("remote-levels") as HTMLInputElement).value;
+
+    if (url) {
+      getXHRLevels(url)
+        .then((levels: ITextLevel[]) => {
+          loadRemoteDialog.close();
+          callback(levels);
+          return levels;
+        })
+        .catch((error: string): void => {
+          showErrorMessage(error);
+        });
+    } else {
+      showErrorMessage("Please enter an URL");
+    }
+  });
+}
+
+function bindLoadDefaultLevels(callback: (levels: ITextLevel[]) => void): void {
+  const loadDefaultsButton = document.getElementById("load-defaults");
+  loadDefaultsButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    getDefaultLevels()
+        .then((levels: ITextLevel[]) => {
+          // Hack to hide menu if it's been shown on a smaller screen.
+          document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
+          document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
+          callback(levels);
+          return levels;
+        })
+      .catch((error: string): void => {
+        showErrorMessage(error);
+      });
+  });
+}
+
+function bindLoadLocalLevels(callback: (levels: ITextLevel[]) => void): void {
+  const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
+
+  const loadLocalLevels = document.getElementById("load-local");
+  loadLocalLevels.addEventListener("click", (e) => {
+    e.preventDefault();
+    loadLocalDialog.showModal();
+  });
+
+  const loadLocalLevelsButton = document.getElementById("load-local-levels");
+  loadLocalLevelsButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
+
+    if (levelsFile) {
+      getLevelsFromFile(levelsFile)
+        .then((levels: ITextLevel[]) => {
+          loadLocalDialog.close();
+          callback(levels);
+          return levels;
+        })
+        .catch((error: string): void => {
+          showErrorMessage(error);
+        });
+    } else {
+      showErrorMessage("Please choose a file");
+    }
+  });
 }
