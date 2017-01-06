@@ -11,6 +11,8 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
     checkDrawerButton(canvas);
   });
 
+  checkDrawerButton(canvas);
+
   window.addEventListener("keyup", (e) => {
     if (!e.shiftKey) {
       modifiers = { x: 0, y: 0 };
