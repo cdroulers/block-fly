@@ -9,11 +9,11 @@ Uses a Fly because I had those sprites laying around somewhere!
 ## Other things that should happen
 
 * Fully offline with service workers
-* Fully mobile with gestures and zoom in/out, etc.
+* <del>Fully mobile with gestures and zoom in/out, etc.</del>
 * Well tested.
 * Level chooser.
 * Level editor.
-* Load custom levels!
+* <del>Load custom levels!</del>
 
 # Build and develop
 
@@ -22,6 +22,13 @@ Uses a Fly because I had those sprites laying around somewhere!
     ./node_modules/.bin/typings install
     npm run start # to get a web server at [http://localhost:5555](http://localhost:5555)
     npm run test -- --watch # to get test to run and re-run anything you rebuild the files.
+
+# Deploying
+
+* Bump version in package.json
+* Update [`CHANGELOG.md`](CHANGELOG.md)
+* Build production version with `npm run deploy`
+* Copy `/build/deploy` to production server.
 
 # Contributing
 

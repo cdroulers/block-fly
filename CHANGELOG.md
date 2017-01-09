@@ -1,5 +1,9 @@
 # History
 
+## 0.12.0 (2017-01-09)
+
+* Use Material Design Lite for better mobile experience!
+
 ## 0.11.0 (2017-01-04)
 
 * Use Material Design Snackbar to show messages instead of ugly alert! (#19 by [@olafleur](https://github.com/olafleur))
