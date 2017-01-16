@@ -1,6 +1,6 @@
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
-import { ITextLevel } from "./level";
+import { ILevelSet } from "./level";
 
 export default class LevelSet {
   private currentLevelIndex: number;
@@ -12,11 +12,10 @@ export default class LevelSet {
   public onSetFinished: () => void;
 
   public constructor(
-    public levels: ITextLevel[] | string[],
+    public levelSet: ILevelSet,
     private boardParser: IBoardParser
   ) {
     this.currentLevelIndex = -1;
-    this.levels = levels;
 
     this.nextLevel();
   }
@@ -24,12 +23,12 @@ export default class LevelSet {
   public nextLevel(): void {
     this.currentLevelIndex++;
 
-    if (this.currentLevelIndex >= this.levels.length && this.onSetFinished) {
+    if (this.currentLevelIndex >= this.levelSet.levels.length && this.onSetFinished) {
       this.onSetFinished();
       return;
     }
 
-    this.currentLevel = this.boardParser.parse(this.levels[this.currentLevelIndex]);
+    this.currentLevel = this.boardParser.parse(this.levelSet.levels[this.currentLevelIndex]);
     this.currentLevel.onWin = () => {
       if (this.onLevelFinished) {
         this.onLevelFinished(this.currentLevelIndex);

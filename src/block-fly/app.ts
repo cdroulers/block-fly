@@ -1,6 +1,6 @@
 import BoardParser from "./game/symbolsBoardParser";
 import LevelSet from "./game/levelSet";
-import { ITextLevel } from "./game/level";
+import { ILevelSet } from "./game/level";
 import { Board } from "./game/board";
 import { writeToCanvas, loadImages } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
@@ -30,8 +30,10 @@ function init(): void {
   });
 }
 
-export function initGame(levels: ITextLevel[]): ITextLevel[] {
+export function initGame(levels: ILevelSet): ILevelSet {
   const levelSet = new LevelSet(levels, parser);
+
+  showMessage(`Loaded levels from "${levels.name || "unknown"}"!`);
 
   levelSet.onLevelFinished = () => {
     showMessage("YOU WIN THIS LEVEL. Give yourself a high-five");
@@ -54,5 +56,7 @@ export function initGame(levels: ITextLevel[]): ITextLevel[] {
 }
 
 function updateLevelTitle(board: Board): void {
-  canvasTitle.innerHTML = board.number + (board.name ? " - " + board.name : "");
+  canvasTitle.innerHTML = board.number +
+    (board.name ? " - " + board.name : "") +
+    (board.password ? " (password: " + board.password + ")" : "");
 }

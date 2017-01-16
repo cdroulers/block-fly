@@ -1,8 +1,8 @@
 import * as Promise from "bluebird";
-import { ITextLevel } from "../game/level";
+import { ITextLevel, ILevelSet } from "../game/level";
 import { showErrorMessage } from "./messageDisplay";
 
-export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): void {
+export function bindLevelsControls(callback: (levels: ILevelSet) => void): void {
   bindLoadRemoteLevels(callback);
 
   bindLoadDefaultLevels(callback);
@@ -10,12 +10,12 @@ export function bindLevelsControls(callback: (levels: ITextLevel[]) => void): vo
   bindLoadLocalLevels(callback);
 }
 
-export function getDefaultLevels(): Promise<ITextLevel[]> {
+export function getDefaultLevels(): Promise<ILevelSet> {
   return getXHRLevels("assets/default-levels.json");
 }
 
-export function getXHRLevels(path: string): Promise<ITextLevel[]> {
-  return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
+export function getXHRLevels(path: string): Promise<ILevelSet> {
+  return new Promise<ILevelSet>((resolve: any, reject: any) => {
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", path);
@@ -40,23 +40,39 @@ export function getXHRLevels(path: string): Promise<ITextLevel[]> {
   });
 }
 
-export function getLevelsFromFile(file: File): Promise<ITextLevel[]> {
-  return new Promise<ITextLevel[]>((resolve: any, reject: any) => {
+export function getLevelsFromFile(file: File): Promise<ILevelSet> {
+  return new Promise<ILevelSet>((resolve: any, reject: any) => {
     const reader = new FileReader();
     reader.onload = e => resolve(transformReponseToLevels(JSON.parse(reader.result)));
     reader.readAsText(file);
   });
 }
 
-function transformReponseToLevels(response: any[]): ITextLevel[] {
+export function transformReponseToLevels(response: any): ILevelSet {
   let levels: ITextLevel[] = [];
+
+  let name = undefined;
+  if (!Array.isArray(response)) {
+    name = response.name;
+    response = response.levels;
+  }
 
   for (let i = 0; i < response.length; i++) {
     const value = response[i];
-    if (Array.isArray(value)) {
-      // Assume it's a simple string;
+    if (typeof value === "string") {
+      // Assume it's a simple string.
       levels.push({
+        name: undefined,
         number: i + 1,
+        password: undefined,
+        text: value
+      });
+    } else if (Array.isArray(value)) {
+      // Assume it's a simple array of strings.
+      levels.push({
+        name: undefined,
+        number: i + 1,
+        password: undefined,
         text: value.join("\n")
       });
     } else {
@@ -71,10 +87,13 @@ function transformReponseToLevels(response: any[]): ITextLevel[] {
     }
   }
 
-  return levels;
+  return {
+    name,
+    levels
+  };
 }
 
-function bindLoadRemoteLevels(callback: (levels: ITextLevel[]) => void): void {
+function bindLoadRemoteLevels(callback: (levels: ILevelSet) => void): void {
   const loadRemoteDialog = document.getElementById("load-remote-file-dialog") as HTMLDialogElement;
 
   const loadRemoteButton = document.getElementById("load-remote");
@@ -90,7 +109,7 @@ function bindLoadRemoteLevels(callback: (levels: ITextLevel[]) => void): void {
 
     if (url) {
       getXHRLevels(url)
-        .then((levels: ITextLevel[]) => {
+        .then((levels: ILevelSet) => {
           loadRemoteDialog.close();
           callback(levels);
           return levels;
@@ -104,25 +123,25 @@ function bindLoadRemoteLevels(callback: (levels: ITextLevel[]) => void): void {
   });
 }
 
-function bindLoadDefaultLevels(callback: (levels: ITextLevel[]) => void): void {
+function bindLoadDefaultLevels(callback: (levels: ILevelSet) => void): void {
   const loadDefaultsButton = document.getElementById("load-defaults");
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
     getDefaultLevels()
-        .then((levels: ITextLevel[]) => {
-          // Hack to hide menu if it's been shown on a smaller screen.
-          document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
-          document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
-          callback(levels);
-          return levels;
-        })
+      .then((levels: ILevelSet) => {
+        // Hack to hide menu if it's been shown on a smaller screen.
+        document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
+        document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
+        callback(levels);
+        return levels;
+      })
       .catch((error: string): void => {
         showErrorMessage(error);
       });
   });
 }
 
-function bindLoadLocalLevels(callback: (levels: ITextLevel[]) => void): void {
+function bindLoadLocalLevels(callback: (levels: ILevelSet) => void): void {
   const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
 
   const loadLocalLevels = document.getElementById("load-local");
@@ -138,7 +157,7 @@ function bindLoadLocalLevels(callback: (levels: ITextLevel[]) => void): void {
 
     if (levelsFile) {
       getLevelsFromFile(levelsFile)
-        .then((levels: ITextLevel[]) => {
+        .then((levels: ILevelSet) => {
           loadLocalDialog.close();
           callback(levels);
           return levels;
