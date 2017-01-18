@@ -21,6 +21,10 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
   });
 
   window.addEventListener("keydown", (e) => {
+    if (document.activeElement.tagName === "INPUT") {
+      return;
+    }
+
     if (e.ctrlKey || e.altKey || e.metaKey) {
       // Do not mess with default shortcuts.
       return;
@@ -30,7 +34,6 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
       updateModifier(e, canvas, levelSet);
       return;
     }
-
     switch (e.keyCode) {
       case 37: // Arrow left
         levelSet.currentLevel.move(1, Move.Left);

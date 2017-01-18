@@ -1,13 +1,21 @@
 import * as Promise from "bluebird";
 import { ITextLevel, ILevelSet } from "../game/level";
+import LevelSet from "../game/levelSet";
 import { showErrorMessage } from "./messageDisplay";
+import { writeToCanvas } from "./canvasDisplay";
 
-export function bindLevelsControls(callback: (levels: ILevelSet) => void): void {
+export function bindLevelsControls(
+  callback: (levels: ILevelSet) => void,
+  levelSetAccessor: () => LevelSet,
+  canvas: HTMLCanvasElement
+): void {
   bindLoadRemoteLevels(callback);
 
   bindLoadDefaultLevels(callback);
 
   bindLoadLocalLevels(callback);
+
+  bindGoToLevelWithPassword(levelSetAccessor, canvas);
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
@@ -167,6 +175,38 @@ function bindLoadLocalLevels(callback: (levels: ILevelSet) => void): void {
         });
     } else {
       showErrorMessage("Please choose a file");
+    }
+  });
+}
+
+function bindGoToLevelWithPassword(
+  levelSetAccessor: () => LevelSet,
+  canvas: HTMLCanvasElement
+): void {
+  const goToLevelWithPasswordDialog = document.getElementById("enter-password") as HTMLDialogElement;
+
+  const goToLevelWithPasswordButton = document.getElementById("enter-password-link");
+  goToLevelWithPasswordButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    goToLevelWithPasswordDialog.showModal();
+  });
+
+  const submitPasswordButton = document.getElementById("load-level-with-password");
+  submitPasswordButton.addEventListener("click", (e) => {
+    const password = (document.getElementById("level-password") as HTMLInputElement).value;
+
+    if (password) {
+      const levelSet = levelSetAccessor();
+      try {
+        levelSet.goToLevelWithPassword(password);
+        goToLevelWithPasswordDialog.close();
+        writeToCanvas(canvas, levelSet.currentLevel);
+      } catch (e) {
+        showErrorMessage(e.message);
+      }
+    } else {
+      showErrorMessage("Please enter a password");
     }
   });
 }

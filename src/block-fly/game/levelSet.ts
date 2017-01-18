@@ -23,11 +23,29 @@ export default class LevelSet {
   public nextLevel(): void {
     this.currentLevelIndex++;
 
-    if (this.currentLevelIndex >= this.levelSet.levels.length && this.onSetFinished) {
-      this.onSetFinished();
+    if (this.currentLevelIndex >= this.levelSet.levels.length) {
+      if (this.onSetFinished) {
+        this.onSetFinished();
+      }
+
       return;
     }
 
+    this.setUpCurrentLevel();
+  }
+
+  public goToLevelWithPassword(password: string): void {
+    const foundLevel = this.levelSet.levels.filter(x => x.password === password)[0];
+    if (foundLevel) {
+      this.currentLevelIndex = this.levelSet.levels.indexOf(foundLevel);
+      this.setUpCurrentLevel();
+      return;
+    }
+
+    throw new Error(`Couldn't find a level with password ${password}.`);
+  }
+
+  private setUpCurrentLevel(): void {
     this.currentLevel = this.boardParser.parse(this.levelSet.levels[this.currentLevelIndex]);
     this.currentLevel.onWin = () => {
       if (this.onLevelFinished) {

@@ -19,11 +19,13 @@ setupDialogs();
 
 const parser = new BoardParser();
 
+let levelSet: LevelSet = undefined;
+
 init();
 
 function init(): void {
   loadImages().then(() => {
-    bindLevelsControls(initGame);
+    bindLevelsControls(initGame, () => levelSet, canvas);
 
     getDefaultLevels()
       .then(initGame);
@@ -31,7 +33,7 @@ function init(): void {
 }
 
 export function initGame(levels: ILevelSet): ILevelSet {
-  const levelSet = new LevelSet(levels, parser);
+  levelSet = new LevelSet(levels, parser);
 
   showMessage(`Loaded levels from "${levels.name || "unknown"}"!`);
 
