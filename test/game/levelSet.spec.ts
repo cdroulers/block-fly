@@ -57,4 +57,36 @@ describe("!unit! LevelSet", () => {
       expect(setFinished).to.be.true;
     });
   });
+
+  describe("goToLevelWithPassword", () => {
+    it("finds the level", () => {
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####", password: "lol" }
+        ]
+      };
+      const levelSet = new LevelSet(levels, parser);
+
+      expect(levelSet.currentLevel.number).to.equal(1);
+
+      levelSet.goToLevelWithPassword("lol");
+      expect(levelSet.currentLevel.number).to.equal(2);
+    });
+
+    it("throws error if not found", () => {
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####" },
+          { number: 3, text: "#DP  #\n######" }
+        ]
+      };
+      const levelSet = new LevelSet(levels, parser);
+
+      expect(() => levelSet.goToLevelWithPassword("slkdjf")).to.throw(Error);
+    });
+  });
 });
