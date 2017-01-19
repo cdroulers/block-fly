@@ -1,7 +1,8 @@
-import LevelSet from "../game/levelSet";
-import { writeToCanvas, imageSize } from "./canvasDisplay";
+import publisher from "../infrastructure/publisher";
+import * as Events from "../infrastructure/events";
+import { imageSize } from "./canvasDisplay";
 
-export function bindMobileControls(canvas: HTMLCanvasElement, levelSet: LevelSet): void {
+export function bindMobileControls(canvas: HTMLCanvasElement): void {
   canvas.addEventListener("touchstart", handleTouchStart, false);
   canvas.addEventListener("touchmove", handleTouchMove, false);
   canvas.addEventListener("touchend", handleTouchEnd, false);
@@ -21,10 +22,10 @@ export function bindMobileControls(canvas: HTMLCanvasElement, levelSet: LevelSet
 
     let xModifier = Math.floor((xDragged - xDown) / imageSize * 5.0);
     let yModifier = Math.floor((yDown - yDragged) / imageSize * 5.0);
-    writeToCanvas(canvas, levelSet.currentLevel, { x: xModifier, y: yModifier });
+    publisher.publish(Events.EventType.ViewportModified, { x: xModifier, y: yModifier });
   }
 
   function handleTouchEnd(evt: TouchEvent): void {
-    writeToCanvas(canvas, levelSet.currentLevel);
+    publisher.publish(Events.EventType.ViewportModified, { x: 0, y: 0 });
   }
 }

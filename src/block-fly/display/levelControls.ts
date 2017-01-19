@@ -1,21 +1,17 @@
 import * as Promise from "bluebird";
 import { ITextLevel, ILevelSet } from "../game/level";
-import LevelSet from "../game/levelSet";
 import { showErrorMessage } from "./messageDisplay";
-import { writeToCanvas } from "./canvasDisplay";
+import publisher from "../infrastructure/publisher";
+import * as Events from "../infrastructure/events";
 
-export function bindLevelsControls(
-  callback: (levels: ILevelSet) => void,
-  levelSetAccessor: () => LevelSet,
-  canvas: HTMLCanvasElement
-): void {
-  bindLoadRemoteLevels(callback);
+export function bindLevelsControls(): void {
+  bindLoadRemoteLevels();
 
-  bindLoadDefaultLevels(callback);
+  bindLoadDefaultLevels();
 
-  bindLoadLocalLevels(callback);
+  bindLoadLocalLevels();
 
-  bindGoToLevelWithPassword(levelSetAccessor, canvas);
+  bindGoToLevelWithPassword();
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
@@ -101,7 +97,7 @@ export function transformReponseToLevels(response: any): ILevelSet {
   };
 }
 
-function bindLoadRemoteLevels(callback: (levels: ILevelSet) => void): void {
+function bindLoadRemoteLevels(): void {
   const loadRemoteDialog = document.getElementById("load-remote-file-dialog") as HTMLDialogElement;
 
   const loadRemoteButton = document.getElementById("load-remote");
@@ -119,10 +115,13 @@ function bindLoadRemoteLevels(callback: (levels: ILevelSet) => void): void {
       getXHRLevels(url)
         .then((levels: ILevelSet) => {
           loadRemoteDialog.close();
-          callback(levels);
+          closeMenu();
+          publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
           return levels;
         })
         .catch((error: string): void => {
+          loadRemoteDialog.close();
+          closeMenu();
           showErrorMessage(error);
         });
     } else {
@@ -131,25 +130,30 @@ function bindLoadRemoteLevels(callback: (levels: ILevelSet) => void): void {
   });
 }
 
-function bindLoadDefaultLevels(callback: (levels: ILevelSet) => void): void {
+function closeMenu(): void {
+  // Hack to hide menu if it's been shown on a smaller screen.
+  document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
+  document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
+}
+
+function bindLoadDefaultLevels(): void {
   const loadDefaultsButton = document.getElementById("load-defaults");
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
     getDefaultLevels()
       .then((levels: ILevelSet) => {
-        // Hack to hide menu if it's been shown on a smaller screen.
-        document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
-        document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
-        callback(levels);
+        closeMenu();
+        publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
         return levels;
       })
       .catch((error: string): void => {
+        closeMenu();
         showErrorMessage(error);
       });
   });
 }
 
-function bindLoadLocalLevels(callback: (levels: ILevelSet) => void): void {
+function bindLoadLocalLevels(): void {
   const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
 
   const loadLocalLevels = document.getElementById("load-local");
@@ -167,10 +171,13 @@ function bindLoadLocalLevels(callback: (levels: ILevelSet) => void): void {
       getLevelsFromFile(levelsFile)
         .then((levels: ILevelSet) => {
           loadLocalDialog.close();
-          callback(levels);
+          closeMenu();
+          publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
           return levels;
         })
         .catch((error: string): void => {
+          loadLocalDialog.close();
+          closeMenu();
           showErrorMessage(error);
         });
     } else {
@@ -179,10 +186,7 @@ function bindLoadLocalLevels(callback: (levels: ILevelSet) => void): void {
   });
 }
 
-function bindGoToLevelWithPassword(
-  levelSetAccessor: () => LevelSet,
-  canvas: HTMLCanvasElement
-): void {
+function bindGoToLevelWithPassword(): void {
   const goToLevelWithPasswordDialog = document.getElementById("enter-password") as HTMLDialogElement;
 
   const goToLevelWithPasswordButton = document.getElementById("enter-password-link");
@@ -197,14 +201,9 @@ function bindGoToLevelWithPassword(
     const password = (document.getElementById("level-password") as HTMLInputElement).value;
 
     if (password) {
-      const levelSet = levelSetAccessor();
-      try {
-        levelSet.goToLevelWithPassword(password);
-        goToLevelWithPasswordDialog.close();
-        writeToCanvas(canvas, levelSet.currentLevel);
-      } catch (e) {
-        showErrorMessage(e.message);
-      }
+      publisher.publish(Events.EventType.WentToLevelWithPassword, { password } as Events.IWentToLevelWithPasswordEvent);
+      goToLevelWithPasswordDialog.close();
+      closeMenu();
     } else {
       showErrorMessage("Please enter a password");
     }

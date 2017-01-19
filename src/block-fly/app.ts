@@ -1,64 +1,53 @@
-import BoardParser from "./game/symbolsBoardParser";
-import LevelSet from "./game/levelSet";
 import { ILevelSet } from "./game/level";
-import { Board } from "./game/board";
-import { writeToCanvas, loadImages } from "./display/canvasDisplay";
+import { loadImages, imageSize } from "./display/canvasDisplay";
 import { bindDefaultControls } from "./display/defaultControls";
 import { bindMobileControls } from "./display/mobileControls";
 import { getDefaultLevels, bindLevelsControls } from "./display/levelControls";
-import { showMessage } from "./display/messageDisplay";
 import { setupDialogs } from "./display/dialogHelpers";
+import publisher from "./infrastructure/publisher";
+import * as Events from "./infrastructure/events";
+import Controller from "./infrastructure/controller";
 
 require("./stylesheets/site.style"); // tslint:disable-line no-require-imports no-var-requires
 require("material-design-lite/material.min"); // tslint:disable-line no-require-imports no-var-requires
 
-const canvas = document.getElementById("root") as HTMLCanvasElement;
-const canvasTitle = document.querySelector("#level-indicator > div:first-child") as HTMLDivElement;
-
 setupDialogs();
 
-const parser = new BoardParser();
-
-let levelSet: LevelSet = undefined;
+const controller = new Controller();
+console.log("Started controller", controller);
 
 init();
 
 function init(): void {
   loadImages().then(() => {
-    bindLevelsControls(initGame, () => levelSet, canvas);
+    bindLevelsControls();
+    bindDefaultControls();
+    bindMobileControls(controller.canvas);
 
     getDefaultLevels()
-      .then(initGame);
+      .then((levels: ILevelSet) => {
+        publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
+      });
   });
+
+  window.addEventListener("resize", (e) => {
+    checkDrawerButton(controller.canvas);
+  });
+
+  checkDrawerButton(controller.canvas);
 }
 
-export function initGame(levels: ILevelSet): ILevelSet {
-  levelSet = new LevelSet(levels, parser);
+function checkDrawerButton(canvas: HTMLElement): void {
+  const drawerButton = document.querySelector(".mdl-layout__drawer-button");
 
-  showMessage(`Loaded levels from "${levels.name || "unknown"}"!`);
+  if (!drawerButton) {
+    setTimeout(() => checkDrawerButton(canvas), 50);
+    return;
+  }
 
-  levelSet.onLevelFinished = () => {
-    showMessage("YOU WIN THIS LEVEL. Give yourself a high-five");
-    levelSet.nextLevel();
-    updateLevelTitle(levelSet.currentLevel);
-    writeToCanvas(canvas, levelSet.currentLevel);
-  };
-
-  levelSet.onSetFinished = () => {
-    showMessage("YOU Finished all levels. Sweet Christmas!");
-  };
-
-  updateLevelTitle(levelSet.currentLevel);
-  writeToCanvas(canvas, levelSet.currentLevel);
-
-  bindDefaultControls(canvas, levelSet);
-  bindMobileControls(canvas, levelSet);
-
-  return levels;
-}
-
-function updateLevelTitle(board: Board): void {
-  canvasTitle.innerHTML = board.number +
-    (board.name ? " - " + board.name : "") +
-    (board.password ? " (password: " + board.password + ")" : "");
+  if (canvas.offsetLeft < imageSize) {
+    drawerButton.classList.add("over-game");
+  } else {
+    drawerButton.classList.remove("over-game");
+  }
 }
