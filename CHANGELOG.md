@@ -1,5 +1,9 @@
 # History
 
+## 0.13.0 (2017-01-19)
+
+* Allow entering a password to go back to a level.
+
 ## 0.12.0 (2017-01-09)
 
 * Use Material Design Lite for better mobile experience!
