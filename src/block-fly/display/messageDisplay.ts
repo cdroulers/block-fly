@@ -11,9 +11,9 @@ export function showMessage(message: string, color: string = "green", timeout: n
   componentHandler.upgradeElement(messageContainer);
 
   const data = {
-      message: message,
-      timeout: timeout
-    };
+    message: message,
+    timeout: timeout
+  };
 
   messageContainer.MaterialSnackbar.showSnackbar(data);
 }

@@ -19,11 +19,16 @@
         <a href="https://github.com/cdroulers/block-fly">Source</a>
       </div>
 
+      <span class="mdl-layout-title">Current level set</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="#enter-password" id="enter-password-link">Enter a password</a>
+      </nav>
+
       <span class="mdl-layout-title">Levels</span>
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#default-levels" id="load-defaults">Load default levels</a>
         <a class="mdl-navigation__link" href="#remote-levels" id="load-remote">Load remote levels</a>
-        <a class="mdl-navigation__link" href="#local-levels" id="load-local">    Load local levels  </a>
+        <a class="mdl-navigation__link" href="#local-levels" id="load-local">Load local levels</a>
       </nav>
 
       <span class="mdl-layout-title">Other</span>
@@ -72,6 +77,17 @@
     </div>
     <div class="mdl-dialog__actions">
       <button type="button" class="mdl-button" id="load-local-levels">Load</button>
+      <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+  </dialog>
+
+  <dialog class="mdl-dialog" id="enter-password">
+    <h4 class="mdl-dialog__title">Enter a password</h4>
+    <div class="mdl-dialog__content">
+      <input type="text" id="level-password">
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button" id="load-level-with-password">Submit</button>
       <button type="button" class="mdl-button close">Cancel</button>
     </div>
   </dialog>

@@ -1,70 +1,63 @@
 import { Move } from "../game/board";
-import LevelSet from "../game/levelSet";
-import { writeToCanvas, getActualDimensions, imageSize } from "./canvasDisplay";
-import { getViewport } from "./viewport";
+import publisher from "../infrastructure/publisher";
+import * as Events from "../infrastructure/events";
 
 let modifiers = { x: 0, y: 0 };
 
-export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSet): void {
-  window.addEventListener("resize", (e) => {
-    writeToCanvas(canvas, levelSet.currentLevel, modifiers);
-    checkDrawerButton(canvas);
-  });
-
-  checkDrawerButton(canvas);
-
+export function bindDefaultControls(): void {
   window.addEventListener("keyup", (e) => {
     if (!e.shiftKey) {
       modifiers = { x: 0, y: 0 };
-      writeToCanvas(canvas, levelSet.currentLevel, modifiers);
+      publisher.publish(Events.EventType.ViewportModified, { viewport: modifiers } as Events.IViewportModified);
     }
   });
 
   window.addEventListener("keydown", (e) => {
+    if (document.activeElement.tagName === "INPUT") {
+      return;
+    }
+
     if (e.ctrlKey || e.altKey || e.metaKey) {
       // Do not mess with default shortcuts.
       return;
     }
 
     if (e.shiftKey) {
-      updateModifier(e, canvas, levelSet);
+      updateModifier(e);
       return;
     }
-
     switch (e.keyCode) {
       case 37: // Arrow left
-        levelSet.currentLevel.move(1, Move.Left);
+        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Left } as Events.IPlayerMovedEvent);
         break;
       case 38: // Arrow up
-        levelSet.currentLevel.move(1, Move.Climb);
+        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Climb } as Events.IPlayerMovedEvent);
         break;
       case 39: // Arrow right
-        levelSet.currentLevel.move(1, Move.Right);
+        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Right } as Events.IPlayerMovedEvent);
         break;
       case 40: // Arrow down
-        levelSet.currentLevel.move(1, Move.GrabDrop);
+        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.GrabDrop } as Events.IPlayerMovedEvent);
         break;
       case 82: // Letter "r"
-        levelSet.currentLevel.reset();
+        publisher.publish(Events.EventType.LevelReset, {} as Events.ILevelResetEvent);
         break;
       default:
         return;
     }
 
     e.preventDefault();
-    writeToCanvas(canvas, levelSet.currentLevel, modifiers);
   });
 
   document.getElementById("reset").addEventListener("click", (evt: Event) => {
     evt.preventDefault();
-    levelSet.currentLevel.reset();
-    writeToCanvas(canvas, levelSet.currentLevel, modifiers);
+    publisher.publish(Events.EventType.LevelReset, {} as Events.ILevelResetEvent);
   });
 
-  bindMove("left", Move.Left, canvas, levelSet);
-  bindMove("up", Move.Climb, canvas, levelSet);
-  bindMove("right", Move.Right, canvas, levelSet);
-  bindMove("down", Move.GrabDrop, canvas, levelSet);
+  bindMove("left", Move.Left);
+  bindMove("up", Move.Climb);
+  bindMove("right", Move.Right);
+  bindMove("down", Move.GrabDrop);
 
   const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement;
 
@@ -75,22 +68,16 @@ export function bindDefaultControls(canvas: HTMLCanvasElement, levelSet: LevelSe
   });
 }
 
-function bindMove(id: string, move: Move, canvas: HTMLCanvasElement, levelSet: LevelSet): void {
+function bindMove(id: string, move: Move): void {
   const element = document.getElementById(id);
 
   element.addEventListener("click", (evt: Event) => {
     evt.preventDefault();
-    levelSet.currentLevel.move(1, move);
-    writeToCanvas(canvas, levelSet.currentLevel, modifiers);
+    publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move } as Events.IPlayerMovedEvent);
   });
 }
 
-function updateModifier(e: KeyboardEvent, canvas: HTMLCanvasElement, levelSet: LevelSet): void {
-  const vpBefore = getViewport(
-    levelSet.currentLevel,
-    getActualDimensions(levelSet.currentLevel, window),
-    modifiers);
-
+function updateModifier(e: KeyboardEvent): void {
   let newModifier = { x: 0, y: 0 };
   switch (e.keyCode) {
     case 37: // Arrow left
@@ -121,30 +108,5 @@ function updateModifier(e: KeyboardEvent, canvas: HTMLCanvasElement, levelSet: L
       return;
   }
 
-  const vpAfter = getViewport(
-    levelSet.currentLevel,
-    getActualDimensions(levelSet.currentLevel, window),
-    newModifier);
-
-  if (vpBefore.x === vpAfter.x && vpBefore.y === vpAfter.y) {
-    return;
-  }
-
-  modifiers = newModifier;
-  writeToCanvas(canvas, levelSet.currentLevel, modifiers);
-}
-
-function checkDrawerButton(canvas: HTMLElement): void {
-  const drawerButton = document.querySelector(".mdl-layout__drawer-button");
-
-  if (!drawerButton) {
-    setTimeout(() => checkDrawerButton(canvas), 50);
-    return;
-  }
-
-  if (canvas.offsetLeft < imageSize) {
-    drawerButton.classList.add("over-game");
-  } else {
-    drawerButton.classList.remove("over-game");
-  }
+  publisher.publish(Events.EventType.ViewportModified, { viewport: newModifier } as Events.IViewportModified);
 }

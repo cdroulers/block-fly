@@ -15,3 +15,8 @@ export interface ITextLevel extends ILevel {
 export interface IPieceLevel extends ILevel {
   pieces: IPiece[];
 }
+
+export interface ILevelSet {
+  name: string;
+  levels: ITextLevel[];
+}

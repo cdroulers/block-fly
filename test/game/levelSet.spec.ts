@@ -8,10 +8,13 @@ const parser = new BoardParser();
 describe("!unit! LevelSet", () => {
   describe("nextLevel", () => {
     it("works with levels", () => {
-      const levels = [
-        "#DP#\n####",
-        "#DP #\n#####"
-      ];
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####" }
+        ]
+      };
       const levelSet = new LevelSet(levels, parser);
 
       expect(levelSet.currentLevel.width).to.equal(4);
@@ -22,11 +25,14 @@ describe("!unit! LevelSet", () => {
     });
 
     it("calls callbacks", () => {
-      const levels = [
-        "#DP#\n####",
-        "#DP #\n#####",
-        "#DP  #\n######"
-      ];
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####" },
+          { number: 3, text: "#DP  #\n######" }
+        ]
+      };
       const levelSet = new LevelSet(levels, parser);
 
       levelSet.onLevelFinished = () => {
@@ -49,6 +55,38 @@ describe("!unit! LevelSet", () => {
       levelSet.currentLevel.move(1, Move.Left);
       expect(levelSet.currentLevel.width).to.equal(6);
       expect(setFinished).to.be.true;
+    });
+  });
+
+  describe("goToLevelWithPassword", () => {
+    it("finds the level", () => {
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####", password: "lol" }
+        ]
+      };
+      const levelSet = new LevelSet(levels, parser);
+
+      expect(levelSet.currentLevel.number).to.equal(1);
+
+      levelSet.goToLevelWithPassword("lol");
+      expect(levelSet.currentLevel.number).to.equal(2);
+    });
+
+    it("throws error if not found", () => {
+      const levels = {
+        name: undefined,
+        levels: [
+          { number: 1, text: "#DP#\n####" },
+          { number: 2, text: "#DP #\n#####" },
+          { number: 3, text: "#DP  #\n######" }
+        ]
+      };
+      const levelSet = new LevelSet(levels, parser);
+
+      expect(() => levelSet.goToLevelWithPassword("slkdjf")).to.throw(Error);
     });
   });
 });
