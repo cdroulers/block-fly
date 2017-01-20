@@ -109,13 +109,15 @@ function bindLoadRemoteLevels(): void {
 
   const loadRemoteLevelsButton = document.getElementById("load-remote-levels");
   loadRemoteLevelsButton.addEventListener("click", (e) => {
-    const url = (document.getElementById("remote-levels") as HTMLInputElement).value;
+    const input = document.getElementById("remote-levels") as HTMLInputElement;
+    const url = input.value;
 
     if (url) {
       getXHRLevels(url)
         .then((levels: ILevelSet) => {
           loadRemoteDialog.close();
           closeMenu();
+          input.value = "";
           publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
           return levels;
         })
@@ -165,13 +167,15 @@ function bindLoadLocalLevels(): void {
   const loadLocalLevelsButton = document.getElementById("load-local-levels");
   loadLocalLevelsButton.addEventListener("click", (e) => {
     e.preventDefault();
-    const levelsFile = (document.getElementById("local-levels") as HTMLInputElement).files[0];
+    const input = document.getElementById("local-levels") as HTMLInputElement;
+    const levelsFile = input.files[0];
 
     if (levelsFile) {
       getLevelsFromFile(levelsFile)
         .then((levels: ILevelSet) => {
           loadLocalDialog.close();
           closeMenu();
+          input.value = "";
           publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
           return levels;
         })
@@ -198,10 +202,12 @@ function bindGoToLevelWithPassword(): void {
 
   const submitPasswordButton = document.getElementById("load-level-with-password");
   submitPasswordButton.addEventListener("click", (e) => {
-    const password = (document.getElementById("level-password") as HTMLInputElement).value;
+    const input = document.getElementById("level-password") as HTMLInputElement;
+    const password = input.value;
 
     if (password) {
       publisher.publish(Events.EventType.WentToLevelWithPassword, { password } as Events.IWentToLevelWithPasswordEvent);
+      input.value = "";
       goToLevelWithPasswordDialog.close();
       closeMenu();
     } else {

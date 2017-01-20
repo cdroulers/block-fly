@@ -9,19 +9,15 @@ import { IViewport, getViewport } from "../display/viewport";
 const parser = new BoardParser();
 
 export default class Controller {
-  private _canvas: HTMLCanvasElement;
+  public canvas: HTMLCanvasElement;
   private canvasTitle: HTMLDivElement;
 
   private levelSet: LevelSet;
 
   private viewportModifier: IViewport = { x: 0, y: 0 };
 
-  public get canvas(): HTMLCanvasElement {
-    return this._canvas;
-  }
-
   constructor() {
-    this._canvas = document.getElementById("root") as HTMLCanvasElement;
+    this.canvas = document.getElementById("root") as HTMLCanvasElement;
     this.canvasTitle = document.querySelector("#level-indicator > div:first-child") as HTMLDivElement;
 
     publisher.subscribe(Events.EventType.LevelsLoaded, this.levelsLoaded.bind(this));

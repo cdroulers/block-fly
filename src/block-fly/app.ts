@@ -14,7 +14,6 @@ require("material-design-lite/material.min"); // tslint:disable-line no-require-
 setupDialogs();
 
 const controller = new Controller();
-console.log("Started controller", controller);
 
 init();
 
