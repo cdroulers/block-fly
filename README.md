@@ -17,6 +17,8 @@ Uses a Fly because I had those sprites laying around somewhere!
 
 # Build and develop
 
+Developed with NodeJS 6.1 (Using `nvm` is recommended!).
+
     git clone git@github.com:cdroulers/block-fly.git
     npm install
     ./node_modules/.bin/typings install
