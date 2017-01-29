@@ -6,14 +6,10 @@ export function showErrorMessage(message: string): void {
 
 export function showMessage(message: string, color: string = "green", timeout: number = 2000): void {
   const messageContainer = document.getElementById("message") as any;
-  messageContainer.setAttribute("class", "mdl-js-snackbar mdl-snackbar mdl-color--" + color);
-
   componentHandler.upgradeElement(messageContainer);
-
-  const data = {
+  messageContainer.setAttribute("class", "mdl-js-snackbar mdl-snackbar mdl-color--" + color);
+  messageContainer.MaterialSnackbar.showSnackbar({
     message: message,
     timeout: timeout
-  };
-
-  messageContainer.MaterialSnackbar.showSnackbar(data);
+  });
 }

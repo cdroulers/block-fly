@@ -10,6 +10,7 @@ describe("!unit! LevelSet", () => {
     it("works with levels", () => {
       const levels = {
         name: undefined,
+        uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####" }
@@ -27,6 +28,7 @@ describe("!unit! LevelSet", () => {
     it("calls callbacks", () => {
       const levels = {
         name: undefined,
+        uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####" },
@@ -62,6 +64,7 @@ describe("!unit! LevelSet", () => {
     it("finds the level", () => {
       const levels = {
         name: undefined,
+        uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####", password: "lol" }
@@ -78,6 +81,7 @@ describe("!unit! LevelSet", () => {
     it("throws error if not found", () => {
       const levels = {
         name: undefined,
+        uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####" },
