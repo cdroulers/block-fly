@@ -143,9 +143,26 @@ describe("!unit! Board canMove", () => {
       expect(actual).to.be.false;
     });
 
-    it("can't climb left or right with block because of wall over", () => {
+    it("can't climb left or right with block because of wall over destination", () => {
       const board = symbolsParser.parse(`
         ## ##
+        # B #
+        ##P##
+        #####
+      `);
+
+      makePlayerHaveBlock(board, { x: 2, y: 1 });
+      let actual = board.canMove(1, Move.Climb);
+      expect(actual).to.be.false;
+
+      makePlayerFaceRight(board);
+      actual = board.canMove(1, Move.Climb);
+      expect(actual).to.be.false;
+    });
+
+    it("can't climb left or right with block because of wall over block", () => {
+      const board = symbolsParser.parse(`
+        # # #
         # B #
         ##P##
         #####

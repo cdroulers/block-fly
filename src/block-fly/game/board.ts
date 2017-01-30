@@ -151,14 +151,17 @@ export class Board {
 
   private canClimb(player: IPlayerPiece): boolean {
     const pieceToClimb = this.getFacingPiece(player);
-    const playerTopPiece = this.getTopPiece(player);
+    let playerTopPiece = this.getTopPiece(player);
     const pieceToClimbTo = this.getTopPiece(pieceToClimb);
-    const blockPiece = Boolean(player.blockCoords) ? this.getTopPiece(pieceToClimbTo) : undefined;
+    let blockPiece = undefined;
+    if (Boolean(player.blockCoords)) {
+      blockPiece = this.getTopPiece(pieceToClimbTo);
+      playerTopPiece = this.getTopPiece(this.getPiece(player.blockCoords));
+    }
+
     return pieceToClimb.type !== PieceType.Empty &&
       (pieceToClimbTo.type === PieceType.Empty || pieceToClimbTo.type === PieceType.Door) &&
-      (playerTopPiece.type === PieceType.Empty ||
-        (Boolean(player.blockCoords) && player.blockCoords.x === playerTopPiece.coords.x &&
-          player.blockCoords.y === playerTopPiece.coords.y)) &&
+      playerTopPiece.type === PieceType.Empty &&
       (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty);
   }
 
