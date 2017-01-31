@@ -9,6 +9,8 @@ export function bindLevelsControls(): void {
 
   bindLoadDefaultLevels();
 
+  bindLoadChildrenLevels();
+
   bindLoadLocalLevels();
 
   bindGoToLevelWithPassword();
@@ -143,6 +145,23 @@ function bindLoadDefaultLevels(): void {
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
     getDefaultLevels()
+      .then((levels: ILevelSet) => {
+        closeMenu();
+        publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
+        return levels;
+      })
+      .catch((error: string): void => {
+        closeMenu();
+        showErrorMessage(error);
+      });
+  });
+}
+
+function bindLoadChildrenLevels(): void {
+  const loadDefaultsButton = document.getElementById("children-levels");
+  loadDefaultsButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    getXHRLevels("assets/children-levels.json")
       .then((levels: ILevelSet) => {
         closeMenu();
         publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
