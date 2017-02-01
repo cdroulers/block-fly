@@ -10,6 +10,7 @@ import { bindDefaultControls } from "../display/defaultControls";
 import { bindMobileControls } from "../display/mobileControls";
 import { getDefaultLevels, getXHRLevels, bindLevelsControls } from "../display/levelControls";
 import Storage from "./storage";
+import { startFireworks } from "../display/fireworksDisplay";
 
 const parser = new BoardParser();
 
@@ -89,12 +90,14 @@ export default class Controller {
       showMessage("YOU WIN THIS LEVEL. Give yourself a high-five");
       this.levelSet.nextLevel();
       this.updateStoredLatestLevel();
+      startFireworks(5000);
       this.updateLevelTitle();
       this.updateCanvas();
     };
 
     this.levelSet.onSetFinished = () => {
       showMessage("YOU Finished all levels. Sweet Christmas!");
+      startFireworks(15000);
     };
 
     this.updateLevelTitle();
