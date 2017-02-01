@@ -9,5 +9,6 @@
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
   "editor.insertSpaces": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "eslint.enable": false
 }

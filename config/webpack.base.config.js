@@ -55,7 +55,7 @@ var config = {
         test: /(\.scss|\.css)$/,
         loaders: [
           "style",
-          "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+          "css?sourceMap&importLoaders=1&localIdentName=[local]",
           "postcss",
           "sass?sourceMap"
         ]
