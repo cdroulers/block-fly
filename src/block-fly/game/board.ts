@@ -57,11 +57,9 @@ export class Board {
 
     switch (move) {
       case Move.Left:
-        const leftPiece = this.getLeftPiece(player);
-        return leftPiece.type === PieceType.Empty || leftPiece.type === PieceType.Door;
+        return this.canMoveLeft(player);
       case Move.Right:
-        const rightPiece = this.getRightPiece(player);
-        return rightPiece.type === PieceType.Empty || rightPiece.type === PieceType.Door;
+        return this.canMoveRight(player);
       case Move.Climb:
         return this.canClimb(player);
       case Move.GrabDrop:
@@ -137,15 +135,34 @@ export class Board {
     return this.pieces.filter(p => p.coords.x === coords.x && p.coords.y === coords.y)[0];
   }
 
+  private canMoveLeft(player: IPlayerPiece): boolean {
+    const leftPiece = this.getLeftPiece(player);
+    const blockPiece = Boolean(player.blockCoords) ? this.getLeftPiece(this.getPiece(player.blockCoords)) : undefined;
+    return (leftPiece.type === PieceType.Empty || leftPiece.type === PieceType.Door) &&
+      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty);
+  }
+
+  private canMoveRight(player: IPlayerPiece): boolean {
+    const rightPiece = this.getRightPiece(player);
+    const blockPiece = Boolean(player.blockCoords) ? this.getRightPiece(this.getPiece(player.blockCoords)) : undefined;
+    return (rightPiece.type === PieceType.Empty || rightPiece.type === PieceType.Door) &&
+      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty);
+  }
+
   private canClimb(player: IPlayerPiece): boolean {
     const pieceToClimb = this.getFacingPiece(player);
-    const playerTopPiece = this.getTopPiece(player);
+    let playerTopPiece = this.getTopPiece(player);
     const pieceToClimbTo = this.getTopPiece(pieceToClimb);
+    let blockPiece = undefined;
+    if (Boolean(player.blockCoords)) {
+      blockPiece = this.getTopPiece(pieceToClimbTo);
+      playerTopPiece = this.getTopPiece(this.getPiece(player.blockCoords));
+    }
+
     return pieceToClimb.type !== PieceType.Empty &&
       (pieceToClimbTo.type === PieceType.Empty || pieceToClimbTo.type === PieceType.Door) &&
-      (playerTopPiece.type === PieceType.Empty ||
-        (Boolean(player.blockCoords) && player.blockCoords.x === playerTopPiece.coords.x &&
-          player.blockCoords.y === playerTopPiece.coords.y));
+      playerTopPiece.type === PieceType.Empty &&
+      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty);
   }
 
   private canGrabDrop(player: IPlayerPiece): boolean {
