@@ -9,10 +9,11 @@ describe("!unit! levelControls", () => {
         "####"
       ];
 
-      const parsed = transformReponseToLevels(response);
+      const parsed = transformReponseToLevels(response, "");
 
       expect(parsed).to.deep.equal({
         name: undefined,
+        uri: "",
         levels: [
           {
             name: undefined,
@@ -36,10 +37,11 @@ describe("!unit! levelControls", () => {
         ["####", "####"]
       ];
 
-      const parsed = transformReponseToLevels(response);
+      const parsed = transformReponseToLevels(response, "");
 
       expect(parsed).to.deep.equal({
         name: undefined,
+        uri: "",
         levels: [
           {
             name: undefined,
@@ -71,10 +73,11 @@ describe("!unit! levelControls", () => {
         }
       ];
 
-      const parsed = transformReponseToLevels(response);
+      const parsed = transformReponseToLevels(response, "");
 
       expect(parsed).to.deep.equal({
         name: undefined,
+        uri: "",
         levels: [
           {
             "number": 1,
@@ -109,10 +112,11 @@ describe("!unit! levelControls", () => {
         ]
       };
 
-      const parsed = transformReponseToLevels(response);
+      const parsed = transformReponseToLevels(response, "");
 
       expect(parsed).to.deep.equal({
         name: "Super cool levels",
+        uri: "",
         levels: [
           {
             "number": 1,

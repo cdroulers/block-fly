@@ -3,6 +3,7 @@ import { ITextLevel, ILevelSet } from "../game/level";
 import { showErrorMessage } from "./messageDisplay";
 import publisher from "../infrastructure/publisher";
 import * as Events from "../infrastructure/events";
+import Storage from "../infrastructure/storage";
 
 export function bindLevelsControls(): void {
   bindLoadRemoteLevels();
@@ -14,6 +15,13 @@ export function bindLevelsControls(): void {
   bindLoadLocalLevels();
 
   bindGoToLevelWithPassword();
+}
+
+// Borrowed from http://stackoverflow.com/questions/470832/getting-an-absolute-url-from-a-relative-one-ie6-issue
+function qualifyURL(url: string): string {
+  const a = document.createElement("a");
+  a.href = url;
+  return a.href;
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
@@ -32,7 +40,7 @@ export function getXHRLevels(path: string): Promise<ILevelSet> {
         const json = typeof xhr.response === "string" ?
           JSON.parse(xhr.response) :
           xhr.response;
-        resolve(transformReponseToLevels(json));
+        resolve(transformReponseToLevels(json, qualifyURL(path)));
       } else {
         reject(Error("Cannot load levels; error : " + xhr.statusText));
       }
@@ -49,12 +57,17 @@ export function getXHRLevels(path: string): Promise<ILevelSet> {
 export function getLevelsFromFile(file: File): Promise<ILevelSet> {
   return new Promise<ILevelSet>((resolve: any, reject: any) => {
     const reader = new FileReader();
-    reader.onload = e => resolve(transformReponseToLevels(JSON.parse(reader.result)));
+    reader.onload = e => {
+      const levels = transformReponseToLevels(JSON.parse(reader.result), "file:///" + file.name);
+      Storage.setItem(levels.uri, JSON.stringify(levels));
+      resolve(levels);
+    };
+
     reader.readAsText(file);
   });
 }
 
-export function transformReponseToLevels(response: any): ILevelSet {
+export function transformReponseToLevels(response: any, levelUri: string): ILevelSet {
   let levels: ITextLevel[] = [];
 
   let name = undefined;
@@ -95,6 +108,7 @@ export function transformReponseToLevels(response: any): ILevelSet {
 
   return {
     name,
+    uri: levelUri,
     levels
   };
 }
