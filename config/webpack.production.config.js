@@ -31,7 +31,7 @@ module.exports = new WebpackConfig.Config().extend({
         loader: extractAppCss.extract(
           "style",
           [
-            "css?sourceMap&modules&importLoaders=1&localIdentName=[local]",
+            "css?sourceMap&importLoaders=1&localIdentName=[local]",
             "postcss",
             "sass?sourceMap"
           ]

@@ -10,7 +10,7 @@ Uses a Fly because I had those sprites laying around somewhere!
 
 * Fully offline with service workers
 * <del>Fully mobile with gestures and zoom in/out, etc.</del>
-* Well tested.
+* <del>Well tested.</del>
 * Level chooser.
 * Level editor.
 * <del>Load custom levels!</del>
@@ -50,8 +50,8 @@ Levels can be seen [here](http://azich.org/blockdude/levels.js).
 
 # Contributors
 
-See [the list](CONTRIBUTORS.md)
+See [the list](CONTRIBUTORS.md).
 
 # History
 
-See [the changelog](CHANGELOG.md)
+See [the changelog](CHANGELOG.md).

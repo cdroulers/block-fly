@@ -1,5 +1,14 @@
 # History
 
+## 1.0.0 (2017-02-01)
+
+Full release! No outstanding bugs, all basic features available!
+
+* Save current level in localStorage for later refresh! [#15]
+* Fix bug for block [#16]
+* Fireworks animation on level and set finished! [#27]
+* Children's tutorial levels
+
 ## 0.13.0 (2017-01-19)
 
 * Allow entering a password to go back to a level.
