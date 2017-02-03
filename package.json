@@ -29,6 +29,7 @@
     "postcss-loader": "^1.2.1",
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
+    "testcafe": "^0.12.1",
     "ts-loader": "^0.9.5",
     "tslint": "^3.15.1",
     "typescript": "^2.0.6",
@@ -45,7 +46,8 @@
     "build-lint": "npm run build & npm run lint",
     "test": "cross-env NODE_ENV=test mocha --require build/test/testHelpers.js \"build/test/**/*spec.js\"",
     "test:xunit": "npm run test -- -R xunit",
-    "deploy": "cross-env NODE_ENV=production webpack -p --config ./config/webpack.production.config.js"
+    "deploy": "cross-env NODE_ENV=production webpack -p --config ./config/webpack.production.config.js",
+    "testcafe": "testcafe chrome test/e2e/*-test.js --app \"npm run start\" --app-init-delay 10000"
   },
   "author": "Christian Droulers <droulers.christian@gmail.com>",
   "license": "ISC"
