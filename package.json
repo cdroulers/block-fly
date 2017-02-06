@@ -47,7 +47,7 @@
     "test": "cross-env NODE_ENV=test mocha --require build/test/testHelpers.js \"build/test/**/*spec.js\"",
     "test:xunit": "npm run test -- -R xunit",
     "deploy": "cross-env NODE_ENV=production webpack -p --config ./config/webpack.production.config.js",
-    "testcafe": "testcafe chrome test/e2e/*-test.js --app \"npm run start\" --app-init-delay 10000"
+    "testcafe": "testcafe chrome test/e2e/*spec.js --app \"npm run start\" --app-init-delay 10000"
   },
   "author": "Christian Droulers <droulers.christian@gmail.com>",
   "license": "ISC"
