@@ -1,5 +1,9 @@
 # History
 
+## 1.1.0 (2017-02-12)
+
+* Offline capabilities with serviceWorker and AppCache using offline-plugin [#12]
+
 ## 1.0.0 (2017-02-01)
 
 Full release! No outstanding bugs, all basic features available!
