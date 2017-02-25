@@ -123,8 +123,9 @@ function bindLoadRemoteLevels(): void {
     loadRemoteDialog.showModal();
   });
 
-  const loadRemoteLevelsButton = document.getElementById("load-remote-levels");
-  loadRemoteLevelsButton.addEventListener("click", (e) => {
+  const loadRemoteLevelsForm = loadRemoteDialog.getElementsByTagName("form")[0];
+  loadRemoteLevelsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
     const input = document.getElementById("remote-levels") as HTMLInputElement;
     const url = input.value;
 
@@ -197,8 +198,8 @@ function bindLoadLocalLevels(): void {
     loadLocalDialog.showModal();
   });
 
-  const loadLocalLevelsButton = document.getElementById("load-local-levels");
-  loadLocalLevelsButton.addEventListener("click", (e) => {
+  const loadLocalLevelsForm = loadLocalDialog.getElementsByTagName("form")[0];
+  loadLocalLevelsForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("local-levels") as HTMLInputElement;
     const levelsFile = input.files[0];
@@ -233,8 +234,9 @@ function bindGoToLevelWithPassword(): void {
     goToLevelWithPasswordDialog.showModal();
   });
 
-  const submitPasswordButton = document.getElementById("load-level-with-password");
-  submitPasswordButton.addEventListener("click", (e) => {
+  const submitPasswordForm = goToLevelWithPasswordDialog.getElementsByTagName("form")[0];
+  submitPasswordForm.addEventListener("click", (e) => {
+    e.preventDefault();
     const input = document.getElementById("level-password") as HTMLInputElement;
     const password = input.value;
 
