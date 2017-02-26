@@ -22,10 +22,10 @@ export function bindMobileControls(canvas: HTMLCanvasElement): void {
 
     let xModifier = Math.floor((xDragged - xDown) / imageSize * 5.0);
     let yModifier = Math.floor((yDown - yDragged) / imageSize * 5.0);
-    publisher.publish(Events.EventType.ViewportModified, { x: xModifier, y: yModifier });
+    publisher.publish(Events.EventType.ViewportModified, { viewport: { x: xModifier, y: yModifier } } as Events.IViewportModified);
   }
 
   function handleTouchEnd(evt: TouchEvent): void {
-    publisher.publish(Events.EventType.ViewportModified, { x: 0, y: 0 });
+    publisher.publish(Events.EventType.ViewportModified, { viewport: { x: 0, y: 0 } } as Events.IViewportModified);
   }
 }
