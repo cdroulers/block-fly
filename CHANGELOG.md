@@ -1,5 +1,10 @@
 # History
 
+## 1.1.1 (2017-02-25)
+
+* Forms around popups for better accessibility [#29]
+* Mobile pan doesn't work anymore [#34]
+
 ## 1.1.0 (2017-02-12)
 
 * Offline capabilities with serviceWorker and AppCache using offline-plugin [#12]
