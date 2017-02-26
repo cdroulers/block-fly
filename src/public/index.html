@@ -61,36 +61,42 @@
   </div>
 
   <dialog class="mdl-dialog" id="load-remote-file-dialog">
-    <h4 class="mdl-dialog__title">Load remote file</h4>
-    <div class="mdl-dialog__content">
-      <input type="text" id="remote-levels">
-    </div>
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button" id="load-remote-levels">Load</button>
-      <button type="button" class="mdl-button close">Cancel</button>
-    </div>
+    <form action="#">
+      <h4 class="mdl-dialog__title">Load remote file</h4>
+      <div class="mdl-dialog__content">
+        <input type="text" id="remote-levels">
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="submit" class="mdl-button">Load</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+      </div>
+    </form>
   </dialog>
 
   <dialog class="mdl-dialog" id="load-local-file-dialog">
+    <form action="#">
     <h4 class="mdl-dialog__title">Load local file</h4>
     <div class="mdl-dialog__content">
       <input type="file" accept=".json" id="local-levels">
     </div>
     <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button" id="load-local-levels">Load</button>
+      <button type="submit" class="mdl-button">Load</button>
       <button type="button" class="mdl-button close">Cancel</button>
     </div>
+    </form>
   </dialog>
 
   <dialog class="mdl-dialog" id="enter-password">
+    <form action="#">
     <h4 class="mdl-dialog__title">Enter a password</h4>
     <div class="mdl-dialog__content">
       <input type="text" id="level-password">
     </div>
     <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button" id="load-level-with-password">Submit</button>
+      <button type="submit" class="mdl-button">Submit</button>
       <button type="button" class="mdl-button close">Cancel</button>
     </div>
+    </form>
   </dialog>
 
   <dialog class="mdl-dialog" id="help-dialog">
