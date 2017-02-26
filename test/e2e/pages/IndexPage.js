@@ -14,7 +14,7 @@ class EnterPasswordDialog extends Dialog {
     super(selector);
 
     this.password = this.content.find("#level-password");
-    this.submit   = this.actions.find("#load-level-with-password");
+    this.submit   = this.actions.find("button[type='submit']");
     this.cancel   = this.actions.find("button.close");
   }
 }
@@ -30,7 +30,9 @@ export default class IndexPage {
   constructor () {
     this.layout = Selector(".mdl-layout__container");
     this.menu   = {
-      enterPassword: Selector(".mdl-navigation__link").withText("Enter a password")
+      enterPassword: Selector(".mdl-navigation__link").withText("Enter a password"),
+      loadChildrensLevels: Selector(".mdl-navigation__link").withText("Load children's tutorial levels"),
+      loadDefaultLevels: Selector(".mdl-navigation__link").withText("Load default levels")
     };
 
     this.dialogs = {
@@ -38,5 +40,7 @@ export default class IndexPage {
     };
 
     this.messageBar = new MessageBar();
+
+    this.levelIndicator = Selector("#level-indicator");
   }
 }
