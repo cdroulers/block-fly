@@ -42,13 +42,29 @@
       <form action="#" id="level-information">
         <ul>
           <li>
-            <input placeholder="Name" name="level_name" />
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" required placeholder="Name" name="level_name" id="level_name" />
+              <label class="mdl-textfield__label" for="level_name">Name:</label>
+            </div>
           </li>
           <li>
-            <input placeholder="Number" name="number" type="number" />
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" placeholder="Number" name="number" id="number" type="number" />
+              <label class="mdl-textfield__label" for="number">Number:</label>
+            </div>
           </li>
           <li>
-            <input placeholder="Password" name="password" />
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" placeholder="Password" name="password" id="password" />
+              <label class="mdl-textfield__label" for="password">Password:</label>
+            </div>
+          </li>
+          <li>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <select class="mdl-textfield__input" multiple name="levels" id="levels">
+              </select>
+              <label class="mdl-textfield__label" for="levels">Levels:</label>
+            </div>
           </li>
         </ul>
       </form>

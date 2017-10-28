@@ -1,5 +1,10 @@
 import BoardParser from "../game/symbolsBoardParser";
 import LevelSet from "../game/levelSet";
+import { ILevelSet } from "../game/level";
+import { showMessage } from "../display/messageDisplay";
+import publisher from "../infrastructure/publisher";
+import * as Events from "../infrastructure/events";
+import { getDefaultLevels } from "../display/levelControls";
 import { PieceType } from "../game/pieces";
 import { writeToCanvas, imageSize } from "../display/canvasDisplay";
 import { IViewport } from "../display/viewport";
@@ -31,9 +36,8 @@ export default class Controller {
   }
 
   private canvasClicked(e: MouseEvent): void {
-    const { offsetX, offsetY } = e;
-    const x = Math.floor(offsetX / imageSize);
-    const y = Math.floor(offsetY / imageSize);
+    const x = Math.floor(e.offsetX / imageSize),
+      y = Math.floor(e.offsetY / imageSize);
     const p = this.levelSet.currentLevel.getPiece({ x, y });
     p.type = this.currentTile;
     this.updateCanvas();
@@ -46,35 +50,40 @@ export default class Controller {
     console.log(form);
   }
 
+  private updateLevelInformation(): void {
+    const form = document.getElementById("level-information") as ILevelInformationForm;
+    const info = this.levelSet.currentLevel;
+
+    form.level_name.value = info.name;
+    form.number.value = (info.number || "").toString();
+    form.password.value = info.password;
+  }
+
   private subscribeToEvents(): void {
-    // Will subscribe when loading and stuff. Code re-use is needed!
+    publisher.subscribe(Events.EventType.LevelsLoaded, this.levelsLoaded.bind(this));
+  }
+
+  private levelsLoaded(event: Events.ILevelsLoadedEvent): void {
+    this.levelSet = new LevelSet(event.levelSet, parser);
+    this.updateCanvas();
+
+    this.updateLevelInformation();
+    showMessage(`Loaded levels from "${this.levelSet.levelSet.name || "unknown"}"!`);
+
+    const levels = document.getElementById("levels");
+    levels.innerHTML = "";
+    event.levelSet.levels.map((x, i) => {
+      const option = document.createElement("option");
+      option.value = i.toString();
+      option.innerText = x.name;
+      levels.appendChild(option);
+    });
   }
 
   private startEditor(): void {
-    this.levelSet = new LevelSet(
-      {
-        levels: [
-          {
-            name: "Level 1",
-            number: 1,
-            password: "TEST",
-            text: `
-          ######
-          #    #
-          #    #
-          #    #
-          #D   #
-          ##B P#
-          ######
-          `
-          }
-        ],
-        name: "EDITOR LEVELS",
-        uri: "/wot.json"
-      },
-      parser
-    );
-    this.updateCanvas();
+    getDefaultLevels().then((levels: ILevelSet) => {
+      publisher.publish(Events.EventType.LevelsLoaded, { levelSet: levels } as Events.ILevelsLoadedEvent);
+    });
   }
 
   private createTiles(): void {
