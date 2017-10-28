@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr-CA">
+<html lang="en-CA">
 
 <head>
   <meta charset="utf-8">
@@ -12,10 +12,15 @@
 <body data-version="<%= htmlWebpackPlugin.options.version %>">
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Block Fly v<%= htmlWebpackPlugin.options.version %></span>
+      <span class="mdl-layout-title">
+        Block Fly
+        <%= "v" + htmlWebpackPlugin.options.version %>
+      </span>
 
       <div class="mdl-layout-item">
-        By <a href="mailto:webmaster@cdroulers.com">Christian Droulers</a> 2016<br />
+        By
+        <a href="mailto:webmaster@cdroulers.com">Christian Droulers</a> 2016-2017
+        <br />
         <a href="https://github.com/cdroulers/block-fly">Source</a>
       </div>
 
@@ -35,6 +40,7 @@
       <span class="mdl-layout-title">Other</span>
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#help" id="help">Help</a>
+        <a class="mdl-navigation__link" href="editor" id="editor">Level editor</a>
       </nav>
     </div>
     <main class="mdl-layout__content">
@@ -75,27 +81,27 @@
 
   <dialog class="mdl-dialog" id="load-local-file-dialog">
     <form action="#">
-    <h4 class="mdl-dialog__title">Load local file</h4>
-    <div class="mdl-dialog__content">
-      <input type="file" accept=".json" id="local-levels">
-    </div>
-    <div class="mdl-dialog__actions">
-      <button type="submit" class="mdl-button">Load</button>
-      <button type="button" class="mdl-button close">Cancel</button>
-    </div>
+      <h4 class="mdl-dialog__title">Load local file</h4>
+      <div class="mdl-dialog__content">
+        <input type="file" accept=".json" id="local-levels">
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="submit" class="mdl-button">Load</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+      </div>
     </form>
   </dialog>
 
   <dialog class="mdl-dialog" id="enter-password">
     <form action="#">
-    <h4 class="mdl-dialog__title">Enter a password</h4>
-    <div class="mdl-dialog__content">
-      <input type="text" id="level-password">
-    </div>
-    <div class="mdl-dialog__actions">
-      <button type="submit" class="mdl-button">Submit</button>
-      <button type="button" class="mdl-button close">Cancel</button>
-    </div>
+      <h4 class="mdl-dialog__title">Enter a password</h4>
+      <div class="mdl-dialog__content">
+        <input type="text" id="level-password">
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="submit" class="mdl-button">Submit</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+      </div>
     </form>
   </dialog>
 
@@ -104,20 +110,30 @@
     <div class="mdl-dialog__content">
       <h3>CONTROLS</h3>
       <ul>
-        <li><strong>Left Arrow</strong>: Move left and face left</li>
-        <li><strong>Right Arrow</strong>: Move right and face right</li>
+        <li>
+          <strong>Left Arrow</strong>: Move left and face left</li>
+        <li>
+          <strong>Right Arrow</strong>: Move right and face right</li>
       </ul>
 
       <p>The following apply in the direction your character is facing.</p>
       <ul>
-        <li><strong>Down Arrow</strong>: Pick up or drop block</li>
-        <li><strong>Up Arrow</strong>: Move upwards (climb on block)</li>
+        <li>
+          <strong>Down Arrow</strong>: Pick up or drop block</li>
+        <li>
+          <strong>Up Arrow</strong>: Move upwards (climb on block)</li>
       </ul>
 
       <h3>Other functionality</h3>
       <ul>
-        <li><strong><keyboard>r</keyboard></strong>: Reset level</li>
-        <li><strong><keyboard>shift+arrows</keyboard></strong>: Pan level</li>
+        <li>
+          <strong>
+            <keyboard>r</keyboard>
+          </strong>: Reset level</li>
+        <li>
+          <strong>
+            <keyboard>shift+arrows</keyboard>
+          </strong>: Pan level</li>
       </ul>
 
       <h3>Mobile controls</h3>
@@ -134,11 +150,6 @@
     <div class="after"></div>
   </div>
 
-  <script>
-    // Force `fetch` polyfill to workaround Chrome not displaying request body
-    // in developer tools for the native `fetch`.
-    self.fetch = null;
-  </script>
   <script>
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {

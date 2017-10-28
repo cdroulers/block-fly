@@ -16,10 +16,13 @@ var config = {
     ],
     app: [
       path.resolve(rootPath, "src", "block-fly", "app.ts")
+    ],
+    editor: [
+      path.resolve(rootPath, "src", "block-fly", "editor", "index.ts")
     ]
   },
   output: {
-    filename: path.resolve(buildPath, "app.js"),
+    filename: path.resolve(buildPath, "[name].js"),
     publicPath: "/",
     path: buildPath
   },
@@ -37,7 +40,15 @@ var config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      chunks: ["vendors", "app"],
       template: path.join(rootPath, "src/public/index.html"),
+      inject: "body",
+      version: packageJson.version
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ["vendors", "editor"],
+      filename: "editor/index.html",
+      template: path.join(rootPath, "src/public/editor.html"),
       inject: "body",
       version: packageJson.version
     }),

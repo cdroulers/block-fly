@@ -26,7 +26,9 @@ export function loadImages(): Promise<any[]> {
 export function writeToCanvas(
   canvas: HTMLCanvasElement,
   board: Board,
-  viewportModifiers: IViewport = undefined): void {
+  viewportModifiers: IViewport = undefined,
+  addGrid: boolean = false
+): void {
   const [player1Left, player1Right, empty, wall, block, door] = images;
 
   const dimensions = getActualDimensions(board, window);
@@ -41,7 +43,9 @@ export function writeToCanvas(
     for (let x = 0; x < dimensions.width; x++) {
       const actualX = x + vp.x;
       const actualY = y + vp.y;
-      let piece = board.pieces.filter(p => p.coords.x === actualX && p.coords.y === actualY)[0];
+      let piece = board.pieces.filter(
+        p => p.coords.x === actualX && p.coords.y === actualY
+      )[0];
       switch (piece.type) {
         case PieceType.Block:
           context.drawImage(block, x * imageSize, y * imageSize);
@@ -56,7 +60,8 @@ export function writeToCanvas(
           context.drawImage(
             (piece as IPlayerPiece).facingLeft ? player1Left : player1Right,
             x * imageSize,
-            y * imageSize);
+            y * imageSize
+          );
           break;
         default:
           context.drawImage(empty, x * imageSize, y * imageSize);
@@ -64,9 +69,34 @@ export function writeToCanvas(
       }
     }
   }
+
+  if (addGrid) {
+    for (let y = 0; y < dimensions.height; y++) {
+      context.beginPath();
+      const lineY = imageSize + y * imageSize;
+      context.moveTo(0, lineY);
+      context.lineTo(imageSize * dimensions.width, lineY);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
+    }
+
+    for (let x = 0; x < dimensions.width; x++) {
+      context.beginPath();
+      const lineX = imageSize + x * imageSize;
+      context.moveTo(lineX, 0);
+      context.lineTo(lineX, imageSize * dimensions.height);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
+    }
+  }
 }
 
-export function getActualDimensions(board: Board, w: Window): ICanvasDimensions {
+export function getActualDimensions(
+  board: Board,
+  w: Window
+): ICanvasDimensions {
   return {
     width: Math.min(Math.floor(w.innerWidth / imageSize), board.width),
     height: Math.min(Math.floor(w.innerHeight / imageSize), board.height)
@@ -74,14 +104,16 @@ export function getActualDimensions(board: Board, w: Window): ICanvasDimensions 
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise<HTMLImageElement>((resolve) => {
+  return new Promise<HTMLImageElement>(resolve => {
     const img = new Image();
     img.addEventListener(
       "load",
       () => {
         resolve(img);
       },
-      false);
+      false
+    );
     img.src = src;
+    return img;
   });
 }

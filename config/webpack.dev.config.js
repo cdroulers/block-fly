@@ -10,6 +10,10 @@ module.exports = new WebpackConfig.Config().extend({
     app: [
       "webpack-dev-server/client?http://localhost:5555",
       "webpack/hot/only-dev-server"
+    ],
+    editor: [
+      "webpack-dev-server/client?http://localhost:5555",
+      "webpack/hot/only-dev-server"
     ]
   },
 
