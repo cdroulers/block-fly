@@ -1,11 +1,6 @@
-import { expect } from "chai";
 import BoardParser from "../../src/block-fly/game/symbolsBoardParser";
-import {
-  PieceType,
-  pieceGenerator,
-  playerPieceGenerator
-} from "../../src/block-fly/game/pieces";
-import {assertBoardEqual} from "./boardHelpers";
+import { PieceType, pieceGenerator, playerPieceGenerator } from "../../src/block-fly/game/pieces";
+import { assertBoardEqual } from "./boardHelpers";
 
 const parser = new BoardParser();
 
@@ -19,9 +14,9 @@ describe("!unit! SymbolsBoardParser", () => {
         #####
       `);
 
-      expect(board.width).to.equal(5);
-      expect(board.height).to.equal(4);
-      expect(board.pieces).to.deep.equal([
+      expect(board.width).toBe(5);
+      expect(board.height).toBe(4);
+      expect(board.pieces).toStrictEqual([
         pieceGenerator(PieceType.Wall, { x: 0, y: 0 }),
         pieceGenerator(PieceType.Door, { x: 1, y: 0 }),
         pieceGenerator(PieceType.Empty, { x: 2, y: 0 }),
@@ -41,7 +36,7 @@ describe("!unit! SymbolsBoardParser", () => {
         pieceGenerator(PieceType.Wall, { x: 1, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 2, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 3, y: 3 }),
-        pieceGenerator(PieceType.Wall, { x: 4, y: 3 })
+        pieceGenerator(PieceType.Wall, { x: 4, y: 3 }),
       ]);
     });
 
@@ -53,9 +48,9 @@ describe("!unit! SymbolsBoardParser", () => {
          #######
       `);
 
-      expect(board.width).to.equal(8);
-      expect(board.height).to.equal(4);
-      expect(board.pieces).to.deep.equal([
+      expect(board.width).toBe(8);
+      expect(board.height).toBe(4);
+      expect(board.pieces).toStrictEqual([
         pieceGenerator(PieceType.Wall, { x: 0, y: 0 }),
         pieceGenerator(PieceType.Door, { x: 1, y: 0 }),
         pieceGenerator(PieceType.Empty, { x: 2, y: 0 }),
@@ -90,7 +85,7 @@ describe("!unit! SymbolsBoardParser", () => {
         pieceGenerator(PieceType.Wall, { x: 4, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 5, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 6, y: 3 }),
-        pieceGenerator(PieceType.Wall, { x: 7, y: 3 })
+        pieceGenerator(PieceType.Wall, { x: 7, y: 3 }),
       ]);
     });
   });
@@ -104,7 +99,10 @@ describe("!unit! SymbolsBoardParser", () => {
         #####
       `);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         #D  #
         ##  #
         ##BP#

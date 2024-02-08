@@ -18,7 +18,7 @@ export default class NumbersBoardParser implements IBoardParser {
           .trim()
           .split(",")
           .map((s, j) => {
-            let piece: IPiece = undefined;
+            let piece: IPiece | undefined = undefined;
             const pieceType = parseInt(s, 10) as PieceType;
             if (pieceType === PieceType.Player) {
               piece = playerPieceGenerator(playerId++, { x: j, y: i });
@@ -30,7 +30,7 @@ export default class NumbersBoardParser implements IBoardParser {
           });
       });
 
-    const arrayOfPieces = [];
+    const arrayOfPieces: IPiece[] = [];
     pieces.forEach((x) => arrayOfPieces.push(...x));
 
     return new Board(arrayOfPieces, pieces[0].length, pieces.length);

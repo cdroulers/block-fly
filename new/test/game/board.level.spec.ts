@@ -1,8 +1,5 @@
-import { expect } from "chai";
 import BoardParser from "../../src/block-fly/game/symbolsBoardParser";
-import {
-  Move
-} from "../../src/block-fly/game/board";
+import { Move } from "../../src/block-fly/game/board";
 import { assertBoardEqual } from "./boardHelpers";
 
 const parser = new BoardParser();
@@ -17,12 +14,16 @@ describe("!unit! Board level", () => {
 
       board.move(1, Move.Left);
 
-      expect(board.hasWon).to.be.true;
+      expect(board.hasWon).toBeTruthy();
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         #DP#
         ####
-      `);
+      `
+      );
     });
 
     it("triggers win callback on fall", () => {
@@ -34,13 +35,17 @@ describe("!unit! Board level", () => {
 
       board.move(1, Move.Left);
 
-      expect(board.hasWon).to.be.true;
+      expect(board.hasWon).toBeTruthy();
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         #P #
         #D##
         ####
-      `);
+      `
+      );
     });
 
     it("triggers win callback on climb", () => {
@@ -52,13 +57,17 @@ describe("!unit! Board level", () => {
 
       board.move(1, Move.Climb);
 
-      expect(board.hasWon).to.be.true;
+      expect(board.hasWon).toBeTruthy();
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         #D #
         ##P#
         ####
-      `);
+      `
+      );
     });
   });
 });
