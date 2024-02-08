@@ -5,9 +5,11 @@ import { IPiece, IPlayerPiece, PieceType } from "./pieces";
 export class Board {
   private originalState: string;
 
+  private level!: ILevel;
+
   private won: boolean = false;
 
-  public onWin: () => void;
+  public onWin?: () => void;
 
   public get hasWon(): boolean {
     return this.won;
@@ -29,7 +31,7 @@ export class Board {
     public pieces: IPiece[],
     public width: number,
     public height: number,
-    private level: ILevel = undefined
+    level?: ILevel
   ) {
     this.originalState = JSON.stringify(pieces);
 
@@ -133,23 +135,23 @@ export class Board {
 
   private canMoveLeft(player: IPlayerPiece): boolean {
     const leftPiece = this.getLeftPiece(player);
-    const blockPiece = Boolean(player.blockCoords)
+    const blockPiece = player.blockCoords
       ? this.getLeftPiece(this.getPiece(player.blockCoords))
       : undefined;
     return (
       (leftPiece.type === PieceType.Empty || leftPiece.type === PieceType.Door) &&
-      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty)
+      (!blockPiece || blockPiece.type === PieceType.Empty)
     );
   }
 
   private canMoveRight(player: IPlayerPiece): boolean {
     const rightPiece = this.getRightPiece(player);
-    const blockPiece = Boolean(player.blockCoords)
+    const blockPiece = player.blockCoords
       ? this.getRightPiece(this.getPiece(player.blockCoords))
       : undefined;
     return (
       (rightPiece.type === PieceType.Empty || rightPiece.type === PieceType.Door) &&
-      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty)
+      (!blockPiece || blockPiece.type === PieceType.Empty)
     );
   }
 
@@ -158,7 +160,7 @@ export class Board {
     let playerTopPiece = this.getTopPiece(player);
     const pieceToClimbTo = this.getTopPiece(pieceToClimb);
     let blockPiece = undefined;
-    if (Boolean(player.blockCoords)) {
+    if (player.blockCoords) {
       blockPiece = this.getTopPiece(pieceToClimbTo);
       playerTopPiece = this.getTopPiece(this.getPiece(player.blockCoords));
     }
@@ -167,7 +169,7 @@ export class Board {
       pieceToClimb.type !== PieceType.Empty &&
       (pieceToClimbTo.type === PieceType.Empty || pieceToClimbTo.type === PieceType.Door) &&
       playerTopPiece.type === PieceType.Empty &&
-      (!Boolean(blockPiece) || blockPiece.type === PieceType.Empty)
+      (!blockPiece || blockPiece.type === PieceType.Empty)
     );
   }
 

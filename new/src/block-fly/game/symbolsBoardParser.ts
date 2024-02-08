@@ -1,4 +1,4 @@
-import { pieceGenerator, playerPieceGenerator, PieceType } from "./pieces";
+import { pieceGenerator, playerPieceGenerator, PieceType, IPiece } from "./pieces";
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
 import { ITextLevel } from "./level";
@@ -46,7 +46,7 @@ export default class SymbolsBoardParser implements IBoardParser {
       });
     });
 
-    const arrayOfPieces = [];
+    const arrayOfPieces: IPiece[] = [];
     pieces.forEach((x) => arrayOfPieces.push(...x));
 
     return new Board(
@@ -58,7 +58,13 @@ export default class SymbolsBoardParser implements IBoardParser {
   }
 
   public asString(board: Board): string {
-    const invertedMap = {};
+    const invertedMap: Record<PieceType, string> = {
+      [PieceType.Empty]: "",
+      [PieceType.Wall]: "",
+      [PieceType.Block]: "",
+      [PieceType.Player]: "",
+      [PieceType.Door]: "",
+    };
     for (const key in SymbolsBoardParser.pieceTypes) {
       if (SymbolsBoardParser.pieceTypes.hasOwnProperty(key)) {
         invertedMap[SymbolsBoardParser.pieceTypes[key]] = key;

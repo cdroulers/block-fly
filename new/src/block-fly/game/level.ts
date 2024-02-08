@@ -17,7 +17,7 @@ export interface IPieceLevel extends ILevel {
 }
 
 export interface ILevelSet {
-  name: string;
+  name?: string;
   uri: string;
   levels: ITextLevel[];
 }
