@@ -2,3 +2,5 @@
 .DS_Store
 node_modules
 build
+**/cobertura-coverage.xml
+**/test-report.xml

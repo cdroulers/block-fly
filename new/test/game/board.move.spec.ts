@@ -1,6 +1,4 @@
-import {
-  Move
-} from "../../src/block-fly/game/board";
+import { Move } from "../../src/block-fly/game/board";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
 import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { assertBoardEqual, makePlayerFaceRight, makePlayerHaveBlock } from "./boardHelpers";
@@ -19,11 +17,15 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.Left);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,3,0,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move left make player fall high", () => {
@@ -36,12 +38,16 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.Left);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,0,1,1
         1,3,1,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move left with block then follows", () => {
@@ -58,12 +64,16 @@ describe("!unit! Board move", () => {
       board.move(1, Move.Left);
       board.move(1, Move.Left);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,0,0,0,1
         1,2,0,0,0,0,1
         1,3,0,0,0,0,1
         1,1,1,1,1,1,1
-      `);
+      `
+      );
     });
   });
 
@@ -77,11 +87,15 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.Right);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,0,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move right makes fly fall", () => {
@@ -93,11 +107,15 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.Right);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,1,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move right makes fly fall with block", () => {
@@ -112,13 +130,17 @@ describe("!unit! Board move", () => {
       makePlayerHaveBlock(board, { x: 1, y: 0 });
       board.move(1, Move.Right);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,0,0,1
         1,1,2,1
         1,1,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
   });
 
@@ -132,11 +154,15 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.Climb);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,3,0,1
         1,1,0,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move climb to right", () => {
@@ -149,11 +175,15 @@ describe("!unit! Board move", () => {
       makePlayerFaceRight(board);
       board.move(1, Move.Climb);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,3,1
         1,0,1,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move climb to right with block", () => {
@@ -168,12 +198,16 @@ describe("!unit! Board move", () => {
       makePlayerFaceRight(board);
       board.move(1, Move.Climb);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,2,1
         1,0,3,1
         1,0,1,1
         1,1,1,1
-      `);
+      `
+      );
     });
   });
 
@@ -187,11 +221,15 @@ describe("!unit! Board move", () => {
 
       board.move(1, Move.GrabDrop);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,2,1
         1,0,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("move grab picks up block from right", () => {
@@ -204,11 +242,15 @@ describe("!unit! Board move", () => {
       makePlayerFaceRight(board);
       board.move(1, Move.GrabDrop);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,2,0,1
         1,3,0,1
         1,1,1,1
-      `);
+      `
+      );
     });
   });
 
@@ -223,11 +265,15 @@ describe("!unit! Board move", () => {
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       board.move(1, Move.GrabDrop);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,0,0,1
         1,2,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
 
     it("falls all the way", () => {
@@ -241,12 +287,16 @@ describe("!unit! Board move", () => {
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       board.move(1, Move.GrabDrop);
 
-      assertBoardEqual(board, symbolsParser, `
+      assertBoardEqual(
+        board,
+        symbolsParser,
+        `
         #  #
         # P#
         #B##
         ####
-      `);
+      `
+      );
     });
 
     it("move drops block on top of wall", () => {
@@ -259,11 +309,15 @@ describe("!unit! Board move", () => {
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       board.move(1, Move.GrabDrop);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,2,0,1
         1,1,3,1
         1,1,1,1
-      `);
+      `
+      );
     });
   });
 });
