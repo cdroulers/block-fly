@@ -52,10 +52,13 @@ export function getXHRLevels(path: string): Promise<ILevelSet> {
 }
 
 export function getLevelsFromFile(file: File): Promise<ILevelSet> {
-  return new Promise<ILevelSet>((resolve: any, reject: any) => {
+  return new Promise<ILevelSet>((resolve) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const levels = transformReponseToLevels(JSON.parse(reader.result), "file:///" + file.name);
+    reader.onload = () => {
+      const levels = transformReponseToLevels(
+        JSON.parse(reader!.result!.toString()),
+        "file:///" + file.name
+      );
       Storage.setItem(levels.uri, JSON.stringify(levels));
       resolve(levels);
     };
@@ -114,7 +117,7 @@ export function transformReponseToLevels(response: any, levelUri: string): ILeve
 function bindLoadRemoteLevels(): void {
   const loadRemoteDialog = document.getElementById("load-remote-file-dialog") as HTMLDialogElement;
 
-  const loadRemoteButton = document.getElementById("load-remote");
+  const loadRemoteButton = document.getElementById("load-remote")!;
   loadRemoteButton.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -151,12 +154,12 @@ function bindLoadRemoteLevels(): void {
 
 function closeMenu(): void {
   // Hack to hide menu if it's been shown on a smaller screen.
-  document.querySelector(".mdl-layout__drawer").classList.remove("is-visible");
-  document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
+  document.querySelector(".mdl-layout__drawer")!.classList.remove("is-visible");
+  document.querySelector(".mdl-layout__obfuscator")!.classList.remove("is-visible");
 }
 
 function bindLoadDefaultLevels(): void {
-  const loadDefaultsButton = document.getElementById("load-defaults");
+  const loadDefaultsButton = document.getElementById("load-defaults")!;
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
     getDefaultLevels()
@@ -175,7 +178,7 @@ function bindLoadDefaultLevels(): void {
 }
 
 function bindLoadChildrenLevels(): void {
-  const loadDefaultsButton = document.getElementById("children-levels");
+  const loadDefaultsButton = document.getElementById("children-levels")!;
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
     getXHRLevels("children-levels.json")
@@ -196,7 +199,7 @@ function bindLoadChildrenLevels(): void {
 function bindLoadLocalLevels(): void {
   const loadLocalDialog = document.getElementById("load-local-file-dialog") as HTMLDialogElement;
 
-  const loadLocalLevels = document.getElementById("load-local");
+  const loadLocalLevels = document.getElementById("load-local")!;
   loadLocalLevels.addEventListener("click", (e) => {
     e.preventDefault();
     loadLocalDialog.showModal();
@@ -206,7 +209,7 @@ function bindLoadLocalLevels(): void {
   loadLocalLevelsForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const input = document.getElementById("local-levels") as HTMLInputElement;
-    const levelsFile = input.files[0];
+    const levelsFile = input.files?.[0];
 
     if (levelsFile) {
       getLevelsFromFile(levelsFile)
@@ -235,7 +238,7 @@ function bindGoToLevelWithPassword(): void {
     "enter-password"
   ) as HTMLDialogElement;
 
-  const goToLevelWithPasswordButton = document.getElementById("enter-password-link");
+  const goToLevelWithPasswordButton = document.getElementById("enter-password-link")!;
   goToLevelWithPasswordButton.addEventListener("click", (e) => {
     e.preventDefault();
 
