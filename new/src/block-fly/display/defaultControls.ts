@@ -8,12 +8,14 @@ export function bindDefaultControls(): void {
   window.addEventListener("keyup", (e) => {
     if (!e.shiftKey) {
       modifiers = { x: 0, y: 0 };
-      publisher.publish(Events.EventType.ViewportModified, { viewport: modifiers } as Events.IViewportModified);
+      publisher.publish(Events.EventType.ViewportModified, {
+        viewport: modifiers,
+      } as Events.IViewportModified);
     }
   });
 
   window.addEventListener("keydown", (e) => {
-    if (document.activeElement.tagName === "INPUT") {
+    if (document.activeElement?.tagName === "INPUT") {
       return;
     }
 
@@ -28,16 +30,28 @@ export function bindDefaultControls(): void {
     }
     switch (e.keyCode) {
       case 37: // Arrow left
-        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Left } as Events.IPlayerMovedEvent);
+        publisher.publish(Events.EventType.PlayerMoved, {
+          playerId: 1,
+          move: Move.Left,
+        } as Events.IPlayerMovedEvent);
         break;
       case 38: // Arrow up
-        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Climb } as Events.IPlayerMovedEvent);
+        publisher.publish(Events.EventType.PlayerMoved, {
+          playerId: 1,
+          move: Move.Climb,
+        } as Events.IPlayerMovedEvent);
         break;
       case 39: // Arrow right
-        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.Right } as Events.IPlayerMovedEvent);
+        publisher.publish(Events.EventType.PlayerMoved, {
+          playerId: 1,
+          move: Move.Right,
+        } as Events.IPlayerMovedEvent);
         break;
       case 40: // Arrow down
-        publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move: Move.GrabDrop } as Events.IPlayerMovedEvent);
+        publisher.publish(Events.EventType.PlayerMoved, {
+          playerId: 1,
+          move: Move.GrabDrop,
+        } as Events.IPlayerMovedEvent);
         break;
       case 82: // Letter "r"
         publisher.publish(Events.EventType.LevelReset, {} as Events.ILevelResetEvent);
@@ -49,7 +63,7 @@ export function bindDefaultControls(): void {
     e.preventDefault();
   });
 
-  document.getElementById("reset").addEventListener("click", (evt: Event) => {
+  document.getElementById("reset")!.addEventListener("click", (evt: Event) => {
     evt.preventDefault();
     publisher.publish(Events.EventType.LevelReset, {} as Events.ILevelResetEvent);
   });
@@ -61,7 +75,7 @@ export function bindDefaultControls(): void {
 
   const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement;
 
-  document.getElementById("help").addEventListener("click", (evt: Event) => {
+  document.getElementById("help")!.addEventListener("click", (evt: Event) => {
     evt.preventDefault();
 
     helpDialog.showModal();
@@ -69,11 +83,14 @@ export function bindDefaultControls(): void {
 }
 
 function bindMove(id: string, move: Move): void {
-  const element = document.getElementById(id);
+  const element = document.getElementById(id)!;
 
   element.addEventListener("click", (evt: Event) => {
     evt.preventDefault();
-    publisher.publish(Events.EventType.PlayerMoved, { playerId: 1, move } as Events.IPlayerMovedEvent);
+    publisher.publish(Events.EventType.PlayerMoved, {
+      playerId: 1,
+      move,
+    } as Events.IPlayerMovedEvent);
   });
 }
 
@@ -83,30 +100,32 @@ function updateModifier(e: KeyboardEvent): void {
     case 37: // Arrow left
       newModifier = {
         x: modifiers.x - 1,
-        y: modifiers.y
+        y: modifiers.y,
       };
       break;
     case 38: // Arrow up
       newModifier = {
         x: modifiers.x,
-        y: modifiers.y - 1
+        y: modifiers.y - 1,
       };
       break;
     case 39: // Arrow right
       newModifier = {
         x: modifiers.x + 1,
-        y: modifiers.y
+        y: modifiers.y,
       };
       break;
     case 40: // Arrow down
       newModifier = {
         x: modifiers.x,
-        y: modifiers.y + 1
+        y: modifiers.y + 1,
       };
       break;
     default:
       return;
   }
 
-  publisher.publish(Events.EventType.ViewportModified, { viewport: newModifier } as Events.IViewportModified);
+  publisher.publish(Events.EventType.ViewportModified, {
+    viewport: newModifier,
+  } as Events.IViewportModified);
 }

@@ -18,7 +18,7 @@ export default class Controller {
   public canvas: HTMLCanvasElement;
   private canvasTitle: HTMLDivElement;
 
-  private levelSet: LevelSet;
+  private levelSet!: LevelSet;
 
   private viewportModifier: IViewport = { x: 0, y: 0 };
 
@@ -32,7 +32,7 @@ export default class Controller {
 
     this.startGame();
 
-    window.addEventListener("resize", (e) => {
+    window.addEventListener("resize", () => {
       this.updateCanvas();
     });
   }
@@ -53,7 +53,7 @@ export default class Controller {
     bindDefaultControls();
     bindMobileControls(this.canvas);
 
-    const latestLevel: ILatestLevel = JSON.parse(Storage.getItem("latestLevel"));
+    const latestLevel: ILatestLevel = JSON.parse(Storage.getItem("latestLevel")!);
 
     if (latestLevel && latestLevel.uri) {
       if (latestLevel.uri.indexOf("http") === 0) {
@@ -122,7 +122,7 @@ export default class Controller {
     this.updateCanvas();
   }
 
-  private levelReset(event: Events.ILevelResetEvent): void {
+  private levelReset(): void {
     this.levelSet.currentLevel.reset();
 
     this.updateCanvas();
@@ -134,7 +134,7 @@ export default class Controller {
       this.updateStoredLatestLevel();
       this.updateCanvas();
       this.updateLevelTitle();
-    } catch (e) {
+    } catch (e: any) {
       showErrorMessage(e.message);
     }
   }
