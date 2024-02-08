@@ -1,0 +1,16 @@
+{
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/.DS_Store": true,
+      "build": false,
+      "node_modules": false
+    },
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.rulers": [100, 120],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+  
