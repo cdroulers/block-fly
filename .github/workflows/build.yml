@@ -1,9 +1,11 @@
 name: Build and test app.
-on:
-  push:
-    branches: [$default-branch]
-  pull_request:
-    branches: [$default-branch]
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+# on:
+#   push:
+#     branches: [$default-branch]
+#   pull_request:
+#     branches: [$default-branch]
 
 jobs:
   build:
@@ -17,11 +19,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
     - run: cd ./new
     - run: npm run build
     - run: npm run lint
