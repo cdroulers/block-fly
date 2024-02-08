@@ -20,13 +20,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - run: cd ./new
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - run: cd ./new
     - run: npm run build
     - run: npm run lint
     - run: npm run test:ci
