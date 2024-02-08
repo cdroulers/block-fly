@@ -2,25 +2,18 @@ import { Board } from "../game/board";
 import { PieceType, IPlayerPiece } from "../game/pieces";
 import { getViewport, ICanvasDimensions, IViewport } from "./viewport";
 
-import player1Left from "../../public/assets/imgs/player1-left.gif";
-import player1Right from "../../public/assets/imgs/player1-right.gif";
-import empty from "../../public/assets/imgs/empty.gif";
-import wall from "../../public/assets/imgs/wall.gif";
-import block from "../../public/assets/imgs/block.gif";
-import door from "../../public/assets/imgs/door.gif";
-
 export const imageSize = 30;
 
 let images: HTMLImageElement[] = [];
 
 export function loadImages(): Promise<any[]> {
   const promises = [
-    loadImage(player1Left),
-    loadImage(player1Right),
-    loadImage(empty),
-    loadImage(wall),
-    loadImage(block),
-    loadImage(door),
+    loadImage("imgs/player1-left.gif"),
+    loadImage("imgs/player1-right.gif"),
+    loadImage("imgs/empty.gif"),
+    loadImage("imgs/wall.gif"),
+    loadImage("imgs/block.gif"),
+    loadImage("imgs/door.gif"),
   ];
   return Promise.all(promises).then((values) => {
     images = values;

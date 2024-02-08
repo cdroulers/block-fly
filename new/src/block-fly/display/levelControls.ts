@@ -24,7 +24,7 @@ function qualifyURL(url: string): string {
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
-  return getXHRLevels("src/public/assets/default-levels.json");
+  return getXHRLevels("./default-levels.json");
 }
 
 export function getXHRLevels(path: string): Promise<ILevelSet> {
@@ -68,6 +68,7 @@ export function transformReponseToLevels(response: any, levelUri: string): ILeve
   let levels: ITextLevel[] = [];
 
   let name = undefined;
+
   if (!Array.isArray(response)) {
     name = response.name;
     response = response.levels;
@@ -177,7 +178,7 @@ function bindLoadChildrenLevels(): void {
   const loadDefaultsButton = document.getElementById("children-levels");
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
-    getXHRLevels("assets/children-levels.json")
+    getXHRLevels("children-levels.json")
       .then((levels: ILevelSet) => {
         closeMenu();
         publisher.publish(Events.EventType.LevelsLoaded, {
