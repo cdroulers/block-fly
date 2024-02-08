@@ -1,0 +1,94 @@
+{
+  "name": "Children's tutorial levels",
+  "levels": [
+    {
+      "number": 1,
+      "name": "Go left",
+      "text": [
+        "#             #",
+        "#             #",
+        "#D     #     P#",
+        "###############"
+      ],
+      "password": "oMG"
+    },
+    {
+      "number": 2,
+      "name": "Go right",
+      "text": [
+        "#             #",
+        "#             #",
+        "#P     #     D#",
+        "###############"
+      ],
+      "password": "wHy"
+    },
+    {
+      "number": 3,
+      "name": "Use block",
+      "text": [
+        "#             #",
+        "#             #",
+        "#      #      #",
+        "#D     #  B  P#",
+        "###############"
+      ],
+      "password": "YOu"
+    },
+    {
+      "number": 4,
+      "name": "Use multiple blocks",
+      "text": [
+        "#             #",
+        "#             #",
+        "#   #         #",
+        "#   #         #",
+        "#D  #BB   B  P#",
+        "###############"
+      ],
+      "password": "Do"
+    },
+    {
+      "number": 5,
+      "name": "Fill the hole in my heart",
+      "text": [
+        "#             #",
+        "#             #",
+        "#D       B   P#",
+        "##### #########",
+        "##  # #       #",
+        "###############"
+      ],
+      "password": "dIs"
+    },
+    {
+      "number": 6,
+      "name": "Rise and fall",
+      "text": [
+        "#             #",
+        "#             #",
+        "#     #       #",
+        "#D    #  B B P#",
+        "##### #########",
+        "##  # #       #",
+        "###############"
+      ],
+      "password": "tO"
+    },
+    {
+      "number": 7,
+      "name": "Now you're thinking with portals",
+      "text": [
+        "#                     #",
+        "#                     #",
+        "#        #            #",
+        "#D       #          #P#",
+        "#####    ##   BBBB  ###",
+        "#####    ##############",
+        "##  ##   #            #",
+        "#######################"
+      ],
+      "password": "ME"
+    }
+  ]
+}
