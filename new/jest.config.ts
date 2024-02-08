@@ -8,4 +8,5 @@ export default {
   moduleNameMapper: {
     //"\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__ mocks __/fileMock.js",
   },
+  testPathIgnorePatterns: ["/test/e2e/"],
 };
