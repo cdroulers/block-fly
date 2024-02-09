@@ -3,6 +3,12 @@
   "private": true,
   "version": "1.1.1",
   "type": "module",
+  "description": "A JavaScript implementation of Block Dude, with flies!",
+  "main": "src/main.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cdroulers/block-fly.git"
+  },
   "scripts": {
     "dev": "vite --port 5555",
     "build": "tsc && vite build",
