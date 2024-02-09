@@ -25,3 +25,8 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:ci
+
+      - name: Run TestCafe Tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome test/e2e/**/*.cafe.ts"
