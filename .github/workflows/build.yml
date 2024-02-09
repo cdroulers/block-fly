@@ -29,4 +29,5 @@ jobs:
       - name: Run TestCafe Tests
         uses: DevExpress/testcafe-action@latest
         with:
-          args: "chrome test/e2e/**/*.cafe.ts"
+          version: "3.5.0"
+          args: "--config-file ./.testcaferc.withapp.cjs"
