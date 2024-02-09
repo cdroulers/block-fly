@@ -14,7 +14,7 @@ export interface IPlayerPiece extends IPiece {
 export function pieceGenerator(type: PieceType, coords: ICoordinates): IPiece {
   return {
     type,
-    coords
+    coords,
   };
 }
 
@@ -23,7 +23,7 @@ export function playerPieceGenerator(id: number, coords: ICoordinates): IPlayerP
     type: PieceType.Player,
     playerId: id,
     facingLeft: true,
-    coords
+    coords,
   };
 }
 
@@ -32,5 +32,5 @@ export enum PieceType {
   Wall = 1,
   Block = 2,
   Player = 3,
-  Door = 4
+  Door = 4,
 }

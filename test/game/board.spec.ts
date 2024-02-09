@@ -1,13 +1,8 @@
-import { expect } from "chai";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
 import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { Move } from "../../src/block-fly/game/board";
-import {
-  PieceType,
-  pieceGenerator,
-  playerPieceGenerator
-} from "../../src/block-fly/game/pieces";
-import {assertBoardEqual} from "./boardHelpers";
+import { PieceType, pieceGenerator, playerPieceGenerator } from "../../src/block-fly/game/pieces";
+import { assertBoardEqual } from "./boardHelpers";
 
 const parser = new BoardParser();
 const symbolsParser = new SymbolsBoardParser();
@@ -22,9 +17,9 @@ describe("!unit! Board", () => {
         1,1,1,1,1
       `);
 
-      expect(board.width).to.equal(5);
-      expect(board.height).to.equal(4);
-      expect(board.pieces).to.deep.equal([
+      expect(board.width).toBe(5);
+      expect(board.height).toBe(4);
+      expect(board.pieces).toStrictEqual([
         pieceGenerator(PieceType.Wall, { x: 0, y: 0 }),
         pieceGenerator(PieceType.Door, { x: 1, y: 0 }),
         pieceGenerator(PieceType.Empty, { x: 2, y: 0 }),
@@ -44,7 +39,7 @@ describe("!unit! Board", () => {
         pieceGenerator(PieceType.Wall, { x: 1, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 2, y: 3 }),
         pieceGenerator(PieceType.Wall, { x: 3, y: 3 }),
-        pieceGenerator(PieceType.Wall, { x: 4, y: 3 })
+        pieceGenerator(PieceType.Wall, { x: 4, y: 3 }),
       ]);
     });
   });
@@ -58,7 +53,10 @@ describe("!unit! Board", () => {
         1,1,1,1,1
       `);
 
-      assertBoardEqual(board, parser, `
+      assertBoardEqual(
+        board,
+        parser,
+        `
         1,4,0,0,1
         1,1,0,0,1
         1,1,2,3,1
@@ -79,10 +77,14 @@ describe("!unit! Board", () => {
 
       board.reset();
 
-      assertBoardEqual(board, symbolsParser, `
+      assertBoardEqual(
+        board,
+        symbolsParser,
+        `
         #D  P#
         ######
-      `);
+      `
+      );
     });
   });
 });

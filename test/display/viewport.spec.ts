@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import BoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { getViewport } from "../../src/block-fly/display/viewport";
 
@@ -15,7 +14,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 3, height: 3 });
 
-    expect(vp).to.deep.equal({ x: 3, y: 1 });
+    expect(vp).toStrictEqual({ x: 3, y: 1 });
   });
 
   it("Properly gets viewport for centered player even width", () => {
@@ -28,7 +27,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 6, height: 3 });
 
-    expect(vp).to.deep.equal({ x: 1, y: 1 });
+    expect(vp).toStrictEqual({ x: 1, y: 1 });
   });
 
   it("Properly gets viewport for player on the bottom right", () => {
@@ -42,7 +41,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 6, height: 4 });
 
-    expect(vp).to.deep.equal({ x: 2, y: 1 });
+    expect(vp).toStrictEqual({ x: 2, y: 1 });
   });
 
   it("Properly gets viewport for player on the bottom left", () => {
@@ -56,7 +55,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 6, height: 4 });
 
-    expect(vp).to.deep.equal({ x: 0, y: 1 });
+    expect(vp).toStrictEqual({ x: 0, y: 1 });
   });
 
   it("Properly gets viewport for player on the top left", () => {
@@ -69,7 +68,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 6, height: 4 });
 
-    expect(vp).to.deep.equal({ x: 0, y: 0 });
+    expect(vp).toStrictEqual({ x: 0, y: 0 });
   });
 
   it("Properly gets viewport for player on the top right", () => {
@@ -82,7 +81,7 @@ describe("!unit! Viewport", () => {
 
     const vp = getViewport(board, { width: 6, height: 4 });
 
-    expect(vp).to.deep.equal({ x: 2, y: 0 });
+    expect(vp).toStrictEqual({ x: 2, y: 0 });
   });
 
   describe("with modifier", () => {
@@ -95,12 +94,9 @@ describe("!unit! Viewport", () => {
         ########
       `);
 
-      const vp = getViewport(
-        board,
-        { width: 6, height: 4 },
-        { x: -1, y: 1 });
+      const vp = getViewport(board, { width: 6, height: 4 }, { x: -1, y: 1 });
 
-      expect(vp).to.deep.equal({ x: 1, y: 1 });
+      expect(vp).toStrictEqual({ x: 1, y: 1 });
     });
 
     it("Properly gets viewport for player on the bottom left with modifier right/up", () => {
@@ -112,12 +108,9 @@ describe("!unit! Viewport", () => {
         ########
       `);
 
-      const vp = getViewport(
-        board,
-        { width: 6, height: 4 },
-        { x: 1, y: -1 });
+      const vp = getViewport(board, { width: 6, height: 4 }, { x: 1, y: -1 });
 
-      expect(vp).to.deep.equal({ x: 1, y: 0 });
+      expect(vp).toStrictEqual({ x: 1, y: 0 });
     });
   });
 });

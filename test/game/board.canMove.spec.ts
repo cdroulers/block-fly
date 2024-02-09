@@ -1,7 +1,4 @@
-import { expect } from "chai";
-import {
-  Move
-} from "../../src/block-fly/game/board";
+import { Move } from "../../src/block-fly/game/board";
 import BoardParser from "../../src/block-fly/game/numbersBoardParser";
 import SymbolsBoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import { makePlayerFaceRight, makePlayerHaveBlock } from "./boardHelpers";
@@ -19,7 +16,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Left);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can move left to empty", () => {
@@ -30,7 +27,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Left);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can move left to door", () => {
@@ -41,7 +38,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Left);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can't go left with block on head with wall in way", () => {
@@ -53,7 +50,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.Left);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
   });
 
@@ -66,7 +63,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Right);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can move right to empty", () => {
@@ -77,7 +74,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Right);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can move right to door", () => {
@@ -88,7 +85,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Right);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can't go right with block on head with wall in way", () => {
@@ -100,12 +97,11 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 1, y: 0 });
       const actual = board.canMove(1, Move.Right);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
   });
 
   describe("climb", () => {
-
     it("can climb left", () => {
       const board = parser.parse(`
         1,0,0,1
@@ -114,7 +110,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can't climb left because of empty", () => {
@@ -125,7 +121,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can't climb left or right because of wall over", () => {
@@ -136,11 +132,11 @@ describe("!unit! Board canMove", () => {
       `);
 
       let actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
 
       makePlayerFaceRight(board);
       actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can't climb left or right with block because of wall over destination", () => {
@@ -153,11 +149,11 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 1 });
       let actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
 
       makePlayerFaceRight(board);
       actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can't climb left or right with block because of wall over block", () => {
@@ -170,11 +166,11 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 1 });
       let actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
 
       makePlayerFaceRight(board);
       actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can climb right", () => {
@@ -186,7 +182,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerFaceRight(board);
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can't climb right", () => {
@@ -198,7 +194,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerFaceRight(board);
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can climb left with block", () => {
@@ -211,7 +207,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 1 });
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can climb left to door", () => {
@@ -222,7 +218,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.Climb);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
   });
 
@@ -235,7 +231,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can grab left if something on top of block", () => {
@@ -246,7 +242,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can grab left if something on top of player", () => {
@@ -257,7 +253,7 @@ describe("!unit! Board canMove", () => {
       `);
 
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
   });
 
@@ -271,7 +267,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can drop left over wall", () => {
@@ -283,7 +279,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can drop left because of wall", () => {
@@ -295,7 +291,7 @@ describe("!unit! Board canMove", () => {
 
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
 
     it("can drop right", () => {
@@ -308,7 +304,7 @@ describe("!unit! Board canMove", () => {
       makePlayerFaceRight(board);
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can drop right over wall", () => {
@@ -321,7 +317,7 @@ describe("!unit! Board canMove", () => {
       makePlayerFaceRight(board);
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.true;
+      expect(actual).toBeTruthy();
     });
 
     it("can't drop right because of wall", () => {
@@ -334,7 +330,7 @@ describe("!unit! Board canMove", () => {
       makePlayerFaceRight(board);
       makePlayerHaveBlock(board, { x: 2, y: 0 });
       const actual = board.canMove(1, Move.GrabDrop);
-      expect(actual).to.be.false;
+      expect(actual).toBeFalsy();
     });
   });
 });

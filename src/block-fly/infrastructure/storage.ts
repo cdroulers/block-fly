@@ -14,36 +14,32 @@ class DefaultStorage implements Storage {
     }
   }
 
-  public getItem(key: string): string | undefined {
+  public getItem(key: string): string | null {
     if (localStorage) {
       return localStorage.getItem(key);
     }
 
-    return undefined;
+    return null;
   }
 
-  public key(index: number): string | undefined {
+  public key(index: number): string | null {
     if (localStorage) {
       return localStorage.key(index);
     }
 
-    return undefined;
+    return null;
   }
 
   public removeItem(key: string): void {
     if (localStorage) {
       localStorage.removeItem(key);
     }
-
-    return undefined;
   }
 
   public setItem(key: string, data: string): void {
     if (localStorage) {
       localStorage.setItem(key, data);
     }
-
-    return undefined;
   }
 
   [key: string]: any;
