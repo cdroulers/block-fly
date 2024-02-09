@@ -25,9 +25,4 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:ci
-
-      - name: Run TestCafe Tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-          skip-install: true
-          args: "--config-file ./.testcaferc.withapp.cjs"
+      - run: npm run tescafe -- --config-file ./.testcaferc.withapp.cjs
