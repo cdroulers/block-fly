@@ -21,7 +21,7 @@ test("cancel password", async (t) => {
     .ok()
     .click(indexPage.menu.enterPassword)
     .click(indexPage.dialogs.enterPassword.cancel)
-    .expect(indexPage.dialogs.enterPassword.visible)
+    .expect(indexPage.dialogs.enterPassword.dialog.visible)
     .notOk();
 });
 
@@ -32,7 +32,7 @@ test("Goes to level", async (t) => {
     .click(indexPage.menu.enterPassword)
     .typeText(indexPage.dialogs.enterPassword.password, "wTF")
     .click(indexPage.dialogs.enterPassword.submit)
-    .expect(indexPage.dialogs.enterPassword.visible)
+    .expect(indexPage.dialogs.enterPassword.dialog.visible)
     .notOk()
     .expect(indexPage.levelIndicator.textContent)
     .contains("11 - Level 11 (password: wTF)");

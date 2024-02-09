@@ -1,7 +1,12 @@
 import { Selector } from "testcafe";
 
 class Dialog {
-  constructor(selector) {
+  public dialog: Selector;
+  protected title: Selector;
+  protected content: Selector;
+  protected actions: Selector;
+
+  constructor(selector: string) {
     this.dialog = Selector(selector);
     this.title = this.dialog.find(".mdl-dialog__title");
     this.content = this.dialog.find(".mdl-dialog__content");
@@ -10,7 +15,11 @@ class Dialog {
 }
 
 class EnterPasswordDialog extends Dialog {
-  constructor(selector) {
+  public password: Selector;
+  public submit: Selector;
+  public cancel: Selector;
+
+  constructor(selector: string) {
     super(selector);
 
     this.password = this.content.find("#level-password");
@@ -20,7 +29,11 @@ class EnterPasswordDialog extends Dialog {
 }
 
 class RemoteLevelsDialog extends Dialog {
-  constructor(selector) {
+  public url: Selector;
+  public submit: Selector;
+  public cancel: Selector;
+
+  constructor(selector: string) {
     super(selector);
 
     this.url = this.content.find("#remote-levels");
@@ -30,7 +43,11 @@ class RemoteLevelsDialog extends Dialog {
 }
 
 class LocalLevelsDialog extends Dialog {
-  constructor(selector) {
+  public url: Selector;
+  public submit: Selector;
+  public cancel: Selector;
+
+  constructor(selector: string) {
     super(selector);
 
     this.url = this.content.find("#local-levels");
@@ -40,6 +57,9 @@ class LocalLevelsDialog extends Dialog {
 }
 
 class MessageBar {
+  public container: Selector;
+  public text: Selector;
+
   constructor() {
     this.container = Selector("#message");
     this.text = Selector(".mdl-snackbar__text");
@@ -47,6 +67,22 @@ class MessageBar {
 }
 
 export default class IndexPage {
+  public layout: Selector;
+  public menu: {
+    enterPassword: Selector;
+    loadChildrensLevels: Selector;
+    loadDefaultLevels: Selector;
+    loadRemoteLevels: Selector;
+    loadLocalLevels: Selector;
+  };
+  public dialogs: {
+    enterPassword: EnterPasswordDialog;
+    remoteLevels: RemoteLevelsDialog;
+    localLevels: LocalLevelsDialog;
+  };
+  public levelIndicator: Selector;
+  public messageBar: MessageBar;
+
   constructor() {
     this.layout = Selector(".mdl-layout__container");
     this.menu = {
