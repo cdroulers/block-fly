@@ -4,11 +4,7 @@ on: [push]
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./new/
 
     strategy:
       matrix:
@@ -16,16 +12,16 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: "./new/package-lock.json"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
 
-    - run: npm install
-    - run: npm run build
-    - run: npm run lint
-    - run: npm run test:ci
+      - run: npm install
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test:ci
