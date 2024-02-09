@@ -29,5 +29,5 @@ jobs:
       - name: Run TestCafe Tests
         uses: DevExpress/testcafe-action@latest
         with:
-          version: "3.5.0"
+          skip-install: true
           args: "--config-file ./.testcaferc.withapp.cjs"
