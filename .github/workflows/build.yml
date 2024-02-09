@@ -1,11 +1,6 @@
 name: Build and test app.
 run-name: ${{ github.actor }} is building stuff!
-#on: [push]
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push]
 
 jobs:
   build-and-test:
