@@ -19,8 +19,7 @@ export interface IViewportModified {
   viewport: IViewport;
 }
 
-export interface ILevelResetEvent {
-}
+export interface ILevelResetEvent {}
 
 export interface IWentToLevelWithPasswordEvent {
   password: string;

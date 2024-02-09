@@ -1,22 +1,21 @@
 import { Board } from "../game/board";
 import { PieceType, IPlayerPiece } from "../game/pieces";
 import { getViewport, ICanvasDimensions, IViewport } from "./viewport";
-import * as Promise from "bluebird";
 
 export const imageSize = 30;
 
-let images = [];
+let images: HTMLImageElement[] = [];
 
 export function loadImages(): Promise<any[]> {
   const promises = [
-    loadImage("assets/imgs/player1-left.gif"),
-    loadImage("assets/imgs/player1-right.gif"),
-    loadImage("assets/imgs/empty.gif"),
-    loadImage("assets/imgs/wall.gif"),
-    loadImage("assets/imgs/block.gif"),
-    loadImage("assets/imgs/door.gif")
+    loadImage("imgs/player1-left.gif"),
+    loadImage("imgs/player1-right.gif"),
+    loadImage("imgs/empty.gif"),
+    loadImage("imgs/wall.gif"),
+    loadImage("imgs/block.gif"),
+    loadImage("imgs/door.gif"),
   ];
-  return Promise.all(promises).then(values => {
+  return Promise.all(promises).then((values) => {
     images = values;
 
     return values;
@@ -26,12 +25,13 @@ export function loadImages(): Promise<any[]> {
 export function writeToCanvas(
   canvas: HTMLCanvasElement,
   board: Board,
-  viewportModifiers: IViewport = undefined): void {
+  viewportModifiers?: IViewport
+): void {
   const [player1Left, player1Right, empty, wall, block, door] = images;
 
   const dimensions = getActualDimensions(board, window);
 
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d")!;
   canvas.width = dimensions.width * imageSize;
   canvas.height = dimensions.height * imageSize;
 
@@ -41,7 +41,7 @@ export function writeToCanvas(
     for (let x = 0; x < dimensions.width; x++) {
       const actualX = x + vp.x;
       const actualY = y + vp.y;
-      let piece = board.pieces.filter(p => p.coords.x === actualX && p.coords.y === actualY)[0];
+      let piece = board.pieces.filter((p) => p.coords.x === actualX && p.coords.y === actualY)[0];
       switch (piece.type) {
         case PieceType.Block:
           context.drawImage(block, x * imageSize, y * imageSize);
@@ -56,7 +56,8 @@ export function writeToCanvas(
           context.drawImage(
             (piece as IPlayerPiece).facingLeft ? player1Left : player1Right,
             x * imageSize,
-            y * imageSize);
+            y * imageSize
+          );
           break;
         default:
           context.drawImage(empty, x * imageSize, y * imageSize);
@@ -69,7 +70,7 @@ export function writeToCanvas(
 export function getActualDimensions(board: Board, w: Window): ICanvasDimensions {
   return {
     width: Math.min(Math.floor(w.innerWidth / imageSize), board.width),
-    height: Math.min(Math.floor(w.innerHeight / imageSize), board.height)
+    height: Math.min(Math.floor(w.innerHeight / imageSize), board.height),
   };
 }
 
@@ -81,7 +82,8 @@ function loadImage(src: string): Promise<HTMLImageElement> {
       () => {
         resolve(img);
       },
-      false);
+      false
+    );
     img.src = src;
   });
 }

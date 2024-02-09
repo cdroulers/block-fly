@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { Move } from "../../src/block-fly/game/board";
 import BoardParser from "../../src/block-fly/game/symbolsBoardParser";
 import LevelSet from "../../src/block-fly/game/levelSet";
@@ -13,16 +12,16 @@ describe("!unit! LevelSet", () => {
         uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
-          { number: 2, text: "#DP #\n#####" }
-        ]
+          { number: 2, text: "#DP #\n#####" },
+        ],
       };
       const levelSet = new LevelSet(levels, parser);
 
-      expect(levelSet.currentLevel.width).to.equal(4);
+      expect(levelSet.currentLevel.width).toBe(4);
 
       levelSet.nextLevel();
 
-      expect(levelSet.currentLevel.width).to.equal(5);
+      expect(levelSet.currentLevel.width).toBe(5);
     });
 
     it("calls callbacks", () => {
@@ -32,8 +31,8 @@ describe("!unit! LevelSet", () => {
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####" },
-          { number: 3, text: "#DP  #\n######" }
-        ]
+          { number: 3, text: "#DP  #\n######" },
+        ],
       };
       const levelSet = new LevelSet(levels, parser);
 
@@ -46,17 +45,17 @@ describe("!unit! LevelSet", () => {
         setFinished = true;
       };
 
-      expect(levelSet.currentLevel.width).to.equal(4);
+      expect(levelSet.currentLevel.width).toBe(4);
 
       levelSet.currentLevel.move(1, Move.Left);
-      expect(levelSet.currentLevel.width).to.equal(5);
+      expect(levelSet.currentLevel.width).toBe(5);
 
       levelSet.currentLevel.move(1, Move.Left);
-      expect(levelSet.currentLevel.width).to.equal(6);
+      expect(levelSet.currentLevel.width).toBe(6);
 
       levelSet.currentLevel.move(1, Move.Left);
-      expect(levelSet.currentLevel.width).to.equal(6);
-      expect(setFinished).to.be.true;
+      expect(levelSet.currentLevel.width).toBe(6);
+      expect(setFinished).toBeTruthy();
     });
   });
 
@@ -67,15 +66,15 @@ describe("!unit! LevelSet", () => {
         uri: "",
         levels: [
           { number: 1, text: "#DP#\n####" },
-          { number: 2, text: "#DP #\n#####", password: "lol" }
-        ]
+          { number: 2, text: "#DP #\n#####", password: "lol" },
+        ],
       };
       const levelSet = new LevelSet(levels, parser);
 
-      expect(levelSet.currentLevel.number).to.equal(1);
+      expect(levelSet.currentLevel.number).toBe(1);
 
       levelSet.goToLevelWithPassword("lol");
-      expect(levelSet.currentLevel.number).to.equal(2);
+      expect(levelSet.currentLevel.number).toBe(2);
     });
 
     it("throws error if not found", () => {
@@ -85,12 +84,12 @@ describe("!unit! LevelSet", () => {
         levels: [
           { number: 1, text: "#DP#\n####" },
           { number: 2, text: "#DP #\n#####" },
-          { number: 3, text: "#DP  #\n######" }
-        ]
+          { number: 3, text: "#DP  #\n######" },
+        ],
       };
       const levelSet = new LevelSet(levels, parser);
 
-      expect(() => levelSet.goToLevelWithPassword("slkdjf")).to.throw(Error);
+      expect(() => levelSet.goToLevelWithPassword("slkdjf")).toThrow(Error);
     });
   });
 });

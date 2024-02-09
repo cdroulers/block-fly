@@ -5,11 +5,11 @@ import { ILevelSet } from "./level";
 export default class LevelSet {
   private currentLevelIndex: number;
 
-  public currentLevel: Board;
+  public currentLevel!: Board;
 
-  public onLevelFinished: (n: number) => void;
+  public onLevelFinished?: (n: number) => void;
 
-  public onSetFinished: () => void;
+  public onSetFinished?: () => void;
 
   public constructor(
     public levelSet: ILevelSet,
@@ -35,7 +35,7 @@ export default class LevelSet {
   }
 
   public goToLevelWithPassword(password: string): void {
-    const foundLevel = this.levelSet.levels.filter(x => x.password === password)[0];
+    const foundLevel = this.levelSet.levels.filter((x) => x.password === password)[0];
     if (foundLevel) {
       this.currentLevelIndex = this.levelSet.levels.indexOf(foundLevel);
       this.setUpCurrentLevel();

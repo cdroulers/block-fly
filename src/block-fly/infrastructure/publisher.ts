@@ -16,7 +16,7 @@ class Publisher {
     const type = EventType[eventType];
 
     if (this.listeners[type]) {
-      this.listeners[type].forEach(callback => {
+      this.listeners[type].forEach((callback) => {
         callback(event);
       });
     }

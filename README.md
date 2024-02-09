@@ -8,12 +8,12 @@ Uses a Fly because I had those sprites laying around somewhere!
 
 ## Other things that should happen
 
-* Fully offline with service workers
-* <del>Fully mobile with gestures and zoom in/out, etc.</del>
-* <del>Well tested.</del>
-* Level chooser.
-* Level editor.
-* <del>Load custom levels!</del>
+- Fully offline with service workers (worked before update to Vite. Gotta do it again.)
+- <del>Fully mobile with gestures and zoom in/out, etc.</del>
+- <del>Well tested.</del>
+- Level chooser.
+- Level editor.
+- <del>Load custom levels!</del>
 
 # Build and develop
 
@@ -27,17 +27,17 @@ Developed with NodeJS 6.1 (Using `nvm` is recommended!).
 
 # Deploying
 
-* Bump version in package.json
-* Update [`CHANGELOG.md`](CHANGELOG.md)
-* Build production version with `npm run deploy`
-* Copy `/build/deploy` to production server.
+- Bump version in package.json
+- Update [`CHANGELOG.md`](CHANGELOG.md)
+- Build production version with `npm run deploy`
+- Copy `/build/deploy` to production server.
 
 # Contributing
 
-* Look at [issues](https://github.com/cdroulers/block-fly/issues)
-* Create a PR from your fork or branch
-* Review, rebase, etc.
-* yay!
+- Look at [issues](https://github.com/cdroulers/block-fly/issues)
+- Create a PR from your fork or branch
+- Review, rebase, etc.
+- yay!
 
 # Stuff
 

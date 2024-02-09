@@ -1,8 +1,4 @@
-import {
-  pieceGenerator,
-  playerPieceGenerator,
-  PieceType
-} from "./pieces";
+import { pieceGenerator, playerPieceGenerator, PieceType, IPiece } from "./pieces";
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
 import { ITextLevel } from "./level";
@@ -11,8 +7,8 @@ export default class SymbolsBoardParser implements IBoardParser {
   private static pieceTypes: { [key: string]: PieceType } = {
     "#": PieceType.Wall,
     " ": PieceType.Empty,
-    "B": PieceType.Block,
-    "D": PieceType.Door
+    B: PieceType.Block,
+    D: PieceType.Door,
   };
 
   public parse(input: string | ITextLevel): Board {
@@ -20,21 +16,21 @@ export default class SymbolsBoardParser implements IBoardParser {
 
     let text = typeof input === "string" ? input : input.text;
 
-    let lines = text.split("\n")
-      .filter(x => x.trim().length > 0);
+    let lines = text.split("\n").filter((x) => x.trim().length > 0);
 
-    let indices = lines
-      .map(x => ({ begin: x.indexOf("#"), end: x.lastIndexOf("#") }));
+    let indices = lines.map((x) => ({ begin: x.indexOf("#"), end: x.lastIndexOf("#") }));
     let stuff = indices.reduce((p, c) => {
       return {
         begin: Math.min(p.begin, c.begin),
-        end: Math.max(p.end, c.end)
+        end: Math.max(p.end, c.end),
       };
     });
 
-    let moreLines = lines.map(x => {
-      return (x + "                                         ")
-        .substring(stuff.begin, stuff.end + 1);
+    let moreLines = lines.map((x) => {
+      return (x + "                                         ").substring(
+        stuff.begin,
+        stuff.end + 1
+      );
     });
     const pieces = moreLines.map((x, i) => {
       return x.split("").map((s, j) => {
@@ -50,18 +46,25 @@ export default class SymbolsBoardParser implements IBoardParser {
       });
     });
 
-    const arrayOfPieces = [];
-    pieces.forEach(x => arrayOfPieces.push(...x));
+    const arrayOfPieces: IPiece[] = [];
+    pieces.forEach((x) => arrayOfPieces.push(...x));
 
     return new Board(
       arrayOfPieces,
       pieces[0].length,
       pieces.length,
-      typeof input === "string" ? undefined : input);
+      typeof input === "string" ? undefined : input
+    );
   }
 
   public asString(board: Board): string {
-    const invertedMap = {};
+    const invertedMap: Record<PieceType, string> = {
+      [PieceType.Empty]: "",
+      [PieceType.Wall]: "",
+      [PieceType.Block]: "",
+      [PieceType.Player]: "",
+      [PieceType.Door]: "",
+    };
     for (const key in SymbolsBoardParser.pieceTypes) {
       if (SymbolsBoardParser.pieceTypes.hasOwnProperty(key)) {
         invertedMap[SymbolsBoardParser.pieceTypes[key]] = key;

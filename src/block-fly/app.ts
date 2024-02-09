@@ -1,22 +1,21 @@
 import { loadImages, imageSize } from "./display/canvasDisplay";
 import { setupDialogs } from "./display/dialogHelpers";
 import Controller from "./infrastructure/controller";
-require("offline-plugin/runtime").install(); // tslint:disable-line no-require-imports no-var-requires
 
-require("./stylesheets/site.style"); // tslint:disable-line no-require-imports no-var-requires
-require("material-design-lite/material.min"); // tslint:disable-line no-require-imports no-var-requires
+import "./stylesheets/site.style.scss";
+import "material-design-lite/material.min.css";
 
 setupDialogs();
 
 init();
 
-let controller: Controller = undefined;
+let controller: Controller = undefined!;
 
 function init(): void {
   loadImages().then(() => {
     controller = new Controller();
 
-    window.addEventListener("resize", (e) => {
+    window.addEventListener("resize", () => {
       checkDrawerButton(controller.canvas);
     });
 

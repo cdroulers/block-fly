@@ -1,9 +1,4 @@
-import {
-  IPiece,
-  pieceGenerator,
-  playerPieceGenerator,
-  PieceType
-} from "./pieces";
+import { IPiece, pieceGenerator, playerPieceGenerator, PieceType } from "./pieces";
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
 import { ITextLevel } from "./level";
@@ -15,22 +10,28 @@ export default class NumbersBoardParser implements IBoardParser {
     }
 
     let playerId = 1;
-    const pieces = text.trim().split("\n").map((x, i) => {
-      return x.trim().split(",").map((s, j) => {
-        let piece: IPiece = undefined;
-        const pieceType = parseInt(s, 10) as PieceType;
-        if (pieceType === PieceType.Player) {
-          piece = playerPieceGenerator(playerId++, { x: j, y: i });
-        } else {
-          piece = pieceGenerator(pieceType, { x: j, y: i });
-        }
+    const pieces = text
+      .trim()
+      .split("\n")
+      .map((x, i) => {
+        return x
+          .trim()
+          .split(",")
+          .map((s, j) => {
+            let piece: IPiece | undefined = undefined;
+            const pieceType = parseInt(s, 10) as PieceType;
+            if (pieceType === PieceType.Player) {
+              piece = playerPieceGenerator(playerId++, { x: j, y: i });
+            } else {
+              piece = pieceGenerator(pieceType, { x: j, y: i });
+            }
 
-        return piece;
+            return piece;
+          });
       });
-    });
 
-    const arrayOfPieces = [];
-    pieces.forEach(x => arrayOfPieces.push(...x));
+    const arrayOfPieces: IPiece[] = [];
+    pieces.forEach((x) => arrayOfPieces.push(...x));
 
     return new Board(arrayOfPieces, pieces[0].length, pieces.length);
   }
