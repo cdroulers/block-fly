@@ -8,7 +8,7 @@ Uses a Fly because I had those sprites laying around somewhere!
 
 ## Other things that should happen
 
-- Fully offline with service workers
+- Fully offline with service workers (worked before update to Vite. Gotta do it again.)
 - <del>Fully mobile with gestures and zoom in/out, etc.</del>
 - <del>Well tested.</del>
 - Level chooser.
