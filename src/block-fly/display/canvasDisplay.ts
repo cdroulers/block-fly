@@ -25,7 +25,8 @@ export function loadImages(): Promise<any[]> {
 export function writeToCanvas(
   canvas: HTMLCanvasElement,
   board: Board,
-  viewportModifiers?: IViewport
+  viewportModifiers?: IViewport,
+  addGrid?: boolean
 ): void {
   const [player1Left, player1Right, empty, wall, block, door] = images;
 
@@ -63,6 +64,28 @@ export function writeToCanvas(
           context.drawImage(empty, x * imageSize, y * imageSize);
           break;
       }
+    }
+  }
+
+  if (addGrid) {
+    for (let y = 0; y < dimensions.height; y++) {
+      context.beginPath();
+      const lineY = imageSize + y * imageSize;
+      context.moveTo(0, lineY);
+      context.lineTo(imageSize * dimensions.width, lineY);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
+    }
+
+    for (let x = 0; x < dimensions.width; x++) {
+      context.beginPath();
+      const lineX = imageSize + x * imageSize;
+      context.moveTo(lineX, 0);
+      context.lineTo(lineX, imageSize * dimensions.height);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
     }
   }
 }

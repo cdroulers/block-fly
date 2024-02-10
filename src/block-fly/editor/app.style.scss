@@ -1,0 +1,25 @@
+:root {
+  --very-dark-background: #aaa;
+  --slightly-dark-background: #fff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+#tiles {
+  margin: 2rem;
+  text-align: center;
+
+  li {
+    display: inline-block;
+    padding: 0.25rem;
+  }
+}
+
+#level-information {
+  li {
+    text-align: center;
+  }
+}
