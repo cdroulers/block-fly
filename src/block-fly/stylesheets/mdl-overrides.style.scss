@@ -7,6 +7,10 @@
   padding: 5px 40px !important;
 }
 
+.mdl-layout__drawer {
+  background-color: var(--slightly-dark-background);
+}
+
 .mdl-layout__drawer > .mdl-layout__title,
 .mdl-layout__drawer > .mdl-layout-title {
   line-height: 32px !important;
@@ -25,4 +29,9 @@
   width: 90% !important;
   max-width: 750px;
   min-width: 320px;
+  background-color: var(--slightly-dark-background);
+
+  .mdl-dialog__title {
+    color: var(--very-dark-background);
+  }
 }

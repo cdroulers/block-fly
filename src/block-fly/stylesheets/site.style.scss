@@ -1,6 +1,11 @@
+:root {
+  --very-dark-background: #333;
+  --slightly-dark-background: #bbb;
+}
+
 body {
   margin: 0;
-  background-color: #eee;
+  background-color: var(--very-dark-background);
 }
 
 #board {
