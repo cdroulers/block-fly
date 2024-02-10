@@ -2,8 +2,8 @@ import { loadImages, imageSize } from "./display/canvasDisplay";
 import { setupDialogs } from "./display/dialogHelpers";
 import Controller from "./infrastructure/controller";
 
-import "./stylesheets/site.style.scss";
 import "material-design-lite/material.min.css";
+import "./stylesheets/site.style.scss";
 
 setupDialogs();
 
