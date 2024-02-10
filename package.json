@@ -16,7 +16,8 @@
     "test": "jest",
     "test:ci": "jest --config jest.ci.config.ts",
     "lint": "prettier -l .",
-    "testcafe": "testcafe"
+    "testcafe": "testcafe",
+    "testcafe:app": "testcafe --config-file ./.testcaferc.withapp.cjs"
   },
   "dependencies": {
     "material-design-lite": "^1.3.0"
