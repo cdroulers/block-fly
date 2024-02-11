@@ -1,3 +1,4 @@
+import { config } from "../../config";
 import { Board } from "../game/board";
 import { PieceType, IPlayerPiece } from "../game/pieces";
 import { getViewport, ICanvasDimensions, IViewport } from "./viewport";
@@ -8,12 +9,12 @@ let images: HTMLImageElement[] = [];
 
 export function loadImages(): Promise<any[]> {
   const promises = [
-    loadImage("imgs/player1-left.gif"),
-    loadImage("imgs/player1-right.gif"),
-    loadImage("imgs/empty.gif"),
-    loadImage("imgs/wall.gif"),
-    loadImage("imgs/block.gif"),
-    loadImage("imgs/door.gif"),
+    loadImage(config.basePath + "imgs/player1-left.gif"),
+    loadImage(config.basePath + "imgs/player1-right.gif"),
+    loadImage(config.basePath + "imgs/empty.gif"),
+    loadImage(config.basePath + "imgs/wall.gif"),
+    loadImage(config.basePath + "imgs/block.gif"),
+    loadImage(config.basePath + "imgs/door.gif"),
   ];
   return Promise.all(promises).then((values) => {
     images = values;

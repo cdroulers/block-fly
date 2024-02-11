@@ -1,10 +1,13 @@
-import { loadImages, imageSize } from "../display/canvasDisplay";
-import { checkDrawerButton } from "../display/helpers";
+import { loadImages, imageSize } from "../block-fly/display/canvasDisplay";
+import { checkDrawerButton } from "../block-fly/display/helpers";
 import Controller from "./controller";
+import { config } from "../config";
 
 import "material-design-lite/material.min.css";
-import "../stylesheets/site.style.scss";
+import "../block-fly/stylesheets/site.style.scss";
 import "./app.style.scss";
+
+config.basePath = "../";
 
 init();
 

@@ -1,6 +1,9 @@
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
 import { ILevelSet } from "./level";
+import { IViewport } from "../display/viewport";
+import { ICoordinates } from "./coordinates";
+import { PieceType } from "./pieces";
 
 export default class LevelSet {
   private currentLevelIndex: number;
@@ -34,6 +37,13 @@ export default class LevelSet {
     this.setUpCurrentLevel();
   }
 
+  public goToLevel(levelNumber: number): void {
+    const idx = this.levelSet.levels.findIndex((x) => x.number == levelNumber);
+    this.currentLevelIndex = idx;
+
+    this.setUpCurrentLevel();
+  }
+
   public goToLevelWithPassword(password: string): void {
     const foundLevel = this.levelSet.levels.filter((x) => x.password === password)[0];
     if (foundLevel) {
@@ -43,6 +53,18 @@ export default class LevelSet {
     }
 
     throw new Error(`Couldn't find a level with password ${password}.`);
+  }
+
+  public replacePiece(coords: ICoordinates, pieceType: PieceType, parser: IBoardParser): void {
+    const piece = this.currentLevel.getPiece(coords);
+    piece.type = pieceType;
+    this.levelSet.levels[this.currentLevelIndex].text = parser.asString(this.currentLevel);
+  }
+
+  public updateInformation(name: string, levelNumber: number, password: string): void {
+    this.levelSet.levels[this.currentLevelIndex].name = name;
+    this.levelSet.levels[this.currentLevelIndex].number = levelNumber;
+    this.levelSet.levels[this.currentLevelIndex].password = password;
   }
 
   private setUpCurrentLevel(): void {

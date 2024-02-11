@@ -3,6 +3,7 @@ import { showErrorMessage } from "./messageDisplay";
 import publisher from "../infrastructure/publisher";
 import * as Events from "../infrastructure/events";
 import Storage from "../infrastructure/storage";
+import { config } from "../../config";
 
 export function bindLevelsControls(): void {
   bindLoadRemoteLevels();
@@ -24,7 +25,7 @@ function qualifyURL(url: string): string {
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
-  return getXHRLevels("./default-levels.json");
+  return getXHRLevels(config.basePath + "default-levels.json");
 }
 
 export function getXHRLevels(path: string): Promise<ILevelSet> {
@@ -181,7 +182,7 @@ function bindLoadChildrenLevels(): void {
   const loadDefaultsButton = document.getElementById("children-levels")!;
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
-    getXHRLevels("children-levels.json")
+    getXHRLevels(config.basePath + "children-levels.json")
       .then((levels: ILevelSet) => {
         closeMenu();
         publisher.publish(Events.EventType.LevelsLoaded, {

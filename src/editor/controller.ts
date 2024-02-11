@@ -1,13 +1,13 @@
-import BoardParser from "../game/symbolsBoardParser";
-import LevelSet from "../game/levelSet";
-import { ILevelSet } from "../game/level";
-import { showMessage } from "../display/messageDisplay";
-import publisher from "../infrastructure/publisher";
-import * as Events from "../infrastructure/events";
-import { getDefaultLevels } from "../display/levelControls";
-import { PieceType } from "../game/pieces";
-import { writeToCanvas, imageSize } from "../display/canvasDisplay";
-import { IViewport } from "../display/viewport";
+import BoardParser from "../block-fly/game/symbolsBoardParser";
+import LevelSet from "../block-fly/game/levelSet";
+import { ILevelSet } from "../block-fly/game/level";
+import { showMessage } from "../block-fly/display/messageDisplay";
+import publisher from "../block-fly/infrastructure/publisher";
+import * as Events from "../block-fly/infrastructure/events";
+import { getDefaultLevels } from "../block-fly/display/levelControls";
+import { PieceType } from "../block-fly/game/pieces";
+import { writeToCanvas, imageSize } from "../block-fly/display/canvasDisplay";
+import { IViewport } from "../block-fly/display/viewport";
 
 const parser = new BoardParser();
 
@@ -28,7 +28,7 @@ export default class Controller {
 
     this.createTiles();
 
-    window.addEventListener("resize", (e) => {
+    window.addEventListener("resize", () => {
       this.updateCanvas();
     });
 
@@ -38,16 +38,20 @@ export default class Controller {
   private canvasClicked(e: MouseEvent): void {
     const x = Math.floor(e.offsetX / imageSize),
       y = Math.floor(e.offsetY / imageSize);
-    const p = this.levelSet.currentLevel.getPiece({ x, y });
-    p.type = this.currentTile;
+    this.levelSet.replacePiece({ x, y }, this.currentTile, parser);
     this.updateCanvas();
   }
 
   private bindEvents(): void {
     const form = document.getElementById("level-information") as ILevelInformationForm;
 
-    // On form submit, I guess save the levels? Probably will need a level picker
-    console.log(form);
+    form.addEventListener("change", (e) => {
+      this.levelSet.updateInformation(
+        form.level_name.value,
+        parseInt(form.number.value, 10),
+        form.password.value
+      );
+    });
   }
 
   private updateLevelInformation(): void {
@@ -72,11 +76,19 @@ export default class Controller {
 
     const levels = document.getElementById("levels")!;
     levels.innerHTML = "";
-    event.levelSet.levels.map((x, i) => {
+    event.levelSet.levels.map((x) => {
       const option = document.createElement("option");
-      option.value = i.toString();
+      option.value = x.number.toString();
+      option.selected = this.levelSet.currentLevel.number == x.number;
       option.innerText = x.name || "";
       levels.appendChild(option);
+    });
+
+    levels.addEventListener("change", (e) => {
+      const newLevel = parseInt((e.target as HTMLSelectElement).value, 10);
+      this.levelSet.goToLevel(newLevel);
+      this.updateLevelInformation();
+      this.updateCanvas();
     });
   }
 
@@ -89,7 +101,6 @@ export default class Controller {
   }
 
   private createTiles(): void {
-    // tslint:disable-next-line:no-unused-variable
     const [player1Left, _, empty, wall, block, door] = this.imgs;
 
     const map: Record<PieceType, HTMLImageElement> = {
@@ -103,11 +114,12 @@ export default class Controller {
     const list = document.getElementById("tiles")!;
     for (let key in Object.keys(map)) {
       if (map.hasOwnProperty(key)) {
-        const img = map[key as unknown as PieceType];
+        const pieceType = parseInt(key, 10) as PieceType;
+        const img = map[pieceType];
         const li = document.createElement("li");
         li.appendChild(img);
         list.appendChild(li);
-        li.addEventListener("click", () => this.setCurrentTile(parseInt(key, 10) as PieceType));
+        li.addEventListener("click", () => this.setCurrentTile(pieceType));
       }
     }
   }
