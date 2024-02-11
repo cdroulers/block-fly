@@ -1,7 +1,6 @@
 import { IBoardParser } from "./boardParser";
 import { Board } from "./board";
 import { ILevelSet } from "./level";
-import { IViewport } from "../display/viewport";
 import { ICoordinates } from "./coordinates";
 import { PieceType } from "./pieces";
 

@@ -45,7 +45,7 @@ export default class Controller {
   private bindEvents(): void {
     const form = document.getElementById("level-information") as ILevelInformationForm;
 
-    form.addEventListener("change", (e) => {
+    form.addEventListener("change", () => {
       this.levelSet.updateInformation(
         form.level_name.value,
         parseInt(form.number.value, 10),
