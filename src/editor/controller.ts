@@ -1,21 +1,24 @@
 import BoardParser from "../block-fly/game/symbolsBoardParser";
-import LevelSet from "../block-fly/game/levelSet";
 import { ILevelSet } from "../block-fly/game/level";
 import { showMessage } from "../block-fly/display/messageDisplay";
 import publisher from "../block-fly/infrastructure/publisher";
 import * as Events from "../block-fly/infrastructure/events";
 import { getDefaultLevels } from "../block-fly/display/levelControls";
 import { PieceType } from "../block-fly/game/pieces";
-import { writeToCanvas, imageSize } from "../block-fly/display/canvasDisplay";
-import { IViewport } from "../block-fly/display/viewport";
+import { writeToCanvas, imageSize, getActualDimensions } from "../block-fly/display/canvasDisplay";
+import { IViewport, getViewport } from "../block-fly/display/viewport";
+import { LevelSetEditor } from "../block-fly/game/levelSetEditor";
+import { bindDefaultControls } from "./controls";
 
 const parser = new BoardParser();
 
 export default class Controller {
   public canvas: HTMLCanvasElement;
 
-  private levelSet!: LevelSet;
+  private levelSet!: LevelSetEditor;
   private currentTile: PieceType = PieceType.Empty;
+
+  private viewportModifier: IViewport = { x: 0, y: 0 };
 
   constructor(private imgs: HTMLImageElement[]) {
     this.canvas = document.getElementById("root") as HTMLCanvasElement;
@@ -36,6 +39,7 @@ export default class Controller {
   }
 
   private canvasClicked(e: MouseEvent): void {
+    // TODO: Gotta take into account if viewport is smaller than level.
     const x = Math.floor(e.offsetX / imageSize),
       y = Math.floor(e.offsetY / imageSize);
     this.levelSet.replacePiece({ x, y }, this.currentTile, parser);
@@ -43,14 +47,36 @@ export default class Controller {
   }
 
   private bindEvents(): void {
+    bindDefaultControls();
+
+    // TODO: Gotta allow changing level size.
     const form = document.getElementById("level-information") as ILevelInformationForm;
 
-    form.addEventListener("change", () => {
-      this.levelSet.updateInformation(
-        form.level_name.value,
-        parseInt(form.number.value, 10),
-        form.password.value
-      );
+    form.addEventListener("change", (e) => {
+      if ((e.target as HTMLFormElement).name == "levels") {
+        const newLevel = parseInt((e.target as HTMLSelectElement).value, 10);
+        this.levelSet.goToLevel(newLevel);
+        this.updateLevelInformation();
+        this.updateCanvas();
+      } else {
+        this.levelSet.updateInformation(
+          form.level_name.value,
+          parseInt(form.number.value, 10),
+          form.password.value
+        );
+      }
+    });
+
+    document.getElementById("add-level")!.addEventListener("click", () => {
+      this.levelSet.addLevel();
+      this.refreshLevelsDropdown(this.levelSet.levelSet);
+    });
+
+    document.getElementById("remove-level")!.addEventListener("click", () => {
+      this.levelSet.removeLevel();
+      this.refreshLevelsDropdown(this.levelSet.levelSet);
+      this.updateLevelInformation();
+      this.updateCanvas();
     });
   }
 
@@ -65,31 +91,52 @@ export default class Controller {
 
   private subscribeToEvents(): void {
     publisher.subscribe(Events.EventType.LevelsLoaded, this.levelsLoaded.bind(this));
+    publisher.subscribe(Events.EventType.ViewportModified, this.viewportModified.bind(this));
   }
 
   private levelsLoaded(event: Events.ILevelsLoadedEvent): void {
-    this.levelSet = new LevelSet(event.levelSet, parser);
+    this.levelSet = new LevelSetEditor(event.levelSet, parser);
     this.updateCanvas();
 
     this.updateLevelInformation();
     showMessage(`Loaded levels from "${this.levelSet.levelSet.name || "unknown"}"!`);
 
+    this.refreshLevelsDropdown(event.levelSet);
+  }
+  private viewportModified(event: Events.IViewportModified): void {
+    const vpBefore = getViewport(
+      this.levelSet.currentLevel,
+      getActualDimensions(this.levelSet.currentLevel, window),
+      this.viewportModifier
+    );
+
+    let newModifier = event.viewport;
+
+    const vpAfter = getViewport(
+      this.levelSet.currentLevel,
+      getActualDimensions(this.levelSet.currentLevel, window),
+      newModifier
+    );
+
+    if (vpBefore.x === vpAfter.x && vpBefore.y === vpAfter.y) {
+      return;
+    }
+
+    this.viewportModifier = newModifier;
+    this.updateCanvas(this.viewportModifier);
+  }
+
+  private refreshLevelsDropdown(levelSet: ILevelSet) {
     const levels = document.getElementById("levels")!;
     levels.innerHTML = "";
-    event.levelSet.levels.map((x) => {
+    levelSet.levels.map((x) => {
       const option = document.createElement("option");
       option.value = x.number.toString();
       option.selected = this.levelSet.currentLevel.number == x.number;
       option.innerText = x.name || "";
       levels.appendChild(option);
     });
-
-    levels.addEventListener("change", (e) => {
-      const newLevel = parseInt((e.target as HTMLSelectElement).value, 10);
-      this.levelSet.goToLevel(newLevel);
-      this.updateLevelInformation();
-      this.updateCanvas();
-    });
+    return levels;
   }
 
   private startEditor(): void {
@@ -130,6 +177,7 @@ export default class Controller {
   }
 
   private updateCanvas(viewport?: IViewport): void {
+    // TODO: Gotta allow panning without reseting.
     writeToCanvas(this.canvas, this.levelSet.currentLevel, viewport, true);
   }
 }

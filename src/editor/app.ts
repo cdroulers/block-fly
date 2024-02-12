@@ -2,12 +2,15 @@ import { loadImages, imageSize } from "../block-fly/display/canvasDisplay";
 import { checkDrawerButton } from "../block-fly/display/helpers";
 import Controller from "./controller";
 import { config } from "../config";
+import { setupDialogs } from "../block-fly/display/dialogHelpers";
 
 import "material-design-lite/material.min.css";
 import "../block-fly/stylesheets/site.style.scss";
 import "./app.style.scss";
 
 config.basePath = "../";
+
+setupDialogs();
 
 init();
 

@@ -6,6 +6,7 @@ let modifiers = { x: 0, y: 0 };
 
 export function bindDefaultControls(): void {
   window.addEventListener("keyup", (e) => {
+    // Resets the viewport to the player when shift is released.
     if (!e.shiftKey) {
       modifiers = { x: 0, y: 0 };
       publisher.publish(Events.EventType.ViewportModified, {
@@ -24,10 +25,12 @@ export function bindDefaultControls(): void {
       return;
     }
 
+    // If Shift key is pressed, update viewport modifier to pan canvas.
     if (e.shiftKey) {
       updateModifier(e);
       return;
     }
+
     switch (e.keyCode) {
       case 37: // Arrow left
         publisher.publish(Events.EventType.PlayerMoved, {
@@ -94,29 +97,28 @@ function bindMove(id: string, move: Move): void {
   });
 }
 
-function updateModifier(e: KeyboardEvent): void {
-  let newModifier = { x: 0, y: 0 };
+export function updateModifier(e: KeyboardEvent): void {
   switch (e.keyCode) {
     case 37: // Arrow left
-      newModifier = {
+      modifiers = {
         x: modifiers.x - 1,
         y: modifiers.y,
       };
       break;
     case 38: // Arrow up
-      newModifier = {
+      modifiers = {
         x: modifiers.x,
         y: modifiers.y - 1,
       };
       break;
     case 39: // Arrow right
-      newModifier = {
+      modifiers = {
         x: modifiers.x + 1,
         y: modifiers.y,
       };
       break;
     case 40: // Arrow down
-      newModifier = {
+      modifiers = {
         x: modifiers.x,
         y: modifiers.y + 1,
       };
@@ -125,7 +127,8 @@ function updateModifier(e: KeyboardEvent): void {
       return;
   }
 
+  // TODO: Should constrain modifiers to max viewport size.
   publisher.publish(Events.EventType.ViewportModified, {
-    viewport: newModifier,
+    viewport: modifiers,
   } as Events.IViewportModified);
 }
