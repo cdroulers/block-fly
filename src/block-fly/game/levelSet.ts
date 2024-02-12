@@ -3,7 +3,7 @@ import { Board } from "./board";
 import { ILevelSet } from "./level";
 
 export default class LevelSet {
-  private currentLevelIndex: number;
+  protected currentLevelIndex: number;
 
   public currentLevel!: Board;
 
@@ -45,7 +45,7 @@ export default class LevelSet {
     throw new Error(`Couldn't find a level with password ${password}.`);
   }
 
-  private setUpCurrentLevel(): void {
+  protected setUpCurrentLevel(): void {
     this.currentLevel = this.boardParser.parse(this.levelSet.levels[this.currentLevelIndex]);
     this.currentLevel.onWin = () => {
       if (this.onLevelFinished) {

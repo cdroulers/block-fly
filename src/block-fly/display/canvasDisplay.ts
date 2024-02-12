@@ -1,3 +1,4 @@
+import { config } from "../../config";
 import { Board } from "../game/board";
 import { PieceType, IPlayerPiece } from "../game/pieces";
 import { getViewport, ICanvasDimensions, IViewport } from "./viewport";
@@ -8,12 +9,12 @@ let images: HTMLImageElement[] = [];
 
 export function loadImages(): Promise<any[]> {
   const promises = [
-    loadImage("imgs/player1-left.gif"),
-    loadImage("imgs/player1-right.gif"),
-    loadImage("imgs/empty.gif"),
-    loadImage("imgs/wall.gif"),
-    loadImage("imgs/block.gif"),
-    loadImage("imgs/door.gif"),
+    loadImage(config.basePath + "imgs/player1-left.gif"),
+    loadImage(config.basePath + "imgs/player1-right.gif"),
+    loadImage(config.basePath + "imgs/empty.gif"),
+    loadImage(config.basePath + "imgs/wall.gif"),
+    loadImage(config.basePath + "imgs/block.gif"),
+    loadImage(config.basePath + "imgs/door.gif"),
   ];
   return Promise.all(promises).then((values) => {
     images = values;
@@ -25,7 +26,8 @@ export function loadImages(): Promise<any[]> {
 export function writeToCanvas(
   canvas: HTMLCanvasElement,
   board: Board,
-  viewportModifiers?: IViewport
+  viewportModifiers?: IViewport,
+  addGrid?: boolean
 ): void {
   const [player1Left, player1Right, empty, wall, block, door] = images;
 
@@ -63,6 +65,28 @@ export function writeToCanvas(
           context.drawImage(empty, x * imageSize, y * imageSize);
           break;
       }
+    }
+  }
+
+  if (addGrid) {
+    for (let y = 0; y < dimensions.height; y++) {
+      context.beginPath();
+      const lineY = imageSize + y * imageSize;
+      context.moveTo(0, lineY);
+      context.lineTo(imageSize * dimensions.width, lineY);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
+    }
+
+    for (let x = 0; x < dimensions.width; x++) {
+      context.beginPath();
+      const lineX = imageSize + x * imageSize;
+      context.moveTo(lineX, 0);
+      context.lineTo(lineX, imageSize * dimensions.height);
+      context.lineWidth = 1;
+      context.strokeStyle = "#fff";
+      context.stroke();
     }
   }
 }
