@@ -73,7 +73,7 @@ export default defineConfig({
   webServer: process.env.CI
     ? {
         command: "npm run dev",
-        url: "http://127.0.0.1:5555",
+        url: "http://localhost:5555",
       }
     : undefined,
 });
