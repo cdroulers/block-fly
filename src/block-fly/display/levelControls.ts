@@ -29,7 +29,7 @@ export function getDefaultLevels(): Promise<ILevelSet> {
 }
 
 export function getXHRLevels(path: string): Promise<ILevelSet> {
-  return new Promise<ILevelSet>((resolve: any, reject: any) => {
+  return new Promise<ILevelSet>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", path);
@@ -38,7 +38,9 @@ export function getXHRLevels(path: string): Promise<ILevelSet> {
     xhr.onload = () => {
       if (xhr.status === 200) {
         const json = typeof xhr.response === "string" ? JSON.parse(xhr.response) : xhr.response;
-        resolve(transformReponseToLevels(json, qualifyURL(path)));
+        const levels = transformReponseToLevels(json, qualifyURL(path));
+        Storage.setItem(levels.uri, JSON.stringify(levels));
+        resolve(levels);
       } else {
         reject(Error("Cannot load levels; error : " + xhr.statusText));
       }

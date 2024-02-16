@@ -1,7 +1,15 @@
 import "material-design-lite";
 
-export function showErrorMessage(message: string): void {
-  showMessage(message, "red", 5000);
+export function showErrorMessage(message: string | Error | unknown): void {
+  let actualMessage = "";
+  if (typeof message === "string") {
+    actualMessage = message;
+  } else if (message instanceof Error) {
+    actualMessage = message.message;
+  } else {
+    actualMessage = (message as any).toString();
+  }
+  showMessage(actualMessage, "red", 5000);
 }
 
 declare interface SnackbarContainer extends HTMLElement {
