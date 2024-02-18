@@ -25,10 +25,10 @@ function qualifyURL(url: string): string {
 }
 
 export function getDefaultLevels(): Promise<ILevelSet> {
-  return getXHRLevels(config.basePath + "default-levels.json");
+  return getRemoteLevels(config.basePath + "default-levels.json");
 }
 
-export function getXHRLevels(path: string): Promise<ILevelSet> {
+export function getRemoteLevels(path: string): Promise<ILevelSet> {
   return new Promise<ILevelSet>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -134,7 +134,7 @@ function bindLoadRemoteLevels(): void {
     const url = input.value;
 
     if (url) {
-      getXHRLevels(url)
+      getRemoteLevels(url)
         .then((levels: ILevelSet) => {
           loadRemoteDialog.close();
           closeMenu();
@@ -184,7 +184,7 @@ function bindLoadChildrenLevels(): void {
   const loadDefaultsButton = document.getElementById("children-levels")!;
   loadDefaultsButton.addEventListener("click", (e) => {
     e.preventDefault();
-    getXHRLevels(config.basePath + "children-levels.json")
+    getRemoteLevels(config.basePath + "children-levels.json")
       .then((levels: ILevelSet) => {
         closeMenu();
         publisher.publish(Events.EventType.LevelsLoaded, {

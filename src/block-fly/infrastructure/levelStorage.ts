@@ -1,4 +1,4 @@
-import { getXHRLevels } from "../display/levelControls";
+import { getRemoteLevels } from "../display/levelControls";
 import { ILevelSet } from "../game/level";
 import DefaultStorage from "./storage";
 
@@ -17,7 +17,7 @@ export class LevelStorage {
 
     if (latestLevel && latestLevel.uri) {
       if (latestLevel.uri.indexOf("http") === 0) {
-        const levels = await getXHRLevels(latestLevel.uri);
+        const levels = await getRemoteLevels(latestLevel.uri);
         return { levelSet: levels, password: latestLevel.password };
       } else if (latestLevel.uri.indexOf("file") === 0) {
         const latestLevelFile = this.storage.getItem(latestLevel.uri);
@@ -55,7 +55,7 @@ export interface IStoredLevel {
   password: string;
 }
 
-interface ILatestLevel {
+export interface ILatestLevel {
   uri: string;
   password: string;
 }
