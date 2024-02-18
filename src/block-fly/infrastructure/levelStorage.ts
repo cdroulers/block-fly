@@ -4,6 +4,8 @@ import DefaultStorage from "./storage";
 
 export class LevelStorage {
   public static readonly LatestLevelsKey: string = "latestLevels";
+  public static readonly LatestPasswordSuffix: string = ":::::pwd";
+
   private readonly storage: Storage;
 
   public constructor(storage?: Storage) {
@@ -11,9 +13,22 @@ export class LevelStorage {
   }
 
   public async loadlatestLevels(): Promise<IStoredLevel | undefined> {
-    const latestLevel: ILatestLevel = JSON.parse(
-      this.storage.getItem(LevelStorage.LatestLevelsKey)!
-    );
+    const latestLevelValue = this.storage.getItem(LevelStorage.LatestLevelsKey);
+    if (!latestLevelValue) {
+      return undefined;
+    }
+
+    let latestLevel: ILatestLevel | undefined = undefined;
+
+    if (latestLevelValue.startsWith("{")) {
+      latestLevel = JSON.parse(latestLevelValue);
+    } else {
+      const pwd = await this.getLatestPassword(latestLevelValue);
+      latestLevel = {
+        uri: latestLevelValue,
+        password: pwd || "",
+      };
+    }
 
     if (latestLevel && latestLevel.uri) {
       if (latestLevel.uri.indexOf("http") === 0) {
@@ -38,15 +53,15 @@ export class LevelStorage {
   }
 
   public storeLatestLevels(uri: string, password: string): Promise<void> {
-    this.storage.setItem(
-      LevelStorage.LatestLevelsKey,
-      JSON.stringify({
-        uri,
-        password,
-      } as ILatestLevel)
-    );
+    this.storage.setItem(LevelStorage.LatestLevelsKey, uri);
+    this.storage.setItem(uri + LevelStorage.LatestPasswordSuffix, password);
 
     return Promise.resolve();
+  }
+
+  public getLatestPassword(uri: string): Promise<string | undefined> {
+    const found = this.storage.getItem(uri + LevelStorage.LatestPasswordSuffix) || undefined;
+    return Promise.resolve(found);
   }
 }
 

@@ -73,13 +73,18 @@ export default class Controller {
   private loadLatestLevels(levels: ILevelSet, password: string): void {
     publisher.publish(Events.EventType.LevelsLoaded, {
       levelSet: levels,
+      password,
     } as Events.ILevelsLoadedEvent);
-    const event = { password } as Events.IWentToLevelWithPasswordEvent;
-    publisher.publish(Events.EventType.WentToLevelWithPassword, event);
   }
 
-  private levelsLoaded(event: Events.ILevelsLoadedEvent): void {
+  private async levelsLoaded(event: Events.ILevelsLoadedEvent): Promise<void> {
     this.levelSet = new LevelSet(event.levelSet, parser);
+
+    const latestPassword = await levelStorage.getLatestPassword(event.levelSet.uri);
+    if (latestPassword) {
+      this.levelSet.goToLevelWithPassword(latestPassword);
+    }
+
     this.updateStoredLatestLevel();
 
     this.levelSet.onLevelFinished = () => {
