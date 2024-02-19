@@ -1,5 +1,12 @@
 # History
 
+## 1.2.0 (2024-02-18)
+
+- Store each level set's latest password separately [#47]
+- Update for 2024 (Vite bundler + lots of updates!) [#42]
+- Add Playwright tests [#46]
+- Add basic editor, very WIP [#45]
+
 ## 1.1.1 (2017-02-25)
 
 - Forms around popups for better accessibility [#29]
