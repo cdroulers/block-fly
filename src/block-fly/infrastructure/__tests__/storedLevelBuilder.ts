@@ -1,4 +1,4 @@
-import { LevelSetBuilder } from "../../game/__tests__/LevelSetBuilder";
+import { LevelSetBuilder } from "../../game/__tests__/levelSetBuilder";
 import { IStoredLevel } from "../levelStorage";
 
 export class StoredLevelBuilder {
