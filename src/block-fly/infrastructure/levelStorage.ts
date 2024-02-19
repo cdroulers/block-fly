@@ -3,7 +3,7 @@ import { ILevelSet } from "../game/level";
 import DefaultStorage from "./storage";
 
 export class LevelStorage {
-  public static readonly LatestLevelsKey: string = "latestLevels";
+  public static readonly LatestLevelKey: string = "latestLevel";
   public static readonly LatestPasswordSuffix: string = ":::::pwd";
 
   private readonly storage: Storage;
@@ -13,7 +13,7 @@ export class LevelStorage {
   }
 
   public async loadlatestLevels(): Promise<IStoredLevel | undefined> {
-    const latestLevelValue = this.storage.getItem(LevelStorage.LatestLevelsKey);
+    const latestLevelValue = this.storage.getItem(LevelStorage.LatestLevelKey);
     if (!latestLevelValue) {
       return undefined;
     }
@@ -53,7 +53,7 @@ export class LevelStorage {
   }
 
   public storeLatestLevels(uri: string, password: string): Promise<void> {
-    this.storage.setItem(LevelStorage.LatestLevelsKey, uri);
+    this.storage.setItem(LevelStorage.LatestLevelKey, uri);
     this.storage.setItem(uri + LevelStorage.LatestPasswordSuffix, password);
 
     return Promise.resolve();

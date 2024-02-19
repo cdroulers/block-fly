@@ -22,7 +22,7 @@ describe("!unit! levelStorage", () => {
 
     it("(with full JSON) When loading unknown levels Then throws", async () => {
       storage.setItem(
-        LevelStorage.LatestLevelsKey,
+        LevelStorage.LatestLevelKey,
         JSON.stringify(new LatestLevelBuilder().withUri("ftp://lol.com/test.json").build())
       );
 
@@ -33,7 +33,7 @@ describe("!unit! levelStorage", () => {
 
     it("(with full JSON) When loading file level that is missing Then throws", async () => {
       storage.setItem(
-        LevelStorage.LatestLevelsKey,
+        LevelStorage.LatestLevelKey,
         JSON.stringify(new LatestLevelBuilder().withUri("file:///C:/lol.json").build())
       );
 
@@ -44,7 +44,7 @@ describe("!unit! levelStorage", () => {
 
     it("(with full JSON) When loading file level that exists Then returns it", async () => {
       storage.setItem(
-        LevelStorage.LatestLevelsKey,
+        LevelStorage.LatestLevelKey,
         JSON.stringify(
           new LatestLevelBuilder().withUri(defaultFileName).withPassword("QUE").build()
         )
