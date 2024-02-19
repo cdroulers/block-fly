@@ -27,4 +27,5 @@ export interface IWentToLevelWithPasswordEvent {
 
 export interface ILevelsLoadedEvent {
   levelSet: ILevelSet;
+  password?: string;
 }

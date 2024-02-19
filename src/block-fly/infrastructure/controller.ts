@@ -80,7 +80,8 @@ export default class Controller {
   private async levelsLoaded(event: Events.ILevelsLoadedEvent): Promise<void> {
     this.levelSet = new LevelSet(event.levelSet, parser);
 
-    const latestPassword = await levelStorage.getLatestPassword(event.levelSet.uri);
+    const latestPassword =
+      event.password ?? (await levelStorage.getLatestPassword(event.levelSet.uri));
     if (latestPassword) {
       this.levelSet.goToLevelWithPassword(latestPassword);
     }
