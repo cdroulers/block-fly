@@ -35,6 +35,12 @@ export class IndexPage {
     return new LocalLevelsDialog(this.page, "#load-local-file-dialog");
   }
 
+  public async loadChildrenLevels(): Promise<void> {
+    await this.page
+      .locator(".mdl-navigation__link", { hasText: "Load children's tutorial levels" })
+      .click();
+  }
+
   public async loadDefaultLevels(): Promise<void> {
     await this.page.locator(".mdl-navigation__link", { hasText: "Load default levels" }).click();
   }

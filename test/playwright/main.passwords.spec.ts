@@ -28,7 +28,7 @@ test.describe("Load level by password", () => {
     await passwordDialog.password.fill("wTF");
     await passwordDialog.submitButton.click();
     await p.shouldHaveLevelIndicator("11 - Level 11 (password: wTF)");
-    await p.loadDefaultLevels();
-    await p.shouldHaveLevelIndicator("1 - Level 1 (password: tcP)");
+    await p.loadChildrenLevels();
+    await p.shouldHaveLevelIndicator("1 - Go left (password: oMG)");
   });
 });

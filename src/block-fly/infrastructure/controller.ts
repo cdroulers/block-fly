@@ -8,11 +8,12 @@ import { writeToCanvas, getActualDimensions } from "../display/canvasDisplay";
 import { IViewport, getViewport } from "../display/viewport";
 import { bindDefaultControls } from "../display/defaultControls";
 import { bindMobileControls } from "../display/mobileControls";
-import { getDefaultLevels, getXHRLevels, bindLevelsControls } from "../display/levelControls";
-import Storage from "./storage";
+import { getDefaultLevels, bindLevelsControls } from "../display/levelControls";
 import { startFireworks } from "../display/fireworksDisplay";
+import { LevelStorage } from "./levelStorage";
 
 const parser = new BoardParser();
+const levelStorage = new LevelStorage();
 
 export default class Controller {
   public canvas: HTMLCanvasElement;
@@ -48,52 +49,43 @@ export default class Controller {
     );
   }
 
-  private startGame(): void {
+  private async startGame(): Promise<void> {
     bindLevelsControls();
     bindDefaultControls();
     bindMobileControls(this.canvas);
 
-    const latestLevel: ILatestLevel = JSON.parse(Storage.getItem("latestLevel")!);
-
-    if (latestLevel && latestLevel.uri) {
-      if (latestLevel.uri.indexOf("http") === 0) {
-        getXHRLevels(latestLevel.uri).then((levels: ILevelSet) => {
-          this.loadLatestLevels(levels, latestLevel.password);
-        });
+    try {
+      const latest = await levelStorage.loadlatestLevels();
+      if (latest) {
+        this.loadLatestLevels(latest?.levelSet, latest?.password);
         return;
-      } else if (latestLevel.uri.indexOf("file") === 0) {
-        const latestLevelFile = Storage.getItem(latestLevel.uri);
-        if (latestLevelFile) {
-          const levels = JSON.parse(latestLevelFile) as ILevelSet;
-          this.loadLatestLevels(levels, latestLevel.password);
-          return;
-        } else {
-          showErrorMessage(
-            `Don't have ${latestLevel.uri} in local cache, you'll have to reload it!`
-          );
-        }
-      } else {
-        showErrorMessage(`Don't know how to reload levels at ${latestLevel.uri}`);
       }
-    }
 
-    getDefaultLevels().then((levels: ILevelSet) => {
+      const levels = await getDefaultLevels();
       publisher.publish(Events.EventType.LevelsLoaded, {
         levelSet: levels,
       } as Events.ILevelsLoadedEvent);
-    });
+    } catch (e) {
+      showErrorMessage(e);
+    }
   }
 
   private loadLatestLevels(levels: ILevelSet, password: string): void {
     publisher.publish(Events.EventType.LevelsLoaded, {
       levelSet: levels,
+      password,
     } as Events.ILevelsLoadedEvent);
-    const event = { password } as Events.IWentToLevelWithPasswordEvent;
-    publisher.publish(Events.EventType.WentToLevelWithPassword, event);
   }
 
-  private levelsLoaded(event: Events.ILevelsLoadedEvent): void {
+  private async levelsLoaded(event: Events.ILevelsLoadedEvent): Promise<void> {
     this.levelSet = new LevelSet(event.levelSet, parser);
+
+    const latestPassword =
+      event.password ?? (await levelStorage.getLatestPassword(event.levelSet.uri));
+    if (latestPassword) {
+      this.levelSet.goToLevelWithPassword(latestPassword);
+    }
+
     this.updateStoredLatestLevel();
 
     this.levelSet.onLevelFinished = () => {
@@ -140,13 +132,7 @@ export default class Controller {
   }
 
   private updateStoredLatestLevel(): void {
-    Storage.setItem(
-      "latestLevel",
-      JSON.stringify({
-        uri: this.levelSet.levelSet.uri,
-        password: this.levelSet.currentLevel.password,
-      } as ILatestLevel)
-    );
+    levelStorage.storeLatestLevels(this.levelSet.levelSet.uri, this.levelSet.currentLevel.password);
   }
 
   private updateCanvas(viewport?: IViewport): void {
@@ -183,9 +169,4 @@ export default class Controller {
     this.viewportModifier = newModifier;
     this.updateCanvas(this.viewportModifier);
   }
-}
-
-interface ILatestLevel {
-  uri: string;
-  password: string;
 }

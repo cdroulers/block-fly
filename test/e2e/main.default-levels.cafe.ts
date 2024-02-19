@@ -6,11 +6,9 @@ const indexPage = new IndexPage();
 
 test("Via menu", async (t) => {
   await t
-    .click(indexPage.menu.enterPassword)
-    .typeText(indexPage.dialogs.enterPassword.password, "wTF")
-    .click(indexPage.dialogs.enterPassword.submit)
+    .click(indexPage.menu.loadChildrensLevels)
     .expect(indexPage.levelIndicator.textContent)
-    .notContains("1 - Level 1 (password: tcP)")
+    .contains("1 - Go left (password: oMG)")
     .click(indexPage.menu.loadDefaultLevels)
     .expect(indexPage.levelIndicator.textContent)
     .contains("1 - Level 1 (password: tcP)");

@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "test": "jest",
     "test:ci": "jest --config jest.ci.config.ts",
-    "lint": "prettier -l .",
+    "lint": "tsc && prettier -l .",
     "testcafe": "testcafe",
     "testcafe:app": "testcafe --config-file ./.testcaferc.withapp.cjs",
     "playwright": "playwright test"
