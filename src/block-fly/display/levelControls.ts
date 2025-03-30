@@ -29,29 +29,18 @@ export function getDefaultLevels(): Promise<ILevelSet> {
 }
 
 export function getRemoteLevels(path: string): Promise<ILevelSet> {
-  return new Promise<ILevelSet>((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open("GET", path);
-    xhr.responseType = "json";
-
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        const json = typeof xhr.response === "string" ? JSON.parse(xhr.response) : xhr.response;
-        const levels = transformReponseToLevels(json, qualifyURL(path));
-        Storage.setItem(levels.uri, JSON.stringify(levels));
-        resolve(levels);
-      } else {
-        reject(Error("Cannot load levels; error : " + xhr.statusText));
+  return fetch(path)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Cannot load levels; error: ${response.status} ${response.statusText}`);
       }
-    };
-
-    xhr.onerror = () => {
-      reject(Error("There was a network error."));
-    };
-
-    xhr.send();
-  });
+      return response.json();
+    })
+    .then((json) => {
+      const levels = transformReponseToLevels(json, qualifyURL(path));
+      Storage.setItem(levels.uri, JSON.stringify(levels));
+      return levels;
+    });
 }
 
 export function getLevelsFromFile(file: File): Promise<ILevelSet> {
