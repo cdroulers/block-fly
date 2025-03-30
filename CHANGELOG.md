@@ -1,5 +1,10 @@
 # History
 
+## 1.2.1 (2025-03-30)
+
+- Update most libraries with Claude Code for fun. [#49]
+- Replace XMLHttpRequest with fetch API in levelControls.ts [#50] (Issue #48)
+
 ## 1.2.0 (2024-02-18)
 
 - Store each level set's latest password separately [#47]

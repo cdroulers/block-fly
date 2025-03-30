@@ -1,7 +1,7 @@
 {
   "name": "block-fly",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "description": "A JavaScript implementation of Block Dude, with flies!",
   "main": "src/main.ts",
