@@ -1,4 +1,6 @@
 // Taken from https://codepen.io/yshlin/pen/ylDEk
+@use "sass:math";
+
 $particles: 50;
 $width: 500;
 $height: 500;
@@ -9,11 +11,11 @@ $box-shadow2: ();
 @for $i from 0 through $particles {
   $box-shadow:
     $box-shadow,
-    random($width) - calc($width / 2) +
+    math.random($width) - calc($width / 2) +
       px
-      random($height) - calc($height / 1.2) +
+      math.random($height) - calc($height / 1.2) +
       px
-      hsl(random(360), 100%, 50%);
+      hsl(math.random(360), 100%, 50%);
   $box-shadow2:
     $box-shadow2,
     0 0 #fff;
